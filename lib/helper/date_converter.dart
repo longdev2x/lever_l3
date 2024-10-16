@@ -12,6 +12,10 @@ class DateConverter {
     return DateFormat('dd/MM/yyyy').format(date);
   }
 
+  static String getHoursMinutes(DateTime date) {
+    return DateFormat('hh:mm').format(date);
+  }
+
   static String formatDate(DateTime dateTime) {
     return DateFormat('yyyy-MM-dd hh:mm:ss a').format(dateTime);
   }

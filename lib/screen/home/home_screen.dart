@@ -1,7 +1,11 @@
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:timesheet/controller/tracking_controller.dart';
+import 'package:timesheet/data/model/body/tracking_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
+import 'package:timesheet/screen/home/tracking_history_screen.dart';
 import 'package:timesheet/utils/color_resources.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
@@ -104,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       AppText14(
-                        'Hôm nay, ${DateConverter.getWeekDay(now)}',
+                        'Hôm nay, Thứ ${DateConverter.getWeekDay(now)}',
                         color: Colors.white,
                       ),
                       SizedBox(height: 10.h),
@@ -115,21 +119,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppText14(
-                        'Giờ vào ...',
-                        color: Colors.white,
-                      ),
-                      SizedBox(height: 10.h),
-                      AppText16(
-                        'Chưa tracking...',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ],
+                  FutureBuilder<List<TrackingEntity>>(
+                    future: Get.find<TrackingController>().getTracking(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        TrackingEntity? objTracking = snapshot.data?.first;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if (objTracking != null)
+                              AppText14(
+                                'Giờ vào ${objTracking.date?.hour}h',
+                                color: Colors.white,
+                              ),
+                            if (objTracking != null) SizedBox(height: 10.h),
+                            AppText16(
+                              objTracking != null
+                                  ? 'Đã tracking'
+                                  : 'Chưa Tracking',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ],
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
@@ -167,8 +186,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 30.h),
                   AppButton(
                     name: 'Tracking',
-                    ontap: () {},
+                    ontap: onTracking,
                   ),
+                  SizedBox(height: 10.h),
+                  GestureDetector(
+                      onTap: () {
+                        Get.to(const TrackingHistoryScreen());
+                      },
+                      child: const AppText16(
+                        'Lịch sử tracking',
+                        color: ColorResources.blueColor,
+                      )),
                 ],
               ),
             ),
@@ -176,5 +204,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void onTracking() async {
+    String content = _contentTrackingController.text;
+    if (content.trim().isNotEmpty) {
+      int statusCode =
+          await Get.find<TrackingController>().saveTracking(content: content);
+      if (statusCode == 200) {
+        _contentTrackingController.clear();
+        //Navigate to history
+      }
+    }
   }
 }

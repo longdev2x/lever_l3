@@ -24,6 +24,7 @@ class AppText10 extends StatelessWidget {
       ),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -51,6 +52,7 @@ class AppText14 extends StatelessWidget {
       ),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -78,6 +80,7 @@ class AppText16 extends StatelessWidget {
       ),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -105,6 +108,7 @@ class AppText18 extends StatelessWidget {
       ),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -132,6 +136,7 @@ class AppText20 extends StatelessWidget {
       ),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -159,6 +164,7 @@ class AppText24 extends StatelessWidget {
       ),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -182,6 +188,7 @@ class AppText26 extends StatelessWidget {
       style: TextStyle(fontSize: 26.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -205,6 +212,7 @@ class AppText28 extends StatelessWidget {
       style: TextStyle(fontSize: 28.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -228,6 +236,7 @@ class AppText34 extends StatelessWidget {
       style: TextStyle(fontSize: 34.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -251,6 +260,7 @@ class AppText40 extends StatelessWidget {
       style: TextStyle(fontSize: 40.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
@@ -274,6 +284,7 @@ class AppText55 extends StatelessWidget {
       style: TextStyle(fontSize: 55.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
