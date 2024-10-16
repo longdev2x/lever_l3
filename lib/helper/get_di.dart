@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timesheet/controller/auth_controller.dart';
+import 'package:timesheet/controller/home_controller.dart';
 import 'package:timesheet/controller/sign_up_controller.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
 import 'package:timesheet/data/repository/splash_repo.dart';
@@ -42,6 +43,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => AuthController(repo: Get.find()));
   Get.lazyPut(() => SignUpController());
   Get.lazyPut(() => TrackingController(repo: Get.find()));
+  Get.lazyPut(() => HomeController());
 
 
   // Retrieving localized data

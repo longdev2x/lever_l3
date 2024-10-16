@@ -4,7 +4,11 @@ import 'package:intl/intl.dart';
 class DateConverter {
 
   static String getWeekDay(DateTime date) {
+    int dayNow = DateTime.now().weekday;
     final List<String> weekdays = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'];
+    if(date.weekday == dayNow) {
+      return 'Hôm nay';
+    }
     return weekdays[date.weekday - 1];
   }
 

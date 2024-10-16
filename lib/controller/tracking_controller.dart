@@ -34,8 +34,6 @@ class TrackingController extends GetxController {
     DateTime now = DateTime.now();
 
     TrackingEntity objTracking = TrackingEntity(
-      //test
-      id: 10,
       content: content,
       date: now,
       user: user,
