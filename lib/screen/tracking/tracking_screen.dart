@@ -45,7 +45,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
           child: Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: ColorResources.getWhiteColor(),
               boxShadow: [
                 BoxShadow(
                   color: ColorResources.getShadowColor(),
@@ -61,9 +61,9 @@ class _TrackingScreenState extends State<TrackingScreen> {
             ),
             child: Row(
               children: [
-                const AppText18(
+                AppText18(
                   'Tracking',
-                  color: Color(0xFF5f607f),
+                  color: ColorResources.getTextColor(),
                   fontWeight: FontWeight.bold,
                 ),
                 const Spacer(),
@@ -71,8 +71,9 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   imagePath: Images.profile,
                   width: 25.w,
                   height: 25.w,
+                  color: ColorResources.getTextColor(),
                   onTap: () {
-                    Get.to(const ProfileScreen());
+                    Get.to(() => const ProfileScreen());
                   },
                 ),
               ],
@@ -87,7 +88,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
               margin: EdgeInsets.symmetric(vertical: 10.h),
               padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
               decoration: BoxDecoration(
-                color: const Color(0xFF11a9f5),
+                color: ColorResources.getWebsiteTextColor(),
                 boxShadow: [
                   BoxShadow(
                     color: ColorResources.getShadowColor(),
@@ -110,13 +111,13 @@ class _TrackingScreenState extends State<TrackingScreen> {
                     children: [
                       AppText14(
                         'Hôm nay, Thứ ${DateConverter.getWeekDay(now)}',
-                        color: Colors.white,
+                        color: ColorResources.getWhiteColor(),
                       ),
                       SizedBox(height: 10.h),
                       AppText16(
                         DateConverter.getOnlyFomatDate(now),
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: ColorResources.getWhiteColor(),
                       ),
                     ],
                   ),
@@ -136,7 +137,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                             if (objTracking != null)
                               AppText14(
                                 'Giờ vào ${objTracking.date?.hour}h',
-                                color: Colors.white,
+                                color: ColorResources.getWhiteColor(),
                               ),
                             if (objTracking != null) SizedBox(height: 10.h),
                             AppText16(
@@ -144,7 +145,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                                   ? 'Đã tracking'
                                   : 'Chưa Tracking',
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: ColorResources.getWhiteColor(),
                             ),
                           ],
                         );
@@ -164,7 +165,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   initialSelectedDate: now,
                   daysCount: 5,
                   selectionColor: Colors.black,
-                  selectedTextColor: Colors.white,
+                  selectedTextColor: ColorResources.getWhiteColor(),
                   activeDates: [now],
                   onDateChange: (selectedDate) {},
                 ),
@@ -192,11 +193,11 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   SizedBox(height: 10.h),
                   GestureDetector(
                       onTap: () {
-                        Get.to(const TrackingHistoryScreen());
+                        Get.to(() => const TrackingHistoryScreen());
                       },
-                      child: const AppText16(
+                      child: AppText16(
                         'Lịch sử tracking',
-                        color: ColorResources.blueColor,
+                        color: ColorResources.getWebsiteTextColor(),
                       )),
                 ],
               ),
@@ -214,7 +215,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
           await Get.find<TrackingController>().saveTracking(content: content);
       if (statusCode == 200) {
         _contentTrackingController.clear();
-        Get.to(const TrackingHistoryScreen());
+        Get.to(() => const TrackingHistoryScreen());
       }
     }
   }

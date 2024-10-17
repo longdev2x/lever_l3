@@ -12,6 +12,8 @@ class TrackingController extends GetxController {
 
   bool _loading = false;
 
+  bool get loading => _loading;
+
   Future<List<TrackingEntity>> getTracking() async {
     _loading = true;
     update();

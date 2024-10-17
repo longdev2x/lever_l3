@@ -20,7 +20,7 @@ class AppButton extends StatelessWidget {
     this.height = 45,
     this.width = double.infinity,
     this.name = "",
-    this.bgColor =  ColorResources.blueColor,
+    this.bgColor,
     this.textColor = Colors.white,
     this.fontSize = 19,
   });
@@ -38,8 +38,8 @@ class AppButton extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              bgColor!,
-              bgColor!.withOpacity(0.9),
+              bgColor ?? ColorResources.getGreyBunkerColor(),
+              (bgColor ?? ColorResources.getGreyBunkerColor()).withOpacity(0.9),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,

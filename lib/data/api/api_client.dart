@@ -71,7 +71,7 @@ class ApiClient extends GetxService {
       Map<String, String>? headers) async {
     try {
       if (foundation.kDebugMode) {
-        logger.i('zzzPost Request: ${appBaseUrl + uri}\nHeader: ${headers ?? _mainHeaders}\nAPI Body: $body');
+        logger.i('Post Request: ${appBaseUrl + uri}\nHeader: ${headers ?? _mainHeaders}\nAPI Body: $body');
       }
       http.Response response = await http.post(
         Uri.parse(appBaseUrl + uri),
@@ -89,7 +89,7 @@ class ApiClient extends GetxService {
       Map<String, String>? headers) async {
     try {
       if (foundation.kDebugMode) {
-        logger.i('zzzPost Request: ${appBaseUrl + uri}\nzzzHeader: ${headers ?? _mainHeaders}\nzzzAPI Body: $body');
+        logger.i('Post Request: ${appBaseUrl + uri}\nHeader: ${headers ?? _mainHeaders}\nAPI Body: $body');
       }
       http.Response response = await http.post(
         Uri.parse(appBaseUrl + uri),

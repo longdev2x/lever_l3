@@ -7,6 +7,7 @@ class AppImageAsset extends StatelessWidget {
   final String? imagePath;
   final double width;
   final double height;
+  final double radius;
   final Function()? onTap;
   final BoxFit? boxFit;
   final Color? color;
@@ -16,6 +17,7 @@ class AppImageAsset extends StatelessWidget {
       this.imagePath = Images.logo,
       this.width = 16,
       this.height = 16,
+      this.radius = 0,
       this.onTap,
       this.color,
       this.boxFit});
@@ -24,12 +26,18 @@ class AppImageAsset extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Image.asset(
-        imagePath ?? Images.logo,
-        width: width.w,
-        height: height.h,
-        fit: boxFit,
-        color: color,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(radius),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: Image.asset(
+          imagePath ?? Images.imgAvatarDefault,
+          width: width.w,
+          height: height.h,
+          fit: boxFit,
+          color: color,
+        ),
       ),
     );
   }

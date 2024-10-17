@@ -5,10 +5,14 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/controller/home_controller.dart';
+import 'package:timesheet/controller/profile_controller.dart';
 import 'package:timesheet/controller/sign_up_controller.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
+import 'package:timesheet/controller/user_search_controller.dart';
+import 'package:timesheet/data/repository/profile_repo.dart';
 import 'package:timesheet/data/repository/splash_repo.dart';
 import 'package:timesheet/data/repository/tracking_repo.dart';
+import 'package:timesheet/data/repository/user_search_repo.dart';
 import '../controller/localization_controller.dart';
 import '../controller/splash_controller.dart';
 import '../data/api/api_client.dart';
@@ -25,16 +29,15 @@ Future<Map<String, Map<String, String>>> init() async {
 
   Get.lazyPut(() => sharedPreferences);
   Get.lazyPut(() => firstCamera);
-  Get.lazyPut(() => ApiClient(
-      appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
+  Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
 
   // Repository
   Get.lazyPut(() => LanguageRepo());
-  Get.lazyPut(
-      () => AuthRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
-  Get.lazyPut(
-          () => SplashRepo(apiClient: Get.find()));
+  Get.lazyPut(() => AuthRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
+  Get.lazyPut(() => SplashRepo(apiClient: Get.find()));
   Get.lazyPut(() => TrackingRepo(apiClient: Get.find()));
+  Get.lazyPut(() => UserSearchRepo(apiClient: Get.find()));
+  Get.lazyPut(() => ProfileRepo(apiClient: Get.find()), fenix: true );
 
   // Controller
   Get.lazyPut(() => ThemeController(sharedPreferences: Get.find()));
@@ -44,6 +47,8 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => SignUpController());
   Get.lazyPut(() => TrackingController(repo: Get.find()));
   Get.lazyPut(() => HomeController());
+  Get.lazyPut(() => UserSearchController(repo: Get.find()));
+  Get.lazyPut(() => ProfileController(repo: Get.find()), fenix: true);
 
 
   // Retrieving localized data
