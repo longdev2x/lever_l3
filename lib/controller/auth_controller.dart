@@ -70,6 +70,10 @@ class AuthController extends GetxController implements GetxService {
     return response.statusCode!;
   }
 
+  void updateUser(User userUpdate) {
+    _user = userUpdate;
+  }
+
   void clearData() {
     _loading = false;
     _user = User();

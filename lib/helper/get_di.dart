@@ -35,7 +35,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => LanguageRepo());
   Get.lazyPut(() => AuthRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => SplashRepo(apiClient: Get.find()));
-  Get.lazyPut(() => TrackingRepo(apiClient: Get.find()));
+  Get.lazyPut(() => TrackingRepo(apiClient: Get.find()), fenix: true);
   Get.lazyPut(() => UserSearchRepo(apiClient: Get.find()));
   Get.lazyPut(() => ProfileRepo(apiClient: Get.find()), fenix: true );
 
@@ -45,8 +45,8 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => SplashController(repo: Get.find()));
   Get.lazyPut(() => AuthController(repo: Get.find()));
   Get.lazyPut(() => SignUpController());
-  Get.lazyPut(() => TrackingController(repo: Get.find()));
-  Get.lazyPut(() => HomeController());
+  Get.lazyPut(() => TrackingController(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => HomeController(), fenix: true);
   Get.lazyPut(() => UserSearchController(repo: Get.find()));
   Get.lazyPut(() => ProfileController(repo: Get.find()), fenix: true);
 

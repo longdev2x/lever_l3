@@ -5,12 +5,12 @@ import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/controller/profile_controller.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/helper/date_converter.dart';
+import 'package:timesheet/screen/profile/edit_profile_screen.dart';
 import 'package:timesheet/screen/profile/widgets/profile_avatar_widget.dart';
+import 'package:timesheet/screen/sign_in/sign_in_screen.dart';
 import 'package:timesheet/screen/users/widgets/user_parameter_widget.dart';
-import 'package:timesheet/utils/color_resources.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
-import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -21,9 +21,17 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                _logout();
+              },
+              icon: const Icon(Icons.logout)),
+          SizedBox(width: 10.w),
+        ],
       ),
       body: GetBuilder<ProfileController>(
-        builder: (controller) { 
+        builder: (controller) {
           User objUser = controller.user!;
           return SingleChildScrollView(
             child: Padding(
@@ -43,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(height: 15.h),
                     AppButton(
                         ontap: () {
-                          //Naviagte edit
+                          Get.to(() => const EditProfileScreen());
                         },
                         name: 'Cập nhật hồ sơ',
                         width: 250),
@@ -121,56 +129,12 @@ class ProfileScreen extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          const SizedBox(),
-          Positioned(
-            bottom: 30.h,
-            left: 10,
-            right: 10,
-            child: _logoutWidget(
-              onTap: _logout,
-            ),
-          )
-        ],
-      ),
     );
   }
 
-  void _logout() {
-    Get.find<AuthController>().logOut();
-  }
-
-  Widget _logoutWidget({
-    required Function() onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 55.h,
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-        margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.r),
-          color: ColorResources.getAcceptBtn(),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const AppImageAsset(
-              imagePath: Images.icLogout,
-              width: 18,
-              height: 18,
-            ),
-            SizedBox(width: 20.w),
-            const AppText16(
-              'Đăng xuất',
-              fontWeight: FontWeight.w600,
-            ),
-          ],
-        ),
-      ),
-    );
+  void _logout() async {
+    if (await Get.find<AuthController>().logOut() == 200) {
+      Get.to(() => const SignInScreen());
+    }
   }
 }

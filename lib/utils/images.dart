@@ -18,4 +18,9 @@ class Images {
   static const String icBlock = 'assets/image/icBlock.png';
   static const String icCamera = 'assets/image/icCamera.png';
   static const String icLogout = 'assets/image/icLogout.png';
+  //Profile
+  static const String icGenderMan= 'assets/image/ic_gender_man.png';
+  static const String icGenderWoman= 'assets/image/ic_gender_woman.png';
+  static const String icCheckTick= 'assets/image/ic_check_tick.png';
+
 }

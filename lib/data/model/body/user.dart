@@ -81,28 +81,28 @@ class User {
         year: year ?? this.year,
       );
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    final roleList = (json['roles'] as List<dynamic>?)
+  factory User.fromJson(Map<String, dynamic>? json) {
+    final roleList = (json?['roles'] as List<dynamic>?)
         ?.map((roleJson) => Role.fromJson(roleJson))
         .toList();
     return User(
-      id: json['id'],
-      username: json['username'],
-      active: json['active'],
-      birthPlace: json['birthPlace'],
-      confirmPassword: json['confirmPassword'],
-      displayName: json['displayName'],
-      dob: json['dob'] != null ? DateTime.tryParse(json['dob']) : null,
-      email: json['email'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      password: json['password'],
-      gender: json['gender'],
-      image: json['image'],
-      university: json['university'],
-      year: json['year'],
-      countDayCheckin: json['countDayCheckin'],
-      countDayTracking: json['countDayTracking'],
+      id: json?['id'],
+      username: json?['username'],
+      active: json?['active'],
+      birthPlace: json?['birthPlace'],
+      confirmPassword: json?['confirmPassword'],
+      displayName: json?['displayName'],
+      dob: json?['dob'] != null ? DateTime.tryParse(json?['dob']) : null,
+      email: json?['email'],
+      firstName: json?['firstName'],
+      lastName: json?['lastName'],
+      password: json?['password'],
+      gender: json?['gender'],
+      image: json?['image'],
+      university: json?['university'],
+      year: json?['year'],
+      countDayCheckin: json?['countDayCheckin'],
+      countDayTracking: json?['countDayTracking'],
       roles: roleList != null && roleList.isNotEmpty ? roleList.first : null,
     );
   }

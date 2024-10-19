@@ -14,7 +14,9 @@ class AppConstants {
   static const String GET_USER = '/mita/users/get-user-current';
   static const String TRACKING = '/mita/tracking';
   static const String SEARCH_USER = '/mita/users/searchByPage';
-  static const String UPDATE_INFO = '/mita/users/update-myself';
+  static const String UPDATE_INFO = '/mita/users/update-myself/';
+  static const String UPLOAD_FILE = '/mita/public/uploadFile';
+  static const String GET_FILE = '/mita/public/images/';
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';

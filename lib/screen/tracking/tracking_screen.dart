@@ -129,7 +129,10 @@ class _TrackingScreenState extends State<TrackingScreen> {
                           child: CircularProgressIndicator(),
                         );
                       } else {
-                        TrackingEntity? objTracking = snapshot.data?.first;
+                        TrackingEntity? objTracking;
+                        if(snapshot.data != null &&  snapshot.data!.isNotEmpty) {
+                          objTracking =  snapshot.data!.first;
+                        }
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

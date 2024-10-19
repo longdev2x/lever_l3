@@ -1,3 +1,5 @@
+
+import 'package:camera/camera.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/data/api/api_client.dart';
 import 'package:timesheet/data/model/body/user.dart';
@@ -15,4 +17,23 @@ class ProfileRepo {
       null,
     );
   }
+
+  Future<Response> uploadFile(XFile xFile) async {
+    return await apiClient.postMultipartData(
+      AppConstants.UPLOAD_FILE,
+      {},
+      [MultipartBody('uploadfile', xFile)],
+      headers: null,
+    );
+  }
+
+  Future<Response> getFile(String nameFile) async {
+    return await apiClient.getImageData(
+      AppConstants.GET_FILE,
+      nameFile: nameFile,
+      headers: null,
+    );
+  }
+
+
 }

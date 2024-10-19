@@ -1,6 +1,9 @@
+import 'package:camera/camera.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/data/api/api_checker.dart';
+import 'package:timesheet/data/model/body/file_entity.dart';
+import 'package:timesheet/data/model/body/post_detail_entity.dart';
 import 'package:timesheet/data/model/body/role.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/data/repository/profile_repo.dart';
@@ -16,8 +19,6 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     _user = Get.find<AuthController>().user;
-
-    print('GETzzz- $user');
   }
 
 
@@ -69,6 +70,42 @@ class ProfileController extends GetxController {
       ApiChecker.checkApi(response);
     }
 
+    Get.find<AuthController>().updateUser(_user!);
     return response.statusCode!;
+  }
+
+
+  Future<int> changeAvatar(XFile xFile) async {
+    Response response = await repo.uploadFile(xFile);
+    print('zzz---120');
+    if(response.statusCode != 200) {
+      ApiChecker.checkApi(response);
+    }
+    print('zzz---121 - ${response.body}');
+    PostDetailEntity? objPostDetail = PostDetailEntity.fromJson(response.body);
+    print('zzz---122');
+    String? nameFile = objPostDetail.name;
+    if(nameFile == null) return 400;
+
+    Response getFileResponse = await repo.getFile(nameFile);
+    if(getFileResponse.statusCode != 200) {
+      ApiChecker.checkApi(response);
+      return getFileResponse.statusCode!;
+    }
+
+    print('zzz---1222 - ${getFileResponse.body}');
+    print('zzz---1222 - ${getFileResponse.headers}');
+
+    FileEntity objFile = FileEntity.fromJson(getFileResponse.body);
+    if(objFile.url == null) {
+       print('zzz---12221');
+      return 400;
+    }
+    print('zzz---12222');
+
+    int updateInforStatuscode = await updateInfo(image: nameFile);
+    print('zzz---123');
+
+    return updateInforStatuscode;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:timesheet/controller/profile_controller.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_image.dart';
 
@@ -21,7 +23,7 @@ class ProfileAvatarWidget extends StatelessWidget {
             child: CircleAvatar(
               radius: 100.r,
               backgroundImage: avatar != null
-                  ? NetworkImage(avatar!)
+                  ? NetworkImage(Uri.file(avatar!).toString())
                   : const AssetImage(Images.imgAvatarDefault) as ImageProvider,
             ),
           ),
@@ -31,7 +33,7 @@ class ProfileAvatarWidget extends StatelessWidget {
               XFile? xFile =
                   await picker.pickImage(source: ImageSource.gallery);
               if (xFile == null) return;
-              //Update
+              _changeIamge(xFile);
             },
             child: Align(
               alignment: Alignment.bottomRight,
@@ -54,5 +56,9 @@ class ProfileAvatarWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _changeIamge(XFile xFile) {
+    Get.find<ProfileController>().changeAvatar(xFile);
   }
 }
