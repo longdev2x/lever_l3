@@ -1,10 +1,10 @@
 import 'package:timesheet/data/model/body/user.dart';
 
 class LikeEntity {
-  final String date;
-  final int id;
-  final int type;
-  final User user;
+  final DateTime? date;
+  final int? id;
+  final int? type;
+  final User? user;
 
   LikeEntity({
     required this.date,
@@ -15,8 +15,8 @@ class LikeEntity {
 
   factory LikeEntity.fromJson(Map<String, dynamic>? json) {
     return LikeEntity(
-      date: json?['date'],
       id: json?['id'],
+      date: json?['date'] != null ? DateTime.fromMillisecondsSinceEpoch(json?['date']) : null,
       type: json?['type'],
       user: User.fromJson(json?['user']),
     );
@@ -27,7 +27,7 @@ class LikeEntity {
       'date': date,
       'id': id,
       'type': type,
-      'user': user.toJson(),
+      'user': user?.toJson(),
     };
   }
 }

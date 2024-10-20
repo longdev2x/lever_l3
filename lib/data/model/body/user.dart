@@ -85,6 +85,7 @@ class User {
     final roleList = (json?['roles'] as List<dynamic>?)
         ?.map((roleJson) => Role.fromJson(roleJson))
         .toList();
+
     return User(
       id: json?['id'],
       username: json?['username'],

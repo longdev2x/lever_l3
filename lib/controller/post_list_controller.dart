@@ -1,20 +1,20 @@
 import 'package:get/get.dart';
 import 'package:timesheet/data/api/api_checker.dart';
-import 'package:timesheet/data/model/body/user.dart';
-import 'package:timesheet/data/model/body/user_search_entity.dart';
+import 'package:timesheet/data/model/body/post_entity.dart';
+import 'package:timesheet/data/model/body/post_search_entity.dart';
 import 'package:timesheet/data/model/body/search_request.dart';
-import 'package:timesheet/data/repository/user_search_repo.dart';
+import 'package:timesheet/data/repository/post_repo.dart';
 
-class UserSearchController extends GetxController {
-  final UserSearchRepo repo;
-  UserSearchController({required this.repo});
+class PostListController extends GetxController implements GetxService {
+  final PostRepo repo;
+  PostListController({required this.repo});
 
-  List<User>? _users;
+  List<PostEntity>? _posts;
   bool _isFirstLoad = true;
   bool _loading = false;
   bool _hasMoreData = true;
 
-  List<User>? get users => _users;
+  List<PostEntity>? get posts => _posts;
   bool get isFirstLoad => _isFirstLoad;
   bool get loading => _loading;
   bool get hasMoreData => _hasMoreData;
@@ -22,17 +22,18 @@ class UserSearchController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    searchUser(keyWord: null, pageIndex: 0, size: 15, status: null);
+    getPosts(keyWord: null, pageIndex: 0, size: 15, status: null);
   }
 
-  Future<int> searchUser({
+
+  Future<int> getPosts({
     String? keyWord,
     required int pageIndex,
     required int size,
     required int? status,
   }) async {
     SearchRequest objSearchRequest =
-    SearchRequest(keyWord, pageIndex, size, status);
+        SearchRequest(keyWord, pageIndex, size, status);
 
     if (!hasMoreData) return 400;
 
@@ -42,10 +43,10 @@ class UserSearchController extends GetxController {
     Response response = await repo.searchUser(objSearchRequest);
 
     if (response.statusCode == 200) {
-      UserSearchEntity objUserSearch = UserSearchEntity.fromJson(response.body);
-      List<User> newUsers = objUserSearch.content;
-      _users = [...?_users, ...newUsers];
-      _hasMoreData = newUsers.isNotEmpty && newUsers.length == size;
+      PostSearchEntity objPostSearch = PostSearchEntity.fromJson(response.body);
+      List<PostEntity> newPosts = objPostSearch.posts;
+      _posts = [...?_posts, ...newPosts];
+      _hasMoreData = newPosts.isNotEmpty && newPosts.length == size;
     } else {
       ApiChecker.checkApi(response);
     }

@@ -1,4 +1,4 @@
-class UserSearchRequest {
+class SearchRequest {
   //Từ khoá tìm kiếm
   final String? keyWord;
   //Số trang
@@ -8,7 +8,7 @@ class UserSearchRequest {
   //Trạng thái người dùng
   final int? status;
 
-  const UserSearchRequest(
+  const SearchRequest(
     this.keyWord,
     this.pageIndex,
     this.size,

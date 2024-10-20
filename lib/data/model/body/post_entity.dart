@@ -3,11 +3,11 @@ import 'package:timesheet/data/model/body/like_entity.dart';
 import 'package:timesheet/data/model/body/user.dart';
 
 class PostEntity {
-  final List<CommentEntity> comments;
   final String? content;
-  final String? date;
-  final List<LikeEntity> likes;
+  final DateTime? date;
   final List<dynamic> media;
+  final List<LikeEntity> likes;
+  final List<CommentEntity> comments;
   final User? user;
 
   PostEntity({
@@ -20,21 +20,24 @@ class PostEntity {
   });
 
   factory PostEntity.fromJson(Map<String, dynamic>? json) {
+
     return PostEntity(
-      comments: json?['posts'] != null
-          ? (json!['posts']['comments'] as List)
+      comments: json?['comments'] != null
+          ? (json!['comments'] as List)
               .map((comment) => CommentEntity.fromJson(comment))
               .toList()
           : [],
-      content: json?['posts']['content'],
-      date: json?['posts']['date'],
-      likes: json?['posts'] != null
-          ? (json?['posts']['likes'] as List)
+      content: json?['content'],
+      date: json?['date'] != null ? DateTime.fromMillisecondsSinceEpoch(json?['date']) : null,
+      likes: json?['likes'] != null
+          ? (json?['likes'] as List)
               .map((like) => LikeEntity.fromJson(like))
               .toList()
           : [],
-      media: json?['posts']['media'] ?? [],
-      user: json?['posts']['user'] != null ? User.fromJson(json?['posts']['user']) : null,
+      media: json?['media'] ?? [],
+      user: json?['user'] != null
+          ? User.fromJson(json?['user'])
+          : null,
     );
   }
 

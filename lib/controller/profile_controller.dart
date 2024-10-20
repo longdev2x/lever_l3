@@ -77,13 +77,10 @@ class ProfileController extends GetxController {
 
   Future<int> changeAvatar(XFile xFile) async {
     Response response = await repo.uploadFile(xFile);
-    print('zzz---120');
     if(response.statusCode != 200) {
       ApiChecker.checkApi(response);
     }
-    print('zzz---121 - ${response.body}');
     PostDetailEntity? objPostDetail = PostDetailEntity.fromJson(response.body);
-    print('zzz---122');
     String? nameFile = objPostDetail.name;
     if(nameFile == null) return 400;
 
@@ -93,18 +90,12 @@ class ProfileController extends GetxController {
       return getFileResponse.statusCode!;
     }
 
-    print('zzz---1222 - ${getFileResponse.body}');
-    print('zzz---1222 - ${getFileResponse.headers}');
-
     FileEntity objFile = FileEntity.fromJson(getFileResponse.body);
     if(objFile.url == null) {
-       print('zzz---12221');
       return 400;
     }
-    print('zzz---12222');
 
     int updateInforStatuscode = await updateInfo(image: nameFile);
-    print('zzz---123');
 
     return updateInforStatuscode;
   }

@@ -5,10 +5,14 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/controller/home_controller.dart';
+import 'package:timesheet/controller/create_post_controller.dart';
+import 'package:timesheet/controller/interaction_controller.dart';
+import 'package:timesheet/controller/post_list_controller.dart';
 import 'package:timesheet/controller/profile_controller.dart';
 import 'package:timesheet/controller/sign_up_controller.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
 import 'package:timesheet/controller/user_search_controller.dart';
+import 'package:timesheet/data/repository/post_repo.dart';
 import 'package:timesheet/data/repository/profile_repo.dart';
 import 'package:timesheet/data/repository/splash_repo.dart';
 import 'package:timesheet/data/repository/tracking_repo.dart';
@@ -38,6 +42,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => TrackingRepo(apiClient: Get.find()), fenix: true);
   Get.lazyPut(() => UserSearchRepo(apiClient: Get.find()));
   Get.lazyPut(() => ProfileRepo(apiClient: Get.find()), fenix: true );
+  Get.lazyPut(() => PostRepo(apiClient: Get.find()));
 
   // Controller
   Get.lazyPut(() => ThemeController(sharedPreferences: Get.find()));
@@ -49,6 +54,10 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => HomeController(), fenix: true);
   Get.lazyPut(() => UserSearchController(repo: Get.find()));
   Get.lazyPut(() => ProfileController(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => ProfileController(repo: Get.find()), fenix: true);
+  Get.lazyPut(() => CreatePostController());
+  Get.lazyPut(() => InteractionController());
+  Get.lazyPut(() => PostListController(repo: Get.find()));
 
 
   // Retrieving localized data

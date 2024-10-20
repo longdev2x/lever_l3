@@ -3,7 +3,7 @@ import 'package:timesheet/data/model/body/user.dart';
 class CommentEntity {
   final int? id;
   final String? content;
-  final String? date;
+  final DateTime? date;
   final User? user;
 
   CommentEntity({
@@ -16,7 +16,7 @@ class CommentEntity {
   factory CommentEntity.fromJson(Map<String, dynamic>? json) {
     return CommentEntity(
       content: json?['content'],
-      date: json?['date'],
+      date: json?['date'] != null ? DateTime.fromMillisecondsSinceEpoch(json?['date']) : null,
       id: json?['id'],
       user: User.fromJson(json?['user']),
     );

@@ -79,7 +79,6 @@ class ApiClient extends GetxService {
         logger.i(
             'Get Request: ${appBaseUrl + uri}\nHeader: ${headers ?? _mainHeaders}');
       }
-      print('zzzzz-${Uri.parse(appBaseUrl + uri + nameFile)}');
       http.Response response = await http
           .get(
             Uri.parse(appBaseUrl + uri + nameFile),
@@ -99,7 +98,6 @@ class ApiClient extends GetxService {
       if (foundation.kDebugMode) {
         logger.i(
             'Post Request: ${appBaseUrl + uri}\nHeader: ${headers ?? _mainHeaders}\nAPI Body: $body');
-        print('zzz- ${jsonEncode(body)}');
       }
       http.Response response = await http
           .post(

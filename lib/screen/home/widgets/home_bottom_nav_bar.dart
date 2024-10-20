@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/home_controller.dart';
 import 'package:timesheet/screen/notify/notify_screen.dart';
+import 'package:timesheet/screen/post/post_screen.dart';
 import 'package:timesheet/screen/setting/setting_screen.dart';
-import 'package:timesheet/screen/social/social_screen.dart';
 import 'package:timesheet/screen/tracking/tracking_screen.dart';
 import 'package:timesheet/screen/users/users_screen.dart';
 import 'package:timesheet/utils/color_resources.dart';
@@ -13,7 +13,7 @@ import 'package:timesheet/view/app_image.dart';
 List<Widget> screens = [
   const TrackingScreen(),
   const UsersScreen(),
-  const SocialScreen(),
+  const PostScreen(),
   const NotifyScreen(),
   const SettingScreen(),
 ];

@@ -17,6 +17,7 @@ class AppConstants {
   static const String UPDATE_INFO = '/mita/users/update-myself/';
   static const String UPLOAD_FILE = '/mita/public/uploadFile';
   static const String GET_FILE = '/mita/public/images/';
+  static const String GET_NEWS = '/mita/posts/get-news';
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';
