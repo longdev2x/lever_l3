@@ -3,6 +3,7 @@ import 'package:timesheet/data/model/body/like_entity.dart';
 import 'package:timesheet/data/model/body/user.dart';
 
 class PostEntity {
+  final int? id;
   final String? content;
   final DateTime? date;
   final List<dynamic> media;
@@ -10,7 +11,9 @@ class PostEntity {
   final List<CommentEntity> comments;
   final User? user;
 
+
   PostEntity({
+    required this.id,
     required this.comments,
     required this.content,
     required this.date,
@@ -22,6 +25,7 @@ class PostEntity {
   factory PostEntity.fromJson(Map<String, dynamic>? json) {
 
     return PostEntity(
+      id: json?['id'],
       comments: json?['comments'] != null
           ? (json!['comments'] as List)
               .map((comment) => CommentEntity.fromJson(comment))
@@ -43,14 +47,39 @@ class PostEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'posts': {
+        'id' : id,
         'comments': comments.map((comment) => comment.toJson()).toList(),
         'content': content,
-        'date': date,
+        'date': date?.toIso8601String(),
         'likes': likes.map((like) => like.toJson()).toList(),
         'media': media,
         'user': user?.toJson(),
-      },
-    };
+      };
   }
 }
+
+
+// {
+//   "date": "2024-10-20T01:28:40.502Z",
+//   "id": 0,
+//   "post": {
+//     "comments": [
+//       {
+//         "content": "string",
+//         "date": "2024-10-20T01:28:40.502Z",
+//         "id": 0,
+//         "user": {}
+//       }
+//     ],
+//     "content": "string",
+//     "date": "2024-10-20T01:28:40.502Z",
+//     "id": 0,
+//     "likes": [
+//       null
+//     ],
+//     "media": [],
+//     "user": {}
+//   },
+//   "type": 0,
+//   "user": {}
+// }

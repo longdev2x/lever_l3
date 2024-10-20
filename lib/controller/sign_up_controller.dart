@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/screen/sign_up/sign_up_screen2.dart';
 
-class SignUpController extends GetxController {
+class SignUpController extends GetxController implements GetxService {
   User user = User(
     gender: 'Nam',
     dob: DateTime.now().subtract(const Duration(days: 7260)),

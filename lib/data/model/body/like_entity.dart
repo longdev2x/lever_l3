@@ -24,7 +24,7 @@ class LikeEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'date': date,
+      'date': date?.toIso8601String(),
       'id': id,
       'type': type,
       'user': user?.toJson(),

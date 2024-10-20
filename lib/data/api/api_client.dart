@@ -93,15 +93,22 @@ class ApiClient extends GetxService {
   }
 
   Future<Response> postData(
-      String uri, dynamic body, Map<String, String>? headers) async {
+      String uri, dynamic body, Map<String, String>? headers, {int? id}) async {
+     String fullUri = appBaseUrl + uri;
+    if(id != null) {
+      fullUri = fullUri.replaceFirst('{id}', id.toString());
+    }
+    // print('zzzz1-${body}');
+    // print('zzzz2-${jsonEncode(body)}');
+    // print('zzzz3-$fullUri');
     try {
       if (foundation.kDebugMode) {
         logger.i(
-            'Post Request: ${appBaseUrl + uri}\nHeader: ${headers ?? _mainHeaders}\nAPI Body: $body');
+            'Post Request: $fullUri \nHeader: ${headers ?? _mainHeaders}\nAPI Body: $body');
       }
       http.Response response = await http
           .post(
-            Uri.parse(appBaseUrl + uri),
+            Uri.parse(fullUri),
             body: jsonEncode(body),
             headers: headers ?? _mainHeaders,
           )

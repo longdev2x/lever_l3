@@ -5,7 +5,7 @@ import 'package:timesheet/data/model/body/tracking_entity.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/data/repository/tracking_repo.dart';
 
-class TrackingController extends GetxController {
+class TrackingController extends GetxController implements GetxService  {
   final TrackingRepo repo;
 
   TrackingController({required this.repo});

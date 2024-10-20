@@ -5,7 +5,7 @@ import 'package:timesheet/data/model/body/user_search_entity.dart';
 import 'package:timesheet/data/model/body/search_request.dart';
 import 'package:timesheet/data/repository/user_search_repo.dart';
 
-class UserSearchController extends GetxController {
+class UserSearchController extends GetxController implements GetxService  {
   final UserSearchRepo repo;
   UserSearchController({required this.repo});
 

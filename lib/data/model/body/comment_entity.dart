@@ -25,7 +25,7 @@ class CommentEntity {
   Map<String, dynamic> toJson() {
     return {
       'content': content,
-      'date': date,
+      'date': date?.toIso8601String(),
       'id': id,
       'user': user?.toJson(),
     };

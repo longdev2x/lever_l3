@@ -8,7 +8,7 @@ import 'package:timesheet/data/model/body/role.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/data/repository/profile_repo.dart';
 
-class ProfileController extends GetxController {
+class ProfileController extends GetxController implements GetxService  {
   final ProfileRepo repo;
   ProfileController({required this.repo});
 

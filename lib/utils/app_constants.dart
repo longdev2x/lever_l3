@@ -18,6 +18,7 @@ class AppConstants {
   static const String UPLOAD_FILE = '/mita/public/uploadFile';
   static const String GET_FILE = '/mita/public/images/';
   static const String GET_NEWS = '/mita/posts/get-news';
+  static const String LIKE_POST = '/mita/posts/likes/{id}';
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';
