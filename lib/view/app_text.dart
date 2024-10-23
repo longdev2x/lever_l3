@@ -16,7 +16,7 @@ class AppText10 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(
         fontSize: 10.sp,
         fontWeight: fontWeight,
@@ -44,7 +44,7 @@ class AppText14 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(
         fontSize: 14.sp,
         fontWeight: fontWeight,
@@ -72,7 +72,7 @@ class AppText16 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(
         fontSize: 16.sp,
         fontWeight: fontWeight,
@@ -100,7 +100,7 @@ class AppText18 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(
         fontSize: 18.sp,
         fontWeight: fontWeight,
@@ -128,7 +128,7 @@ class AppText20 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(
         fontSize: 20.sp,
         fontWeight: fontWeight,
@@ -156,7 +156,7 @@ class AppText24 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(
         fontSize: 24.sp,
         fontWeight: fontWeight,
@@ -184,7 +184,7 @@ class AppText26 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(fontSize: 26.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,
@@ -208,7 +208,7 @@ class AppText28 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(fontSize: 28.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,
@@ -232,7 +232,7 @@ class AppText34 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(fontSize: 34.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,
@@ -256,7 +256,7 @@ class AppText40 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(fontSize: 40.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,
@@ -280,7 +280,7 @@ class AppText55 extends StatelessWidget {
   @override
   Widget build(context) {
     return Text(
-      text!,
+      text ?? '',
       style: TextStyle(fontSize: 55.sp, fontWeight: fontWeight, color: color),
       maxLines: maxLines,
       textAlign: textAlign,

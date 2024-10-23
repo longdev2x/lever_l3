@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:timesheet/controller/post_list_controller.dart';
+import 'package:timesheet/controller/post_controller.dart';
 import 'package:timesheet/data/model/body/post_entity.dart';
 import 'package:timesheet/screen/post/widgets/post_divider_widget.dart';
 import 'package:timesheet/screen/post/widgets/post_item.dart';
@@ -15,7 +15,7 @@ class PostContent extends StatefulWidget {
 class _PostContentState extends State<PostContent> {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PostListController>(
+    return GetBuilder<PostController>(
       builder: (controller) {
         final List<PostEntity>? posts = controller.posts;
         if (controller.isFirstLoad) {

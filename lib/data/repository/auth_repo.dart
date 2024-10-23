@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timesheet/data/model/body/token_request.dart';
+import 'package:timesheet/data/model/body/request/token_request.dart';
 import 'package:timesheet/data/model/body/user.dart';
 
 import '../../utils/app_constants.dart';

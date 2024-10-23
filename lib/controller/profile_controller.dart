@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/data/api/api_checker.dart';
 import 'package:timesheet/data/model/body/file_entity.dart';
-import 'package:timesheet/data/model/body/post_detail_entity.dart';
+import 'package:timesheet/data/model/body/media_entity.dart';
 import 'package:timesheet/data/model/body/role.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/data/repository/profile_repo.dart';
@@ -80,7 +80,7 @@ class ProfileController extends GetxController implements GetxService  {
     if(response.statusCode != 200) {
       ApiChecker.checkApi(response);
     }
-    PostDetailEntity? objPostDetail = PostDetailEntity.fromJson(response.body);
+    MediaEntity? objPostDetail = MediaEntity.fromJson(response.body);
     String? nameFile = objPostDetail.name;
     if(nameFile == null) return 400;
 

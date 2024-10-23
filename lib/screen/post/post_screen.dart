@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:timesheet/controller/auth_controller.dart';
-import 'package:timesheet/controller/post_list_controller.dart';
+import 'package:timesheet/controller/post_controller.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/screen/post/create_post_screen.dart';
 import 'package:timesheet/screen/post/widgets/post_content.dart';
@@ -21,19 +23,7 @@ class _PostScreenState extends State<PostScreen> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.atEdge) {
-
-        bool isTop = _scrollController.position.pixels == 0;
-        if (!isTop) {
-          Get.find<PostListController>().getPosts(
-            pageIndex: Get.find<PostListController>().posts!.length ~/ 15,
-            size: 15,
-            status: null,
-          );
-        }
-      }
-    });
+    _scrollController.addListener(_scrollListener);
   }
 
   @override
@@ -42,7 +32,30 @@ class _PostScreenState extends State<PostScreen> {
     super.dispose();
   }
 
-  void scrollListener() {}
+  void _scrollListener() {
+    if (_scrollController.position.atEdge) {
+      bool isTop = _scrollController.position.pixels == 0;
+      if (!isTop) {
+        Get.find<PostController>().getPosts(
+          pageIndex: Get.find<PostController>().posts!.length ~/ 300,
+          size: 300,
+          status: null,
+        );
+      }
+    }
+  }
+
+  void _addImage(BuildContext context, User objUser) async {
+    if (!context.mounted) return;
+
+    Get.to(() => const CreatePostScreen(), transition: Transition.downToUp);
+
+    final ImagePicker picker = ImagePicker();
+    final List<XFile> xFiles = await picker.pickMultiImage();
+    if (kDebugMode) {
+      print(xFiles);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +67,13 @@ class _PostScreenState extends State<PostScreen> {
           controller: _scrollController,
           child: Column(
             children: [
-              GetBuilder<PostListController>(
+              GetBuilder<PostController>(
                 builder: (controller) {
                   return PostHeaderWidget(
                     avatar: objUser.image,
                     onTapRow: () {
-                      showModalBottomSheet(
-                        context: context,
-                        useSafeArea: false,
-                        enableDrag: false,
-                        isScrollControlled: true,
-                        builder: (ctx) => const CreatePostScreen(),
-                      );
+                      Get.to(() => const CreatePostScreen(),
+                          transition: Transition.downToUp);
                     },
                     onTapImagePicker: () {
                       _addImage(context, objUser);
@@ -74,26 +82,11 @@ class _PostScreenState extends State<PostScreen> {
                 },
               ),
               const PostDividerWidget(),
-              PostContent(),
+              const PostContent(),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  void _addImage(BuildContext context, User objUser) async {
-    // final ImagePicker picker = ImagePicker();
-    // final List<XFile> xFiles = await picker.pickMultiImage();
-
-    if (!context.mounted) return;
-
-    showModalBottomSheet(
-      context: context,
-      useSafeArea: true,
-      enableDrag: false,
-      isScrollControlled: true,
-      builder: (ctx) => const CreatePostScreen(),
     );
   }
 }

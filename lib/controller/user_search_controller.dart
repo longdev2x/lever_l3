@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:timesheet/data/api/api_checker.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/data/model/body/user_search_entity.dart';
-import 'package:timesheet/data/model/body/search_request.dart';
+import 'package:timesheet/data/model/body/request/search_request.dart';
 import 'package:timesheet/data/repository/user_search_repo.dart';
 
 class UserSearchController extends GetxController implements GetxService  {

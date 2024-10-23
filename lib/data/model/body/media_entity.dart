@@ -1,16 +1,16 @@
 import 'package:timesheet/data/model/body/post_entity.dart';
 
-class PostDetailEntity {
+class MediaEntity {
   final int? id;
-  final int? contentSize;
   final String? contentType;
+  final int? contentSize;
   final String? extension;
   final String? filePath;
   final bool? isVideo;
   final String? name;
   final PostEntity? objPost;
 
-  PostDetailEntity({
+  MediaEntity({
     this.contentSize,
     this.contentType,
     this.extension,
@@ -21,8 +21,8 @@ class PostDetailEntity {
     this.objPost,
   });
 
-  factory PostDetailEntity.fromJson(Map<String, dynamic>? json) {
-    return PostDetailEntity(
+  factory MediaEntity.fromJson(Map<String, dynamic>? json) {
+    return MediaEntity(
       id: json?['id'],
       contentType: json?['contentType'],
       contentSize: json?['contentSize'],
@@ -30,7 +30,7 @@ class PostDetailEntity {
       extension: json?['extension'],
       filePath: json?['filePath'],
       isVideo: json?['isVideo'],
-      objPost: PostEntity.fromJson(json?['posts']),
+      objPost: json?['posts'] != null ? PostEntity.fromJson(json!['posts']) : null,
     );
   }
 

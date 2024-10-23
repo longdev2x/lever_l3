@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
-import 'package:timesheet/controller/post_list_controller.dart';
+import 'package:timesheet/controller/post_controller.dart';
 import 'package:timesheet/data/model/body/like_entity.dart';
 import 'package:timesheet/data/model/body/post_entity.dart';
+import 'package:timesheet/helper/date_converter.dart';
+import 'package:timesheet/screen/post/post_detail_screen.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
@@ -18,68 +20,94 @@ class PostItem extends StatelessWidget {
   }
 
   void _onLike() {
-    Get.find<PostListController>().likePost(DateTime.now(), objPost);
+    Get.find<PostController>().likePost(DateTime.now(), objPost);
+  }
+
+  String _getDateFormat(DateTime? date) {
+    if(date == null) return 'No Infor';
+    DateTime now = DateTime.now();
+
+    int difference = now.difference(date).inMinutes;
+
+
+    if(difference < 60) {
+      return '$difference phút trước';
+    }
+    if(difference < 1440) {
+      int hours = now.difference(date).inHours;
+      return '$hours phút trước';
+    }
+    if(difference < 10080) {
+      int days = now.difference(date).inDays;
+      return '$days ngày trước';
+    }
+    return '${DateConverter.getWeekDay(objPost.date!)} - Ngày ${DateConverter.getOnlyFomatDate(objPost.date!)}';
   }
 
   @override
   Widget build(BuildContext context) {
     int? currentId = Get.find<AuthController>().user.id;
 
-    return Padding(
-      padding: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: objPost.user?.image != null
-                    ? NetworkImage(objPost.user!.image!)
-                    : const AssetImage(Images.imgAvatarDefault)
-                        as ImageProvider,
-                radius: 25,
-              ),
-              SizedBox(width: 12.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText16(
-                    objPost.user?.displayName,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  AppText14(objPost.date.toString()),
-                ],
-              ),
-              const Spacer(),
-              AppImageAsset(
-                onTap: () {},
-                imagePath: Images.icThreeDotVeti,
-                width: 3,
-                height: 15,
-              ),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          AppText20(
-            objPost.content,
-            maxLines: null,
-          ),
-          SizedBox(height: 50.h),
-          Padding(
-            padding: EdgeInsets.only(left: 5.w),
-            child: _reactButton(
-                onLikeTap: _onLike, onCommentTap: () {}, isLiked: _checkLiked(currentId, objPost.likes)),
-          ),
-          SizedBox(width: 14.w),
-          Padding(
-            padding: EdgeInsets.only(top: 14.h, bottom: 20.h),
-            child: _reactInfor(
-                onLikeTap: () {},
-                onCommentTap: () {},
-                reactInfors: objPost.likes,
-                commentCounts: objPost.comments.length),
-          ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => const PostDetailScreen());
+      },
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: objPost.user?.image != null
+                      ? NetworkImage(objPost.user!.image!)
+                      : const AssetImage(Images.imgAvatarDefault)
+                          as ImageProvider,
+                  radius: 25,
+                ),
+                SizedBox(width: 12.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppText16(
+                      objPost.user?.displayName,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    AppText14(_getDateFormat(objPost.date)),
+                  ],
+                ),
+                const Spacer(),
+                AppImageAsset(
+                  onTap: () {},
+                  imagePath: Images.icThreeDotVeti,
+                  width: 3,
+                  height: 15,
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+            AppText20(
+              objPost.content,
+              maxLines: null,
+            ),
+            SizedBox(height: 50.h),
+            Padding(
+              padding: EdgeInsets.only(left: 5.w),
+              child: _reactButton(
+                  onLikeTap: _onLike, onCommentTap: () {}, isLiked: _checkLiked(currentId, objPost.likes)),
+            ),
+            SizedBox(width: 14.w),
+            Padding(
+              padding: EdgeInsets.only(top: 14.h, bottom: 20.h),
+              child: _reactInfor(
+                  onLikeTap: () {},
+                  onCommentTap: () {},
+                  reactInfors: objPost.likes,
+                  commentCounts: objPost.comments.length),
+            ),
+          ],
+        ),
       ),
     );
   }

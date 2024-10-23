@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:timesheet/data/api/api_client.dart';
-import 'package:timesheet/data/model/body/search_request.dart';
+import 'package:timesheet/data/model/body/request/search_request.dart';
 import 'package:timesheet/utils/app_constants.dart';
 
 class UserSearchRepo {

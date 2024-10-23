@@ -37,7 +37,7 @@ class PostHeaderWidget extends StatelessWidget {
             GestureDetector(
               onTap: onTapImagePicker,
               child: const AppImageAsset(
-                imagePath: Images.icCamera,
+                imagePath: Images.icImagePicker,
                 height: 35,
                 width: 35,
               ),

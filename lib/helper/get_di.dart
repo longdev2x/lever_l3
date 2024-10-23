@@ -5,9 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/controller/home_controller.dart';
-import 'package:timesheet/controller/create_post_controller.dart';
-import 'package:timesheet/controller/interaction_controller.dart';
-import 'package:timesheet/controller/post_list_controller.dart';
+import 'package:timesheet/controller/post_controller.dart';
 import 'package:timesheet/controller/profile_controller.dart';
 import 'package:timesheet/controller/sign_up_controller.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
@@ -55,9 +53,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => UserSearchController(repo: Get.find()));
   Get.lazyPut(() => ProfileController(repo: Get.find()));
   Get.lazyPut(() => ProfileController(repo: Get.find()));
-  Get.lazyPut(() => CreatePostController());
-  Get.lazyPut(() => InteractionController());
-  Get.lazyPut(() => PostListController(repo: Get.find()));
+  Get.lazyPut(() => PostController(repo: Get.find()));
 
 
   // Retrieving localized data
