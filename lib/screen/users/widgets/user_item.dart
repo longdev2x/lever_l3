@@ -15,7 +15,7 @@ class UserItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User user = Get.find<AuthController>().user;
-    bool isAdmin = user.roles?.name == 'ROLE_ADMIN';
+    bool isAdmin = user.roles?[0].name == 'ROLE_ADMIN';
 
     return GestureDetector(
       onTap: () {

@@ -44,7 +44,7 @@ class ProfileScreen extends StatelessWidget {
                     ProfileAvatarWidget(avatar: objUser.image),
                     SizedBox(height: 15.h),
                     AppText20(
-                        '${objUser.username} (${objUser.roles?.name == 'ROLE_USER' ? 'USER' : 'ADMIN'})',
+                        '${objUser.username} (${objUser.roles?[0].name == 'ROLE_USER' ? 'USER' : 'ADMIN'})',
                         fontWeight: FontWeight.bold),
                     SizedBox(height: 5.h),
                     AppText16(objUser.email),

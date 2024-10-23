@@ -4,13 +4,16 @@ class User {
   int? id;
   String? username;
   bool? active;
+  bool? setPassword;
   bool? changePass;
+  bool? hasPhoto;
   String? birthPlace;
   String? confirmPassword;
   String? displayName;
   DateTime? dob;
   String? email;
   String? firstName;
+  String? tokenDevice;
   String? lastName;
   String? gender;
   String? image;
@@ -19,16 +22,19 @@ class User {
   int? countDayCheckin;
   int? countDayTracking;
   int? year;
-  Role? roles;
+  List<Role>? roles;
 
   User({
     this.id,
     this.username,
     this.active,
     this.changePass,
+    this.setPassword,
+    this.hasPhoto,
     this.birthPlace,
     this.confirmPassword,
     this.displayName,
+    this.tokenDevice,
     this.dob,
     this.email,
     this.firstName,
@@ -47,7 +53,10 @@ class User {
     String? username,
     bool? active,
     bool? changePass,
+    bool? hasPhoto,
+    bool? setPassword,
     String? birthPlace,
+    String? tokenDevice,
     String? confirmPassword,
     String? displayName,
     DateTime? dob,
@@ -61,12 +70,15 @@ class User {
     int? countDayCheckin,
     int? countDayTracking,
     int? year,
-    Role? roles,
+    List<Role>? roles,
   }) =>
       User(
         id: id,
         active: active ?? this.active,
         changePass: changePass ?? this.changePass,
+        setPassword: setPassword ?? this.setPassword,
+        hasPhoto: hasPhoto ?? this.hasPhoto,
+        tokenDevice: tokenDevice ?? this.tokenDevice,
         birthPlace: birthPlace ?? this.birthPlace,
         confirmPassword: confirmPassword ?? this.confirmPassword,
         countDayCheckin: countDayCheckin ?? this.countDayCheckin,
@@ -86,15 +98,20 @@ class User {
       );
 
   factory User.fromJson(Map<String, dynamic>? json) {
-    final roleList = (json?['roles'] as List<dynamic>?)
-        ?.map((roleJson) => Role.fromJson(roleJson))
-        .toList();
+    final roleList = json?['roles'] != null
+        ? (json!['roles'] as List<dynamic>?)
+            ?.map((roleJson) => Role.fromJson(roleJson))
+            .toList()
+        : null;
 
     return User(
       id: json?['id'],
       username: json?['username'],
       active: json?['active'],
       changePass: json?['changePass'],
+      hasPhoto: json?['hasPhoto'],
+      setPassword: json?['setPassword'],
+      tokenDevice: json?['tokenDevice'],
       birthPlace: json?['birthPlace'],
       confirmPassword: json?['confirmPassword'],
       displayName: json?['displayName'],
@@ -109,7 +126,7 @@ class User {
       year: json?['year'],
       countDayCheckin: json?['countDayCheckin'],
       countDayTracking: json?['countDayTracking'],
-      roles: roleList != null && roleList.isNotEmpty ? roleList.first : null,
+      roles: roleList,
     );
   }
 
@@ -119,6 +136,8 @@ class User {
       'username': username,
       'active': active,
       'birthPlace': birthPlace,
+      'setPassword': setPassword,
+      'changePass': changePass,
       'confirmPassword': confirmPassword,
       "displayName": displayName,
       'dob': dob?.toIso8601String(),
@@ -126,14 +145,15 @@ class User {
       'firstName': firstName,
       'lastName': lastName,
       'password': password,
-      // 'roles': roles?.map((roles) => roles.toJson()).toList(),
       'university': university,
       'year': year,
       'gender': gender,
       'image': image,
+      'tokenDevice': tokenDevice,
       'countDayCheckin': countDayCheckin,
       'countDayTracking': countDayTracking,
-      // 'hasPhoto':hasPhoto
+      'hasPhoto': hasPhoto,
+      'roles': roles?.map((roles) => roles.toJson()).toList(),
     };
   }
 }

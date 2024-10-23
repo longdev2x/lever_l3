@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:timesheet/data/api/api_checker.dart';
+import 'package:timesheet/data/model/body/role.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/data/model/response/token_resposive.dart';
 import 'package:timesheet/data/repository/auth_repo.dart';
@@ -16,9 +17,11 @@ class AuthController extends GetxController implements GetxService {
   User get user => _user;
 
   Future<int> signUp(User objUser) async {
+    Role role = Role(null, 'ROLE_ADMIN', 'ROLE_ADMIN');
     objUser = objUser.copyWith(
       active: true,
       changePass: true,
+      roles: [role]
     );
     _loading = true;
     update();

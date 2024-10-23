@@ -39,7 +39,7 @@ class ProfileController extends GetxController implements GetxService  {
     int? countDayCheckin,
     int? countDayTracking,
     int? year,
-    Role? roles,
+    List<Role>? roles,
   }) async {
     if(_user == null) return Future.delayed(const Duration(seconds: 1), () => 400,);
 

@@ -16,8 +16,6 @@ class AuthRepo {
   AuthRepo({required this.apiClient, required this.sharedPreferences});
 
   Future<Response> signUp({required User objUser}) async {
-    User ok = objUser.copyWith(
-        displayName: 'longfksdjf',);
 
     Map<String, String> header = {
       'Content-Type': 'application/json',
@@ -42,7 +40,7 @@ class AuthRepo {
 
     return await apiClient.postDataLogin(
       AppConstants.SIGN_UP,
-      jsonEncode(ok.toJson()),
+      jsonEncode(objUser.toJson()),
       header,
     );
   }
