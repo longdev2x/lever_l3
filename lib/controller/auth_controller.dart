@@ -16,8 +16,13 @@ class AuthController extends GetxController implements GetxService {
   User get user => _user;
 
   Future<int> signUp(User objUser) async {
+    objUser = objUser.copyWith(
+      active: true,
+      changePass: true,
+    );
     _loading = true;
     update();
+
     Response response = await repo.signUp(objUser: objUser);
     if (response.statusCode == 200) {
       TokenResponsive tokeBody = TokenResponsive.fromJson(response.body);
@@ -25,6 +30,7 @@ class AuthController extends GetxController implements GetxService {
     } else {
       ApiChecker.checkApi(response);
     }
+
     _loading = false;
     update();
     return response.statusCode!;

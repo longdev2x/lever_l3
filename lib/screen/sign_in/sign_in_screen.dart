@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
-import 'package:timesheet/screen/sign_up/sign_up_screen2.dart';
+import 'package:timesheet/screen/sign_up/sign_up_screen1.dart';
 import 'package:timesheet/utils/images.dart';
 
 import '../home/home_screen.dart';
@@ -111,7 +111,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       Align(
                                         alignment: Alignment.centerRight,
                                         child: TextButton(onPressed: () {
-                                          Get.to(const SignUpScreen2(), transition: Transition.size, curve: Curves.bounceIn);
+                                          Get.to(const SignUpScreen1(), transition: Transition.size, curve: Curves.bounceIn);
                                         }, child: const Text('You havn\'t an account?',),),),
                                       Container(
                                         margin: const EdgeInsets.only(top: 20),

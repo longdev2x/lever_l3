@@ -4,6 +4,7 @@ class User {
   int? id;
   String? username;
   bool? active;
+  bool? changePass;
   String? birthPlace;
   String? confirmPassword;
   String? displayName;
@@ -24,6 +25,7 @@ class User {
     this.id,
     this.username,
     this.active,
+    this.changePass,
     this.birthPlace,
     this.confirmPassword,
     this.displayName,
@@ -44,6 +46,7 @@ class User {
   User copyWith({
     String? username,
     bool? active,
+    bool? changePass,
     String? birthPlace,
     String? confirmPassword,
     String? displayName,
@@ -63,6 +66,7 @@ class User {
       User(
         id: id,
         active: active ?? this.active,
+        changePass: changePass ?? this.changePass,
         birthPlace: birthPlace ?? this.birthPlace,
         confirmPassword: confirmPassword ?? this.confirmPassword,
         countDayCheckin: countDayCheckin ?? this.countDayCheckin,
@@ -90,6 +94,7 @@ class User {
       id: json?['id'],
       username: json?['username'],
       active: json?['active'],
+      changePass: json?['changePass'],
       birthPlace: json?['birthPlace'],
       confirmPassword: json?['confirmPassword'],
       displayName: json?['displayName'],

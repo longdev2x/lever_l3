@@ -18,16 +18,10 @@ class SignUpScreen2 extends StatefulWidget {
 }
 
 class _SignUpScreen2State extends State<SignUpScreen2> {
-  late final TextEditingController _usernameController;
-  late final TextEditingController _passwordController;
-  late final TextEditingController _rePasswordController;
-  @override
-  void initState() {
-    super.initState();
-    _usernameController = TextEditingController();
-    _passwordController = TextEditingController();
-    _rePasswordController = TextEditingController();
-  }
+  late final TextEditingController _usernameController = TextEditingController();
+  late final TextEditingController _passwordController = TextEditingController();
+  late final TextEditingController _rePasswordController = TextEditingController();
+  late final TextEditingController _displayNameController = TextEditingController();
 
   @override
   void dispose() {
@@ -35,6 +29,26 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
     _usernameController.dispose();
     _passwordController.dispose();
     _rePasswordController.dispose();
+    _displayNameController.dispose();
+  }
+
+
+  void _register() async {
+    Get.find<SignUpController>().updateInfor(
+      username: _usernameController.text,
+      displayName: _displayNameController.text,
+      password: _passwordController.text,
+      confirmPassword: _rePasswordController.text,
+    );
+    String? error = Get.find<SignUpController>().secondValidate();
+    if (error != null) {
+      AppToast.showToast(error);
+      return;
+    }
+    int statusCode = await Get.find<AuthController>().signUp(Get.find<SignUpController>().user);
+    if(statusCode == 200) {
+      Get.to(const HomeScreen());
+    }
   }
 
   @override
@@ -60,26 +74,29 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                   ),
                   SizedBox(height: 20.h),
                   AppTextField(
-                    hintText: 'username',
+                    hintText: 'Tên hiển thị',
+                    controller: _displayNameController,
+                  ),
+                  SizedBox(height: 20.h),
+                  AppTextField(
+                    hintText: 'Tên đăng nhập',
                     controller: _usernameController,
                   ),
                   SizedBox(height: 20.h),
                   AppTextField(
-                    hintText: 'password',
+                    hintText: 'Mật khẩu',
                     controller: _passwordController,
                   ),
                   SizedBox(height: 20.h),
                   AppTextField(
-                    hintText: 'confirm password',
+                    hintText: 'Xác nhận mật khẩu',
                     controller: _rePasswordController,
                   ),
                   SizedBox(height: 50.h),
                   GetBuilder<SignUpController>(
                     builder: (controller) => AppButton(
                       name: 'Register',
-                      ontap: () {
-                        _register(controller);
-                      },
+                      ontap: _register,
                     ),
                   ),
                 ],
@@ -99,22 +116,5 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
         ),
       ),
     );
-  }
-
-  void _register(SignUpController controller) async {
-    controller.updateInfor(
-      username: _usernameController.text,
-      password: _passwordController.text,
-      confirmPassword: _rePasswordController.text,
-    );
-    String? error = controller.secondValidate();
-    if (error != null) {
-      AppToast.showToast(error);
-      return;
-    }
-    int statusCode = await Get.find<AuthController>().signUp(controller.user);
-    if(statusCode == 200) {
-      Get.to(const HomeScreen());
-    }
   }
 }

@@ -16,34 +16,33 @@ class AuthRepo {
   AuthRepo({required this.apiClient, required this.sharedPreferences});
 
   Future<Response> signUp({required User objUser}) async {
+    User ok = objUser.copyWith(
+        displayName: 'longfksdjf',);
+
     Map<String, String> header = {
       'Content-Type': 'application/json',
-      // 'X-localization' : 'vi',
-      // 'Authorization': '$token'
     };
 
-//Cần đổi tên username
-    // Dữ liệu request
-    Map<String, dynamic> body = {
-  "active": true,
-  "birthPlace": "longtest",
-  "changePass": true,
-  "confirmPassword": "123456",
-  "displayName": "longtest",
-  "email": "longtest@gmail.com",
-  "firstName": "longtest",
-  "gender": "M",
-  "lastName": "longtest",
-  "password": "123456",
-  "university": "longtest",
-  "username": "longtest",
-  "year": 2,
-}
-;
+    //Request chuẩn
+    // Map<String, dynamic> body = {
+    //   "active": true,
+    //   "birthPlace": "longtest",
+    //   "changePass": true,
+    //   "confirmPassword": "123456",
+    //   "displayName": "longtest",
+    //   "email": "longtest@gmail.com",
+    //   "firstName": "longtest",
+    //   "gender": "M",
+    //   "lastName": "longtest",
+    //   "password": "123456",
+    //   "university": "longtest",
+    //   "username": "longtest",
+    //   "year": 2,
+    // };
 
     return await apiClient.postDataLogin(
       AppConstants.SIGN_UP,
-      jsonEncode(body),
+      jsonEncode(ok.toJson()),
       header,
     );
   }

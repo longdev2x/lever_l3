@@ -18,23 +18,13 @@ class SignUpScreen1 extends StatefulWidget {
 }
 
 class _SignUpScreen1State extends State<SignUpScreen1> {
-  late final TextEditingController _lastnameController;
-  late final TextEditingController _firstnameController;
-  late final TextEditingController _dobController;
-  late final TextEditingController _emailController;
-  late final TextEditingController _universityNameController;
-  late final TextEditingController _yearController;
-
-  @override
-  void initState() {
-    super.initState();
-    _lastnameController = TextEditingController();
-    _firstnameController = TextEditingController();
-    _dobController = TextEditingController();
-    _emailController = TextEditingController();
-    _universityNameController = TextEditingController();
-    _yearController = TextEditingController();
-  }
+  late final TextEditingController _lastnameController = TextEditingController();
+  late final TextEditingController _firstnameController = TextEditingController();
+  late final TextEditingController _dobController = TextEditingController();
+  late final TextEditingController _emailController = TextEditingController();
+  late final TextEditingController _universityNameController = TextEditingController();
+  late final TextEditingController _yearController = TextEditingController();
+  late final TextEditingController _birthPlaceController = TextEditingController();
 
   @override
   void dispose() {
@@ -45,6 +35,48 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
     _emailController.dispose();
     _universityNameController.dispose();
     _yearController.dispose();
+    _birthPlaceController.dispose();
+  }
+
+
+  void _onContinue() {
+    Get.find<SignUpController>().updateInfor(
+      firstName: _firstnameController.text,
+      lastName: _lastnameController.text,
+      email: _emailController.text,
+      university: _universityNameController.text,
+      year: int.tryParse(_yearController.text),
+      birthPlace: _birthPlaceController.text,
+      
+    );
+    String? error = Get.find<SignUpController>().firstValidate();
+    if (error != null) {
+      AppToast.showToast(error);
+      return;
+    }
+    Get.to(const SignUpScreen2());
+  }
+
+  void _showDatePicker() async {
+    DateTime? dob = await showDatePicker(
+        context: context,
+        firstDate: DateTime.now().subtract(const Duration(days: 10000)),
+        lastDate: DateTime.now(),
+        initialDate: Get.find<SignUpController>().user.dob ??
+            DateTime.now().subtract(const Duration(days: 7260)));
+    if (dob != null) {
+      Get.find<SignUpController>().updateInfor(dob: dob);
+    }
+  }
+
+  int _getBirthDay(DateTime date) {
+    DateTime now = DateTime.now();
+    int birth = now.year - date.year;
+    if (now.month > date.month ||
+        now.month == date.month && now.day > date.day) {
+      birth--;
+    }
+    return birth;
   }
 
   @override
@@ -97,16 +129,16 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
                       ),
                       const AppText16('Nam'),
                       Radio<String>(
-                        value: 'Nam',
-                        groupValue: controller.user.gender ?? 'Nam',
+                        value: 'M',
+                        groupValue: controller.user.gender ?? 'M',
                         onChanged: (value) =>
                             controller.updateInfor(gender: value),
                       ),
                       SizedBox(width: 10.w),
                       const AppText16('Nữ'),
                       Radio<String>(
-                        value: 'Nữ',
-                        groupValue: controller.user.gender ?? 'Nam',
+                        value: 'F',
+                        groupValue: controller.user.gender ?? 'M',
                         onChanged: (value) =>
                             controller.updateInfor(gender: value),
                       ),
@@ -114,13 +146,16 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
                   ),
                   SizedBox(height: 10.h),
                   AppTextField(
-                    onTap: () {
-                      _showDatePicker(controller);
-                    },
+                    onTap: _showDatePicker,
                     lable:
                         'Ngày sinh (${_getBirthDay(controller.user.dob ?? DateTime.now().subtract(const Duration(days: 7260)))} tuổi)',
                     controller: _dobController,
                     readOnly: true,
+                  ),
+                  SizedBox(height: 20.h),
+                  AppTextField(
+                    hintText: 'Nơi sinh',
+                    controller: _birthPlaceController,
                   ),
                   SizedBox(height: 20.h),
                   AppTextField(
@@ -140,9 +175,7 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
                   SizedBox(height: 50.h),
                   AppButton(
                     name: 'Tiếp',
-                    ontap: () {
-                      _onContinue(controller);
-                    },
+                    ontap: _onContinue,
                   ),
                   SizedBox(height: 10.h),
                   Align(
@@ -174,43 +207,5 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
         ),
       ),
     );
-  }
-
-  void _onContinue(SignUpController controller) {
-    controller.updateInfor(
-      firstName: _firstnameController.text,
-      lastName: _lastnameController.text,
-      email: _emailController.text,
-      university: _universityNameController.text,
-      year: int.tryParse(_yearController.text),
-    );
-    String? error = controller.firstValidate();
-    if (error != null) {
-      AppToast.showToast(error);
-      return;
-    }
-    Get.to(const SignUpScreen2());
-  }
-
-  void _showDatePicker(SignUpController controller) async {
-    DateTime? dob = await showDatePicker(
-        context: context,
-        firstDate: DateTime.now().subtract(const Duration(days: 10000)),
-        lastDate: DateTime.now(),
-        initialDate: controller.user.dob ??
-            DateTime.now().subtract(const Duration(days: 7260)));
-    if (dob != null) {
-      controller.updateInfor(dob: dob);
-    }
-  }
-
-  int _getBirthDay(DateTime date) {
-    DateTime now = DateTime.now();
-    int birth = now.year - date.year;
-    if (now.month > date.month ||
-        now.month == date.month && now.day > date.day) {
-      birth--;
-    }
-    return birth;
   }
 }
