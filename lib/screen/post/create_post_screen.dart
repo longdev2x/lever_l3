@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,8 +39,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
     int statusCode =
         await Get.find<PostController>().createPost(content: content);
-    if (statusCode == 200) {
-      _onPop();
+    if (statusCode == 200 && mounted) {
+      Get.find<PostController>().removeXfile();
+      Navigator.pop(context);
     }
   }
 
@@ -119,9 +119,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           AppText16(objUser.displayName,
                               fontWeight: FontWeight.bold),
                           const Spacer(),
-                          TextButton(onPressed: () {
-                            Get.find<PostController>().getImage();
-                          }, child: const Text('Check Get Iagmes')),
+                          TextButton(
+                              onPressed: () {
+                                Get.find<PostController>().getImage();
+                              },
+                              child: const Text('Check Get Iagmes')),
                         ],
                       ),
                       SizedBox(height: 20.h),
@@ -129,17 +131,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         controller: _controller,
                         hintText: 'Hãy nói gì đó về nội dung này...',
                         maxLength: 1000,
-                        maxLines: 2,
+                        maxLines: 10,
                       ),
                       SizedBox(height: 20.h),
                       //Hàng ảnh
                       const CreatePostImageWidget(maxImages: 5),
-                      GetBuilder<PostController>(builder: (controller) {
-                        if(controller.filePng != null) {
-                          return Image.file(controller.filePng!);
-                        }
-                        return const SizedBox.shrink();
-                      },),
+                      GetBuilder<PostController>(
+                        builder: (controller) {
+                          if (controller.filePng != null) {
+                            return Image.file(controller.filePng!);
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
                     ],
                   ),
                 ),

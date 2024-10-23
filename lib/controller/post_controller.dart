@@ -5,9 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/data/api/api_checker.dart';
+import 'package:timesheet/data/model/body/comment_entity.dart';
 import 'package:timesheet/data/model/body/like_entity.dart';
 import 'package:timesheet/data/model/body/media_entity.dart';
-import 'package:timesheet/data/model/body/request/like_request.dart';
 import 'package:timesheet/data/model/body/post_entity.dart';
 import 'package:timesheet/data/model/body/post_search_entity.dart';
 import 'package:timesheet/data/model/body/request/search_request.dart';
@@ -31,8 +31,8 @@ class PostController extends GetxController implements GetxService {
   bool get isFirstLoad => _isFirstLoad;
   bool get loading => _loading;
   bool get hasMoreData => _hasMoreData;
-  List<XFile>? get xMediaFiles => _mediaFiles; 
-  File? get filePng => _filePng; 
+  List<XFile>? get xMediaFiles => _mediaFiles;
+  File? get filePng => _filePng;
 
   @override
   void onInit() {
@@ -111,6 +111,7 @@ class PostController extends GetxController implements GetxService {
     update();
 
     Response response = await repo.createPost(objPost);
+
     if (response.statusCode != 200) {
       ApiChecker.checkApi(response);
     }
@@ -124,17 +125,19 @@ class PostController extends GetxController implements GetxService {
     // Thằng này trả về Media json
     Response response = await repo.uploadImages(xFiles);
     print('zzu- 1. 2 - start - ${response.body}');
-    if (response.statusCode != 200) {
+
+    if (response.statusCode == 200) {
+      if (response.body != null) {
+        return (response.body as List)
+            .map((e) => MediaEntity.fromJson(e))
+            .toList();
+      }
+      _filePath = response.body['name'];
+      print('zzz -1 .3 $_filePath');
+    } else {
       ApiChecker.checkApi(response);
     }
-    _filePath = response.body['name'];
-    print('zzz -1 .3 $_filePath');
 
-    if (response.body != null) {
-      return (response.body as List)
-          .map((e) => MediaEntity.fromJson(e))
-          .toList();
-    }
     return null;
   }
 
@@ -145,18 +148,21 @@ class PostController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       // 2. Tạo file tạm để lưu dữ liệu
       print('zzz6');
-      final tempDir = await getTemporaryDirectory(); // import 'package:path_provider/path_provider.dart';
+      final tempDir =
+          await getTemporaryDirectory(); // import 'package:path_provider/path_provider.dart';
       print('zzz7');
       final file = File('${tempDir.path}/testName');
       print('zzz7.8');
       // 3. Ghi dữ liệu vào file
       if (response.bodyString != null) {
         print('zzz8');
-        _filePng =  await file.writeAsBytes(response.bodyString!.codeUnits);
+        _filePng = await file.writeAsBytes(response.bodyString!.codeUnits);
         update();
- 
+
         print('zzz82');
       }
+    } else {
+      ApiChecker.checkApi(response);
     }
   }
 
@@ -164,19 +170,18 @@ class PostController extends GetxController implements GetxService {
     final DateTime? date,
     final PostEntity? objPost,
   ) async {
-    LikeRequest likeRequest =
-        LikeRequest(objPost?.id, 0, DateTime.now(), objPost, _user);
+    LikeEntity likeEntity = LikeEntity(
+        id: null, type: 0, date: DateTime.now(), objPost: objPost, user: _user);
 
     bool? isLiked = objPost!.likes.any((e) => e.user?.id == _user?.id);
     if (!isLiked) {
-      objPost.likes
-          .add(LikeEntity(date: date, id: null, type: null, user: _user));
+      objPost.likes.add(LikeEntity(date: date, user: _user));
     } else {
       objPost.likes.removeWhere((e) => e.user?.id == _user?.id);
     }
     update();
 
-    Response response = await repo.likePost(likeRequest, objPost.id!);
+    Response response = await repo.likePost(likeEntity);
 
     if (response.statusCode != 200) {
       ApiChecker.checkApi(response);
@@ -191,10 +196,34 @@ class PostController extends GetxController implements GetxService {
     return response.statusCode!;
   }
 
+  Future<int> sendComment(String content, PostEntity objPost) async {
+    CommentEntity objComment = CommentEntity(
+      content: content,
+      date: DateTime.now(),
+      objPost: objPost,
+      user: _user,
+    );
+
+    objPost.comments.add(objComment);
+    update();
+
+    print('zzz88');
+    Response response = await repo.comment(objComment);
+    print('zzz89');
+    if (response.statusCode != 200) {
+      objPost.comments.remove(objComment);
+      ApiChecker.checkApi(response);
+    }
+
+    update();
+    return response.statusCode!;
+  }
+
   void addXFile(List<XFile> xFiles) {
     _mediaFiles = xFiles;
     update();
   }
+
   void removeXfile() {
     _mediaFiles = null;
     update();

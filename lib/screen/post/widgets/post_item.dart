@@ -24,24 +24,27 @@ class PostItem extends StatelessWidget {
   }
 
   String _getDateFormat(DateTime? date) {
-    if(date == null) return 'No Infor';
+    if (date == null) return 'No Infor';
     DateTime now = DateTime.now();
 
     int difference = now.difference(date).inMinutes;
 
-
-    if(difference < 60) {
+    if (difference < 60) {
       return '$difference phút trước';
     }
-    if(difference < 1440) {
+    if (difference < 1440) {
       int hours = now.difference(date).inHours;
       return '$hours phút trước';
     }
-    if(difference < 10080) {
+    if (difference < 10080) {
       int days = now.difference(date).inDays;
       return '$days ngày trước';
     }
     return '${DateConverter.getWeekDay(objPost.date!)} - Ngày ${DateConverter.getOnlyFomatDate(objPost.date!)}';
+  }
+
+  void _navigateToDetail() {
+    Get.to(() => const PostDetailScreen(), arguments: {'objPost': objPost});
   }
 
   @override
@@ -50,7 +53,7 @@ class PostItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Get.to(() => const PostDetailScreen());
+        _navigateToDetail();
       },
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 0),
@@ -95,14 +98,20 @@ class PostItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 5.w),
               child: _reactButton(
-                  onLikeTap: _onLike, onCommentTap: () {}, isLiked: _checkLiked(currentId, objPost.likes)),
+                  onLikeTap: _onLike,
+                  onCommentTap: () {
+                    _navigateToDetail();
+                  },
+                  isLiked: _checkLiked(currentId, objPost.likes)),
             ),
             SizedBox(width: 14.w),
             Padding(
               padding: EdgeInsets.only(top: 14.h, bottom: 20.h),
               child: _reactInfor(
                   onLikeTap: () {},
-                  onCommentTap: () {},
+                  onCommentTap: () {
+                    _navigateToDetail();
+                  },
                   reactInfors: objPost.likes,
                   commentCounts: objPost.comments.length),
             ),
@@ -175,7 +184,12 @@ class PostItem extends StatelessWidget {
     return Row(
       children: [
         AppImageAsset(
-            onTap: onLikeTap, imagePath: Images.icLike, height: 18, width: 21, color: isLiked ? Colors.blue : null,),
+          onTap: onLikeTap,
+          imagePath: Images.icLike,
+          height: 18,
+          width: 21,
+          color: isLiked ? Colors.blue : null,
+        ),
         SizedBox(width: 30.w),
         AppImageAsset(
             onTap: onCommentTap,

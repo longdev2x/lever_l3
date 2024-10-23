@@ -19,10 +19,13 @@ class Images {
   static const String icCamera = 'assets/image/icCamera.png';
   static const String icLogout = 'assets/image/icLogout.png';
   static const String icThreeDotVeti = 'assets/image/icThreeDotVeti.png';
+  static const String icThreeDotHori = 'assets/image/icThreeDotHori.png';
   static const String icReacLike = 'assets/image/icReacLike.png';
   static const String icLike = 'assets/image/icLike.png';
   static const String icCmt = 'assets/image/icCmt.png';
   static const String icImagePicker = 'assets/image/icImagePicker.png';
+  static const String icArrowBack = 'assets/image/icArrowBack.png';
+  static const String icSend = 'assets/image/icSend.png';
   //Profile
   static const String icGenderMan= 'assets/image/ic_gender_man.png';
   static const String icGenderWoman= 'assets/image/ic_gender_woman.png';

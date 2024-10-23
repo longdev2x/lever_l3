@@ -1,8 +1,9 @@
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:timesheet/data/api/api_client.dart';
+import 'package:timesheet/data/model/body/comment_entity.dart';
+import 'package:timesheet/data/model/body/like_entity.dart';
 import 'package:timesheet/data/model/body/post_entity.dart';
-import 'package:timesheet/data/model/body/request/like_request.dart';
 import 'package:timesheet/data/model/body/request/search_request.dart';
 import 'package:timesheet/utils/app_constants.dart';
 
@@ -28,21 +29,36 @@ class PostRepo {
   }
 
   Future<Response> uploadImages(List<XFile> xFiles) async {
-    List<MultipartBody> multipartBodys = xFiles.map((e) => MultipartBody('uploadfile', e)).toList();
+    List<MultipartBody> multipartBodys =
+        xFiles.map((e) => MultipartBody('uploadfile', e)).toList();
     return await apiClient.postMultipartData(
-      AppConstants.UPLOAD_FILE, 
-      {}, 
-      multipartBodys, 
-      headers: null,);
+      AppConstants.UPLOAD_FILE,
+      {},
+      multipartBodys,
+      headers: null,
+    );
   }
 
   Future<Response> getImage(String filePath) async {
-    return await apiClient.getImageData(AppConstants.GET_FILE, nameFile: filePath);
+    return await apiClient.getImageData(AppConstants.GET_FILE,
+        nameFile: filePath);
   }
 
-  Future<Response> likePost(LikeRequest likeRequest, int idPost) async {
+  Future<Response> likePost(LikeEntity objLike) async {
     return await apiClient.postData(
-        AppConstants.LIKE_POST, likeRequest.toJson(), null,
-        id: idPost);
+      AppConstants.LIKE_POST,
+      objLike.toJson(),
+      null,
+      id: objLike.objPost?.id,
+    );
+  }
+
+  Future<Response> comment(CommentEntity objComment) async {
+    return await apiClient.postData(
+      AppConstants.SEND_COMMENT,
+      objComment.toJson(),
+      null,
+      id: objComment.objPost?.id
+    );
   }
 }

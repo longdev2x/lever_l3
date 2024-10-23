@@ -1,3 +1,4 @@
+import 'package:timesheet/data/model/body/post_entity.dart';
 import 'package:timesheet/data/model/body/user.dart';
 
 class LikeEntity {
@@ -5,12 +6,14 @@ class LikeEntity {
   final int? id;
   final int? type;
   final User? user;
+  final PostEntity? objPost;
 
   LikeEntity({
-    required this.date,
-    required this.id,
-    required this.type,
-    required this.user,
+    this.date,
+    this.id,
+    this.type,
+    this.user,
+    this.objPost,
   });
 
   factory LikeEntity.fromJson(Map<String, dynamic>? json) {
@@ -19,6 +22,7 @@ class LikeEntity {
       date: json?['date'] != null ? DateTime.fromMillisecondsSinceEpoch(json?['date']) : null,
       type: json?['type'],
       user: User.fromJson(json?['user']),
+      objPost: PostEntity.fromJson(json?['post']),
     );
   }
 
@@ -28,6 +32,8 @@ class LikeEntity {
       'id': id,
       'type': type,
       'user': user?.toJson(),
+      //vòng lặp vô tận
+      "post": null,
     };
   }
 }
