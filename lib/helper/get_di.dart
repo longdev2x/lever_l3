@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timesheet/controller/auth_controller.dart';
@@ -15,6 +16,7 @@ import 'package:timesheet/data/repository/profile_repo.dart';
 import 'package:timesheet/data/repository/splash_repo.dart';
 import 'package:timesheet/data/repository/tracking_repo.dart';
 import 'package:timesheet/data/repository/user_search_repo.dart';
+import 'package:timesheet/helper/notification_helper.dart';
 import '../controller/localization_controller.dart';
 import '../controller/splash_controller.dart';
 import '../data/api/api_client.dart';
@@ -31,15 +33,17 @@ Future<Map<String, Map<String, String>>> init() async {
 
   Get.lazyPut(() => sharedPreferences);
   Get.lazyPut(() => firstCamera);
-  Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
+  Get.lazyPut(() => ApiClient(
+      appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
 
   // Repository
   Get.lazyPut(() => LanguageRepo());
-  Get.lazyPut(() => AuthRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
+  Get.lazyPut(
+      () => AuthRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => SplashRepo(apiClient: Get.find()));
   Get.lazyPut(() => TrackingRepo(apiClient: Get.find()));
   Get.lazyPut(() => UserSearchRepo(apiClient: Get.find()));
-  Get.lazyPut(() => ProfileRepo(apiClient: Get.find()) );
+  Get.lazyPut(() => ProfileRepo(apiClient: Get.find()));
   Get.lazyPut(() => PostRepo(apiClient: Get.find()));
 
   // Controller
@@ -55,7 +59,12 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => ProfileController(repo: Get.find()));
   Get.lazyPut(() => PostController(repo: Get.find()));
 
-
+  //Init Notification
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  NotificationHelper.initialize(flutterLocalNotificationsPlugin);
+  NotificationHelper.listenNetworkConnect(flutterLocalNotificationsPlugin);
+  
   // Retrieving localized data
   Map<String, Map<String, String>> languages = {};
   for (LanguageModel languageModel in AppConstants.languages) {

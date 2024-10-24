@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +13,8 @@ import '../utils/app_constants.dart';
 class NotificationHelper {
   static Future<void> initialize(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+    _requestNotificationPermission();
+    
     var androidInitialize =
         const AndroidInitializationSettings('notification_icon');
     var iOSInitialize = const DarwinInitializationSettings();
@@ -41,8 +45,17 @@ class NotificationHelper {
     });
   }
 
+  static Future<void> _requestNotificationPermission() async {
+    NotificationSettings settings = await FirebaseMessaging.instance
+        .requestPermission(sound: true, badge: true, alert: true);
+    if (kDebugMode) {
+      print('Quyền thông báo - ${settings.authorizationStatus}');
+    }
+  }
+
   static Future<void> showNotification(RemoteMessage message,
       FlutterLocalNotificationsPlugin fln, bool data) async {
+    print('Nework -3 -');
     if (!GetPlatform.isIOS) {
       String? title;
       String? body;
@@ -59,6 +72,8 @@ class NotificationHelper {
                 : '${AppConstants.BASE_URL}/storage/app/public/notification/${message.data['image']}'
             : null;
       } else {
+        print('Nework -4');
+        print('Nework -4 - ${message.notification?.title}');
         title = message.notification?.title;
         body = message.notification?.body;
         orderID = message.notification?.titleLocKey;
@@ -87,27 +102,40 @@ class NotificationHelper {
           await showBigTextNotification(title!, body!, orderID!, fln);
         }
       } else {
+        print('Nework -5');
+        print('Nework -5 - $title, $body, $orderID, $fln');
         await showBigTextNotification(title!, body!, orderID!, fln);
       }
     }
   }
 
-  Future<void> listenNetworkConnect(FlutterLocalNotificationsPlugin fln) async {
+  static Future<void> listenNetworkConnect(
+      FlutterLocalNotificationsPlugin fln) async {
+    print('Listen network Connect');
     Connectivity().onConnectivityChanged.listen(
       (ConnectivityResult result) async {
+        print('Nework -2');
+        print('Nework - $result');
         if (result == ConnectivityResult.none) {
-          await showBigTextNotification(
-            'Mất mạng',
-            'Kiểm tra lại mạng',
-            'network',
+          await showNotification(
+            const RemoteMessage(
+              notification: RemoteNotification(
+                title: 'Mất mạng',
+                body: 'Hãy bật lại mạng',
+              ),
+            ),
             fln,
+            false,
           );
         } else {
-          await showBigTextNotification(
-            'Đã có mạng mạng',
-            'Ok rồi',
-            'network',
+          await showNotification(
+            const RemoteMessage(
+              notification: RemoteNotification(
+                title: 'Đã có mạng',
+              ),
+            ),
             fln,
+            false,
           );
         }
       },
