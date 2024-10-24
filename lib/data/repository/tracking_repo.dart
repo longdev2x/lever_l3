@@ -3,7 +3,7 @@ import 'package:timesheet/data/api/api_client.dart';
 import 'package:timesheet/data/model/body/tracking_entity.dart';
 import 'package:timesheet/utils/app_constants.dart';
 
-class TrackingRepo {
+class TrackingRepo extends GetxService{
   final ApiClient apiClient;
 
   TrackingRepo({required this.apiClient});

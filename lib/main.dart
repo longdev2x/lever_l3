@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:timesheet/firebase_options.dart';
 import 'package:timesheet/theme/dark_theme.dart';
 import 'package:timesheet/theme/light_theme.dart';
 import 'package:timesheet/theme/theme_controller.dart';
@@ -20,6 +22,9 @@ Future<void> main() async {
     print("Bắt đầu: ${DateTime.now()}");
   }
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   if (ResponsiveHelper.isMobilePhone()) {
     HttpOverrides.global = MyHttpOverrides();
@@ -46,7 +51,9 @@ class MyApp extends StatelessWidget {
     return GetBuilder<ThemeController>(builder: (themeController) {
       return GetBuilder<LocalizationController>(builder: (localizeController) {
         FlutterNativeSplash.remove();
-        print("Kết thúc init: ${DateTime.now()}");
+        if (kDebugMode) {
+          print("Kết thúc init: ${DateTime.now()}");
+        }
         return GetMaterialApp(
           title: AppConstants.APP_NAME,
           debugShowCheckedModeBanner: false,

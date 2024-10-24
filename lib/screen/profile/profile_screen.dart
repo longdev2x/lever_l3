@@ -32,6 +32,12 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: GetBuilder<ProfileController>(
         builder: (controller) {
+          bool isAdmin = false;
+
+          if (controller.user?.roles != null && controller.user!.roles!.isNotEmpty) {
+            isAdmin = controller.user!.roles?[0].name == 'ROLE_ADMIN';
+          }
+
           User objUser = controller.user!;
           return SingleChildScrollView(
             child: Padding(
@@ -44,7 +50,7 @@ class ProfileScreen extends StatelessWidget {
                     ProfileAvatarWidget(avatar: objUser.image),
                     SizedBox(height: 15.h),
                     AppText20(
-                        '${objUser.username} (${objUser.roles?[0].name == 'ROLE_USER' ? 'USER' : 'ADMIN'})',
+                        '${objUser.username} (${isAdmin ? 'ADMIN' : 'USER'})',
                         fontWeight: FontWeight.bold),
                     SizedBox(height: 5.h),
                     AppText16(objUser.email),

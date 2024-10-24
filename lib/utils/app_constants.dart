@@ -24,6 +24,7 @@ class AppConstants {
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';
+  static const String TOKEN_DEVICE = 'token_device';
   static const String COUNTRY_CODE = 'country_code';
   static const String LANGUAGE_CODE = 'language_code';
   static const String USER_PASSWORD = 'user_password';

@@ -2,7 +2,7 @@ import 'package:timesheet/utils/app_constants.dart';
 import '../api/api_client.dart';
 import 'package:get/get.dart';
 
-class SplashRepo {
+class SplashRepo extends GetxService{
   final ApiClient apiClient;
 
   SplashRepo({required this.apiClient});

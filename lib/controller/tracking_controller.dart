@@ -19,6 +19,7 @@ class TrackingController extends GetxController implements GetxService  {
     update();
 
     Response response = await repo.getCurrentUserTracking();
+    
     if (response.statusCode == 200) {
       return List.from(response.body)
           .map((json) => TrackingEntity.fromJson(json))

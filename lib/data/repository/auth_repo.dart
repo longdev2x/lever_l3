@@ -1,22 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timesheet/controller/profile_controller.dart';
 import 'package:timesheet/data/model/body/request/token_request.dart';
 import 'package:timesheet/data/model/body/user.dart';
 
 import '../../utils/app_constants.dart';
 import '../api/api_client.dart';
 
-class AuthRepo {
+class AuthRepo extends GetxService{
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
 
   AuthRepo({required this.apiClient, required this.sharedPreferences});
 
   Future<Response> signUp({required User objUser}) async {
-
     Map<String, String> header = {
       'Content-Type': 'application/json',
     };
@@ -78,17 +79,59 @@ class AuthRepo {
     return await apiClient.getData(AppConstants.GET_USER);
   }
 
-  Future<String> _saveDeviceToken() async {
-    String? _deviceToken = '@';
+  //Device Token
+
+  Future<void> setDeviceToken() async {
+    await _requestNotificationPermission();
+    await _saveDeviceToken();
+
+    FirebaseMessaging.instance.onTokenRefresh.listen(
+      (String token) async {
+        await sharedPreferences.setString(AppConstants.TOKEN_DEVICE, token);
+        _sendTokenToSever(token);
+      },
+    );
+  }
+
+  Future<String?> _saveDeviceToken() async {
+    String? _deviceToken;
     if (!GetPlatform.isWeb) {
       try {
         _deviceToken = await FirebaseMessaging.instance.getToken();
-      } catch (e) {}
+      } catch (e) {
+        if (kDebugMode) {
+          print('Error getting device token: $e');
+        }
+      }
     }
     if (_deviceToken != null) {
+      await sharedPreferences.setString(
+          AppConstants.TOKEN_DEVICE, _deviceToken);
+      _sendTokenToSever(_deviceToken);
       print('--------Device Token---------- ' + _deviceToken);
     }
-    return _deviceToken!;
+    return _deviceToken;
+  }
+
+  Future<void> _sendTokenToSever(String token) async {
+    Get.find<ProfileController>().updateInfo(
+      tokenDevice: token,
+    );
+  }
+
+  Future<void> _requestNotificationPermission() async {
+    NotificationSettings settings = await FirebaseMessaging.instance
+        .requestPermission(alert: true, badge: true, sound: true);
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      if (kDebugMode) {
+        print('User accept Permission');
+      }
+    } else {
+      if (kDebugMode) {
+        print('User not accept Permission');
+      }
+    }
   }
 
   // for  user token

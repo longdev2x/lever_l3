@@ -77,9 +77,13 @@ class _SplashScreenState extends State<SplashScreen> {
   _route() async {
     Get.find<AuthController>().getCurrentUser().then((value) => {
           if (value == 200)
-            {Get.to(() => const HomeScreen())}
+            {
+              Get.to(() => const HomeScreen()),
+            }
           else
-            {Get.offNamed(RouteHelper.signIn)}
+            {
+              Get.offNamed(RouteHelper.signIn),
+            }
         });
   }
 }

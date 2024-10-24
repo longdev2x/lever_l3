@@ -8,7 +8,7 @@ import 'package:timesheet/data/model/body/role.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/data/repository/profile_repo.dart';
 
-class ProfileController extends GetxController implements GetxService  {
+class ProfileController extends GetxController implements GetxService {
   final ProfileRepo repo;
   ProfileController({required this.repo});
 
@@ -21,7 +21,6 @@ class ProfileController extends GetxController implements GetxService  {
     _user = Get.find<AuthController>().user;
   }
 
-
   Future<int> updateInfo({
     String? username,
     bool? active,
@@ -29,6 +28,7 @@ class ProfileController extends GetxController implements GetxService  {
     String? confirmPassword,
     String? displayName,
     DateTime? dob,
+    String? tokenDevice,
     String? email,
     String? firstName,
     String? lastName,
@@ -41,15 +41,21 @@ class ProfileController extends GetxController implements GetxService  {
     int? year,
     List<Role>? roles,
   }) async {
-    if(_user == null) return Future.delayed(const Duration(seconds: 1), () => 400,);
+    if (_user == null) {
+      return Future.delayed(
+        const Duration(seconds: 1),
+        () => 400,
+      );
+    }
 
     _user = _user!.copyWith(
       username: username,
       active: active,
+      tokenDevice: tokenDevice,
       birthPlace: birthPlace,
       confirmPassword: confirmPassword,
       countDayCheckin: countDayCheckin,
-      countDayTracking: countDayTracking, 
+      countDayTracking: countDayTracking,
       displayName: displayName,
       dob: dob,
       email: email,
@@ -66,32 +72,34 @@ class ProfileController extends GetxController implements GetxService  {
     update();
 
     Response response = await repo.updateInfo(_user!);
-    if(response.statusCode != 200) {
+
+    if (response.statusCode == 200) {
+      Get.find<AuthController>().updateUser(_user!);
+    } else {
       ApiChecker.checkApi(response);
     }
 
-    Get.find<AuthController>().updateUser(_user!);
+    update();
     return response.statusCode!;
   }
 
-
   Future<int> changeAvatar(XFile xFile) async {
     Response response = await repo.uploadFile(xFile);
-    if(response.statusCode != 200) {
+    if (response.statusCode != 200) {
       ApiChecker.checkApi(response);
     }
     MediaEntity? objPostDetail = MediaEntity.fromJson(response.body);
     String? nameFile = objPostDetail.name;
-    if(nameFile == null) return 400;
+    if (nameFile == null) return 400;
 
     Response getFileResponse = await repo.getFile(nameFile);
-    if(getFileResponse.statusCode != 200) {
+    if (getFileResponse.statusCode != 200) {
       ApiChecker.checkApi(response);
       return getFileResponse.statusCode!;
     }
 
     FileEntity objFile = FileEntity.fromJson(getFileResponse.body);
-    if(objFile.url == null) {
+    if (objFile.url == null) {
       return 400;
     }
 

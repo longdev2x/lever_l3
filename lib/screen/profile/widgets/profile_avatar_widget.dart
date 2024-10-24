@@ -12,7 +12,6 @@ class ProfileAvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLoader = false || true;
     return SizedBox(
       height: 150.w,
       width: 150.w,
@@ -48,11 +47,6 @@ class ProfileAvatarWidget extends StatelessWidget {
               ),
             ),
           ),
-          if (isLoader)
-            const Align(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(),
-            )
         ],
       ),
     );

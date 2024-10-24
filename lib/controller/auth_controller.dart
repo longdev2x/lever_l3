@@ -18,18 +18,15 @@ class AuthController extends GetxController implements GetxService {
 
   Future<int> signUp(User objUser) async {
     Role role = Role(null, 'ROLE_ADMIN', 'ROLE_ADMIN');
-    objUser = objUser.copyWith(
-      active: true,
-      changePass: true,
-      roles: [role]
-    );
+    objUser = objUser.copyWith(active: true, changePass: true, roles: [role]);
     _loading = true;
     update();
 
     Response response = await repo.signUp(objUser: objUser);
     if (response.statusCode == 200) {
       TokenResponsive tokeBody = TokenResponsive.fromJson(response.body);
-      repo.saveUserToken(tokeBody.accessToken!);
+      await repo.saveUserToken(tokeBody.accessToken!);
+      await repo.setDeviceToken();
     } else {
       ApiChecker.checkApi(response);
     }
@@ -46,7 +43,8 @@ class AuthController extends GetxController implements GetxService {
         await repo.login(username: username, password: password);
     if (response.statusCode == 200) {
       TokenResponsive tokeBody = TokenResponsive.fromJson(response.body);
-      repo.saveUserToken(tokeBody.accessToken!);
+      await repo.saveUserToken(tokeBody.accessToken!);
+      await repo.setDeviceToken();
     } else {
       ApiChecker.checkApi(response);
     }
