@@ -57,7 +57,7 @@ class ApiClient extends GetxService {
     try {
       if (foundation.kDebugMode) {
         logger.i(
-            'Get Request: ${appBaseUrl + uri}\nHeader: ${headers ?? _mainHeaders}');
+            'Get Request: ${appBaseUrl + uri}\nHeader: ${headers ?? _mainHeaders} \nURL - ${Uri.parse(appBaseUrl + uri).replace(queryParameters: query)}');
       }
       http.Response response = await http
           .get(

@@ -15,7 +15,11 @@ class UserDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User currentUser = Get.find<AuthController>().user;
-    bool isAdmin = currentUser.roles?[0].name == 'ROLE_ADMIN';
+    bool isAdmin = false;
+
+    if (currentUser.roles != null && currentUser.roles!.isNotEmpty) {
+      isAdmin = currentUser.roles?[0].name == 'ROLE_ADMIN';
+    }
 
     User user = Get.arguments as User;
     return Scaffold(

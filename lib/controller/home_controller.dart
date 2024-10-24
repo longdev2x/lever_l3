@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:timesheet/data/repository/auth_repo.dart';
 
 class HomeController extends GetxController implements GetxService  {
   final RxInt bottomIndexSelected = 0.obs;
@@ -6,7 +7,7 @@ class HomeController extends GetxController implements GetxService  {
   @override
   void onInit() {
     super.onInit();
-    // Get.find<AuthRepo>().setDeviceToken();
+    Get.find<AuthRepo>().setDeviceToken();
   }
 
   void onSelected(int index) {

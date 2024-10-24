@@ -114,8 +114,9 @@ class AuthRepo extends GetxService{
   }
 
   Future<void> _sendTokenToSever(String token) async {
-    Get.find<ProfileController>().updateInfo(
-      tokenDevice: token,
+    await apiClient.getData(
+      AppConstants.SEND_TOKEN_DEVICE,
+      query: {'tokenDevice' : token}
     );
   }
 

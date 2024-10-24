@@ -9,6 +9,7 @@ class AppConstants {
   static const String BASE_URL = 'http://android-tracking.oceantech.com.vn';
   static const String CONFIG_URI = '/mita/public/config-app';
   static const String LOGIN_URI = '/mita/oauth/token';
+  static const String SEND_TOKEN_DEVICE = '/mita/users/token-device';
   static const String SIGN_UP = '/mita/public/sign';
   static const String LOG_OUT = '/mita/oauth/logout';
   static const String GET_USER = '/mita/users/get-user-current';

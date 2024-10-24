@@ -1,11 +1,10 @@
 import 'dart:io';
-
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:timesheet/helper/route_helper.dart';
 
 import '../utils/app_constants.dart';
 
@@ -20,9 +19,7 @@ class NotificationHelper {
     flutterLocalNotificationsPlugin.initialize(initializationsSettings,
         onDidReceiveNotificationResponse:
             (NotificationResponse notificationResponse) async {
-      try {
-
-      } catch (e) {}
+      try {} catch (e) {}
       return;
     });
 
@@ -40,9 +37,7 @@ class NotificationHelper {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print(
           "onOpenApp: ${message.notification?.title}/${message.notification?.body}/${message.notification?.titleLocKey}");
-      try {
-
-      } catch (e) {}
+      try {} catch (e) {}
     });
   }
 
@@ -95,6 +90,28 @@ class NotificationHelper {
         await showBigTextNotification(title!, body!, orderID!, fln);
       }
     }
+  }
+
+  Future<void> listenNetworkConnect(FlutterLocalNotificationsPlugin fln) async {
+    Connectivity().onConnectivityChanged.listen(
+      (ConnectivityResult result) async {
+        if (result == ConnectivityResult.none) {
+          await showBigTextNotification(
+            'Mất mạng',
+            'Kiểm tra lại mạng',
+            'network',
+            fln,
+          );
+        } else {
+          await showBigTextNotification(
+            'Đã có mạng mạng',
+            'Ok rồi',
+            'network',
+            fln,
+          );
+        }
+      },
+    );
   }
 
   static Future<void> showTextNotification(String title, String body,
@@ -187,8 +204,8 @@ Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
   var androidInitialize =
       const AndroidInitializationSettings('notification_icon');
   var iOSInitialize = const DarwinInitializationSettings();
-  var initializationsSettings = InitializationSettings(
-      android: androidInitialize, iOS: iOSInitialize);
+  var initializationsSettings =
+      InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   flutterLocalNotificationsPlugin.initialize(initializationsSettings);
