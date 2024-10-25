@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/data/model/body/user.dart';
+import 'package:timesheet/screen/profile/edit_profile_screen.dart';
 import 'package:timesheet/screen/users/user_detail_screen.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
+import 'package:timesheet/view/app_toast.dart';
 
 class UserItem extends StatelessWidget {
   final User objUser;
@@ -14,11 +16,26 @@ class UserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User user = Get.find<AuthController>().user;
+    User currentUser = Get.find<AuthController>().user;
     bool isAdmin = false;
-    
-    if (user.roles != null && user.roles!.isNotEmpty) {
-      isAdmin = user.roles?[0].name == 'ROLE_ADMIN';
+
+    if (currentUser.roles != null && currentUser.roles!.isNotEmpty) {
+      isAdmin = currentUser.roles?[0].name == 'ROLE_ADMIN';
+    }
+
+    void blockUser(User objUser, BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (context) => AppConfirm(
+          title: 'Bạn thực sự muốn block ${objUser.displayName}',
+          onConfirm: () {
+            // User không lưu thông tin block
+            // Get.find<AuthController>()
+            AppToast.showToast('Không có thông tin block để triển khai');
+            Navigator.pop(context);
+          },
+        ),
+      );
     }
 
     return GestureDetector(
@@ -57,14 +74,18 @@ class UserItem extends StatelessWidget {
                   children: [
                     AppImageAsset(
                       imagePath: Images.icUpdateUser,
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => const EditProfileScreen());
+                      },
                       height: 22,
                       width: 22,
                     ),
                     SizedBox(width: 15.w),
                     AppImageAsset(
                       imagePath: Images.icBlock,
-                      onTap: () {},
+                      onTap: () {
+                        blockUser(objUser, context);
+                      },
                       height: 22,
                       width: 22,
                     ),

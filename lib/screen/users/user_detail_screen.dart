@@ -4,13 +4,30 @@ import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/helper/date_converter.dart';
+import 'package:timesheet/screen/users/edit_member_user_screen.dart';
 import 'package:timesheet/screen/users/widgets/user_parameter_widget.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_image.dart';
+import 'package:timesheet/view/app_toast.dart';
 
 class UserDetailScreen extends StatelessWidget {
   const UserDetailScreen({super.key});
+
+  void blockUser(User objUser, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AppConfirm(
+        title: 'Bạn thực sự muốn block ${objUser.displayName}',
+        onConfirm: () {
+          // User không lưu thông tin block
+          // Get.find<AuthController>()
+          AppToast.showToast('Không có thông tin block để triển khai');
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +39,7 @@ class UserDetailScreen extends StatelessWidget {
     }
 
     User user = Get.arguments as User;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(user.displayName ?? ''),
@@ -44,7 +62,9 @@ class UserDetailScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: AppButton(
-                        ontap: () {},
+                        ontap: () {
+                          Get.to(() => EditMemberUserScreen(objUser: user));
+                        },
                         name: 'Change',
                         height: 37,
                       ),
@@ -52,7 +72,9 @@ class UserDetailScreen extends StatelessWidget {
                     SizedBox(width: 30.w),
                     Expanded(
                       child: AppButton(
-                        ontap: () {},
+                        ontap: () {
+                          blockUser(user, context);
+                        },
                         name: 'Block',
                         height: 37,
                       ),
