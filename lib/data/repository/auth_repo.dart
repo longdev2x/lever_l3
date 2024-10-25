@@ -81,7 +81,6 @@ class AuthRepo extends GetxService{
   //Device Token
 
   Future<void> setDeviceToken() async {
-    await _requestNotificationPermission();
     await _saveDeviceToken();
 
     FirebaseMessaging.instance.onTokenRefresh.listen(
@@ -117,21 +116,6 @@ class AuthRepo extends GetxService{
       AppConstants.SEND_TOKEN_DEVICE,
       query: {'tokenDevice' : token}
     );
-  }
-
-  Future<void> _requestNotificationPermission() async {
-    NotificationSettings settings = await FirebaseMessaging.instance
-        .requestPermission(alert: true, badge: true, sound: true);
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      if (kDebugMode) {
-        print('User accept Permission');
-      }
-    } else {
-      if (kDebugMode) {
-        print('User not accept Permission');
-      }
-    }
   }
 
   // for  user token

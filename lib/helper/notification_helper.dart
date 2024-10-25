@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -14,9 +13,9 @@ class NotificationHelper {
   static Future<void> initialize(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     _requestNotificationPermission();
-    
+
     var androidInitialize =
-        const AndroidInitializationSettings('notification_icon');
+        const AndroidInitializationSettings('@drawable/logo');
     var iOSInitialize = const DarwinInitializationSettings();
     var initializationsSettings =
         InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
@@ -27,7 +26,11 @@ class NotificationHelper {
       return;
     });
 
+    print('zzzz5 - 1');
+
+    //Foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('zzzz5 - 2');
       print(
           "onMessage: ${message.notification?.title}/${message.notification?.body}/${message.notification?.titleLocKey}");
       NotificationHelper.showNotification(
@@ -38,7 +41,10 @@ class NotificationHelper {
       //   Get.find<NotificationController>().getNotificationList(true);
       // }
     });
+
+    //Background
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('zzzz5 - 2');
       print(
           "onOpenApp: ${message.notification?.title}/${message.notification?.body}/${message.notification?.titleLocKey}");
       try {} catch (e) {}
@@ -55,7 +61,6 @@ class NotificationHelper {
 
   static Future<void> showNotification(RemoteMessage message,
       FlutterLocalNotificationsPlugin fln, bool data) async {
-    print('Nework -3 -');
     if (!GetPlatform.isIOS) {
       String? title;
       String? body;
@@ -72,8 +77,6 @@ class NotificationHelper {
                 : '${AppConstants.BASE_URL}/storage/app/public/notification/${message.data['image']}'
             : null;
       } else {
-        print('Nework -4');
-        print('Nework -4 - ${message.notification?.title}');
         title = message.notification?.title;
         body = message.notification?.body;
         orderID = message.notification?.titleLocKey;
@@ -102,8 +105,6 @@ class NotificationHelper {
           await showBigTextNotification(title!, body!, orderID!, fln);
         }
       } else {
-        print('Nework -5');
-        print('Nework -5 - $title, $body, $orderID, $fln');
         await showBigTextNotification(title!, body!, orderID!, fln);
       }
     }
@@ -111,31 +112,21 @@ class NotificationHelper {
 
   static Future<void> listenNetworkConnect(
       FlutterLocalNotificationsPlugin fln) async {
-    print('Listen network Connect');
     Connectivity().onConnectivityChanged.listen(
       (ConnectivityResult result) async {
-        print('Nework -2');
-        print('Nework - $result');
         if (result == ConnectivityResult.none) {
-          await showNotification(
-            const RemoteMessage(
-              notification: RemoteNotification(
-                title: 'Mất mạng',
-                body: 'Hãy bật lại mạng',
-              ),
-            ),
+          await showBigTextNotification(
+            'Mất mạng',
+            'Hãy bật lại mạng',
+            'không payload',
             fln,
-            false,
           );
         } else {
-          await showNotification(
-            const RemoteMessage(
-              notification: RemoteNotification(
-                title: 'Đã có mạng',
-              ),
-            ),
+          await showBigTextNotification(
+            'Đã có mạng mạng',
+            '...',
+            'không payload',
             fln,
-            false,
           );
         }
       },
@@ -145,14 +136,13 @@ class NotificationHelper {
   static Future<void> showTextNotification(String title, String body,
       String orderID, FlutterLocalNotificationsPlugin fln) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      '6ammart',
-      '6ammart',
-      playSound: true,
-      importance: Importance.max,
-      priority: Priority.max,
-      sound: RawResourceAndroidNotificationSound('notification'),
-    );
+        AndroidNotificationDetails('6ammart', '6ammart',
+            playSound: true,
+            importance: Importance.max,
+            priority: Priority.max,
+            icon: '@drawable/logo'
+            // sound: RawResourceAndroidNotificationSound('notification'),
+            );
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await fln.show(0, title, body, platformChannelSpecifics, payload: orderID);
@@ -167,15 +157,14 @@ class NotificationHelper {
       htmlFormatContentTitle: true,
     );
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      '6ammart',
-      '6ammart',
-      importance: Importance.max,
-      styleInformation: bigTextStyleInformation,
-      priority: Priority.max,
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound('notification'),
-    );
+        AndroidNotificationDetails('6ammart', '6ammart',
+            importance: Importance.max,
+            styleInformation: bigTextStyleInformation,
+            priority: Priority.max,
+            playSound: true,
+            icon: '@drawable/logo',
+            // sound: RawResourceAndroidNotificationSound('notification'),
+            );
     NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await fln.show(0, title, body, platformChannelSpecifics, payload: orderID);
@@ -199,6 +188,7 @@ class NotificationHelper {
       summaryText: body,
       htmlFormatSummaryText: true,
     );
+
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       '6ammart',
@@ -208,7 +198,8 @@ class NotificationHelper {
       playSound: true,
       styleInformation: bigPictureStyleInformation,
       importance: Importance.max,
-      sound: RawResourceAndroidNotificationSound('notification'),
+      icon: '@drawable/logo',
+      // sound: RawResourceAndroidNotificationSound('notification'),
     );
     final NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -230,7 +221,7 @@ Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
   print(
       "onBackground: ${message.notification?.title}/${message.notification?.body}/${message.notification?.titleLocKey}");
   var androidInitialize =
-      const AndroidInitializationSettings('notification_icon');
+      const AndroidInitializationSettings('@drawable/logo');
   var iOSInitialize = const DarwinInitializationSettings();
   var initializationsSettings =
       InitializationSettings(android: androidInitialize, iOS: iOSInitialize);

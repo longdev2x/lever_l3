@@ -22,6 +22,7 @@ class AppConstants {
   static const String CREATE_POST = '/mita/posts/create';
   static const String LIKE_POST = '/mita/posts/likes/{id}';
   static const String SEND_COMMENT = '/mita/posts/comments/{id}';
+  static const String GET_NOTIFICATION = '/mita/notifications';
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';
@@ -37,7 +38,6 @@ class AppConstants {
 
   static const String MODULE_ID = 'moduleId';
   static const String LOCALIZATION_KEY = 'X-localization';
-
 
   // Shared Key
 

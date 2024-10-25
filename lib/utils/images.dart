@@ -7,6 +7,7 @@ class Images {
   //appBar Icon
   static const String profile = 'assets/image/profile.png';
   static const String icSearchUser = 'assets/image/icSearchUser.png';
+  static const String icSearch = 'assets/image/icSearch.png';
   //BottomNav
   static const String icHome = 'assets/image/icHome.png';
   static const String icNotify = 'assets/image/icNotify.png';

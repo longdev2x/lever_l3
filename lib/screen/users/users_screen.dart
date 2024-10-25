@@ -19,7 +19,7 @@ class UsersScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Row(
               children: [
-                AppText18(
+                AppText24(
                   'Tracking',
                   color: ColorResources.getTextColor(),
                   fontWeight: FontWeight.bold,

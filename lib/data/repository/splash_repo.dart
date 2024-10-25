@@ -10,5 +10,4 @@ class SplashRepo extends GetxService{
   Future<Response> getConfig() {
     return apiClient.getData(AppConstants.CONFIG_URI);
   }
-
 }
