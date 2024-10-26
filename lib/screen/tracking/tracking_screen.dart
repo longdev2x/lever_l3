@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
-import 'package:timesheet/data/model/body/tracking_entity.dart';
+import 'package:timesheet/data/model/body/check_in_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/profile/profile_screen.dart';
 import 'package:timesheet/screen/tracking/tracking_history_screen.dart';
@@ -103,6 +103,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                 ],
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
@@ -110,7 +111,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       AppText14(
-                        'Hôm nay, Thứ ${DateConverter.getWeekDay(now)}',
+                        'Hôm nay, ${DateConverter.getWeekDay(now)}',
                         color: ColorResources.getWhiteColor(),
                       ),
                       SizedBox(height: 10.h),
@@ -121,32 +122,30 @@ class _TrackingScreenState extends State<TrackingScreen> {
                       ),
                     ],
                   ),
-                  FutureBuilder<List<TrackingEntity>>(
-                    future: Get.find<TrackingController>().getTracking(),
+                  FutureBuilder<CheckInEntity?>(
+                    future: Get.find<TrackingController>().getCheckin(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
+                      } else if (snapshot.data == null) {
+                        return const SizedBox.shrink();
                       } else {
-                        TrackingEntity? objTracking;
-                        if(snapshot.data != null &&  snapshot.data!.isNotEmpty) {
-                          objTracking =  snapshot.data!.first;
-                        }
+                        CheckInEntity objCheckIn = snapshot.data!;
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            if (objTracking != null)
-                              AppText14(
-                                'Giờ vào ${objTracking.date?.hour}h',
-                                color: ColorResources.getWhiteColor(),
-                              ),
-                            if (objTracking != null) SizedBox(height: 10.h),
+                            AppText14(
+                              'Giờ vào ${objCheckIn.dateAttendance?.hour}h',
+                              color: ColorResources.getWhiteColor(),
+                            ),
+                            SizedBox(height: 10.h),
                             AppText16(
-                              objTracking != null
-                                  ? 'Đã tracking'
-                                  : 'Chưa Tracking',
+                              objCheckIn.message != null
+                                  ? 'Đã CheckIn'
+                                  : 'Chưa CheckIn',
                               fontWeight: FontWeight.bold,
                               color: ColorResources.getWhiteColor(),
                             ),
