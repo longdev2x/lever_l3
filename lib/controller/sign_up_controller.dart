@@ -45,7 +45,7 @@ class SignUpController extends GetxController implements GetxService {
     if (user.lastName == null || user.lastName!.trim().length < 2) {
       return 'Tên cần lớn hơn 1 ký tự';
     }
-    if (user.birthPlace == null || user.birthPlace!.length < 2) {
+    if (user.birthPlace == null || user.birthPlace!.isEmpty) {
       return 'Nơi sinh trống';
     }
     if (user.email == null || !user.email!.contains('@')) {

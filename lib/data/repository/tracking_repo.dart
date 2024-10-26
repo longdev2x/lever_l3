@@ -8,15 +8,6 @@ class TrackingRepo extends GetxService {
 
   TrackingRepo({required this.apiClient});
 
-  Future<Response> getInfoCheckIn(String ip) async {
-    return await apiClient.getData(
-      AppConstants.CHECK_IN,
-      query: {
-        'ip' : ip
-      }
-    );
-  }
-
   Future<Response> getCurrentUserTracking() async {
     return await apiClient.getData(AppConstants.TRACKING);
   }

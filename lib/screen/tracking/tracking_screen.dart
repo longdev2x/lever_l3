@@ -2,6 +2,7 @@ import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:timesheet/controller/check_in_controller.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
 import 'package:timesheet/data/model/body/check_in_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
@@ -31,9 +32,61 @@ class _TrackingScreenState extends State<TrackingScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Get.find<CheckInController>().getCheckIn();
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _contentTrackingController.dispose();
+  }
+
+  void _checkIn() {
+    Get.find<CheckInController>().checkIn();
+  }
+
+  void onTracking() async {
+    String content = _contentTrackingController.text;
+    if (content.trim().isNotEmpty) {
+      int statusCode =
+          await Get.find<TrackingController>().saveTracking(content: content);
+      if (statusCode == 200) {
+        _contentTrackingController.clear();
+        Get.to(() => const TrackingHistoryScreen());
+      }
+    }
+  }
+
+  String _checkDelay(DateTime dateCheckIn) {
+    //Ví dụ 7 giờ phải checkIn
+    DateTime ruleTime =
+        DateTime(dateCheckIn.year, dateCheckIn.month, dateCheckIn.day, 7, 0);
+    var difference = dateCheckIn.difference(ruleTime);
+    //Tới sớm
+    if (difference.inMinutes < 0) {
+      difference = -difference;
+      if (difference.inMinutes == 60) {
+        return 'CheckIn sớm 1h';
+      } else if (difference.inMinutes > 60) {
+        return 'CheckIn sớm ${difference.inMinutes ~/ 60}h - ${difference.inMinutes % 60}p';
+      } else {
+        return 'CheckIn sớm ${difference.inMinutes}p';
+      }
+    }
+    // Tới muộn
+    if (difference.inMinutes > 0) {
+      if (difference.inMinutes == 60) {
+        return 'CheckIn muộn 1h';
+      } else if (difference.inMinutes > 60) {
+        return 'CheckIn muộn ${difference.inMinutes ~/ 60}h - ${difference.inMinutes % 60}p';
+      } else {
+        return 'CheckIn muộn ${difference.inMinutes}p';
+      }
+    }
+    //Đúng giờ
+    return 'CheckIn Đúng giờ';
   }
 
   @override
@@ -122,36 +175,41 @@ class _TrackingScreenState extends State<TrackingScreen> {
                       ),
                     ],
                   ),
-                  FutureBuilder<CheckInEntity?>(
-                    future: Get.find<TrackingController>().getCheckin(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                  GetBuilder<CheckInController>(
+                    builder: (controller) {
+                      if (controller.loading == true) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else if (snapshot.data == null) {
-                        return const SizedBox.shrink();
-                      } else {
-                        CheckInEntity objCheckIn = snapshot.data!;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            AppText14(
-                              'Giờ vào ${objCheckIn.dateAttendance?.hour}h',
-                              color: ColorResources.getWhiteColor(),
-                            ),
-                            SizedBox(height: 10.h),
-                            AppText16(
-                              objCheckIn.message != null
-                                  ? 'Đã CheckIn'
-                                  : 'Chưa CheckIn',
-                              fontWeight: FontWeight.bold,
-                              color: ColorResources.getWhiteColor(),
-                            ),
-                          ],
+                      }
+
+                      List<CheckInEntity> listCheckIn = controller.listCheckIn;
+                      int nowDay = DateTime.now().day;
+
+                      if (listCheckIn.isEmpty ||
+                          listCheckIn.first.dateAttendance?.day != nowDay) {
+                        return ElevatedButton(
+                          onPressed: _checkIn,
+                          child: const AppText16('CheckIn'),
                         );
                       }
+                      CheckInEntity todayCheckIn = listCheckIn.first;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText14(
+                            'Giờ vào ${todayCheckIn.dateAttendance?.hour}h',
+                            color: ColorResources.getWhiteColor(),
+                          ),
+                          SizedBox(height: 10.h),
+                          AppText16(
+                            _checkDelay(todayCheckIn.dateAttendance!),
+                            fontWeight: FontWeight.bold,
+                            color: ColorResources.getWhiteColor(),
+                          ),
+                        ],
+                      );
                     },
                   ),
                 ],
@@ -208,17 +266,5 @@ class _TrackingScreenState extends State<TrackingScreen> {
         ),
       ),
     );
-  }
-
-  void onTracking() async {
-    String content = _contentTrackingController.text;
-    if (content.trim().isNotEmpty) {
-      int statusCode =
-          await Get.find<TrackingController>().saveTracking(content: content);
-      if (statusCode == 200) {
-        _contentTrackingController.clear();
-        Get.to(() => const TrackingHistoryScreen());
-      }
-    }
   }
 }

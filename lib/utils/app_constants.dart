@@ -13,6 +13,7 @@ class AppConstants {
   static const String SIGN_UP = '/mita/public/sign';
   static const String LOG_OUT = '/mita/oauth/logout';
   static const String GET_USER = '/mita/users/get-user-current';
+  static const String GET_CHECK_IN = '/mita/time-sheets';
   static const String CHECK_IN = '/mita/time-sheets/check-in';
   static const String TRACKING = '/mita/tracking';
   static const String SEARCH_USER = '/mita/users/searchByPage';
@@ -42,8 +43,6 @@ class AppConstants {
   static const String LOCALIZATION_KEY = 'X-localization';
 
   // Shared Key
-
-
   static List<LanguageModel> languages = [
     LanguageModel(
         imageUrl: Images.vietnam,

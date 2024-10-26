@@ -18,10 +18,16 @@ class SignUpScreen2 extends StatefulWidget {
 }
 
 class _SignUpScreen2State extends State<SignUpScreen2> {
-  late final TextEditingController _usernameController = TextEditingController();
-  late final TextEditingController _passwordController = TextEditingController();
-  late final TextEditingController _rePasswordController = TextEditingController();
-  late final TextEditingController _displayNameController = TextEditingController();
+  final RxBool _showPass = false.obs;
+  final RxBool _showConfirmPass = false.obs;
+  late final TextEditingController _usernameController =
+      TextEditingController();
+  late final TextEditingController _passwordController =
+      TextEditingController();
+  late final TextEditingController _rePasswordController =
+      TextEditingController();
+  late final TextEditingController _displayNameController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -31,7 +37,6 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
     _rePasswordController.dispose();
     _displayNameController.dispose();
   }
-
 
   void _register() async {
     Get.find<SignUpController>().updateInfor(
@@ -45,8 +50,9 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
       AppToast.showToast(error);
       return;
     }
-    int statusCode = await Get.find<AuthController>().signUp(Get.find<SignUpController>().user);
-    if(statusCode == 200) {
+    int statusCode = await Get.find<AuthController>()
+        .signUp(Get.find<SignUpController>().user);
+    if (statusCode == 200) {
       Get.to(const HomeScreen());
     }
   }
@@ -74,28 +80,40 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                   ),
                   SizedBox(height: 20.h),
                   AppTextField(
-                    hintText: 'Tên hiển thị',
+                    hintText: 'display_name'.tr,
                     controller: _displayNameController,
                   ),
                   SizedBox(height: 20.h),
                   AppTextField(
-                    hintText: 'Tên đăng nhập',
+                    hintText: 'username'.tr,
                     controller: _usernameController,
                   ),
                   SizedBox(height: 20.h),
-                  AppTextField(
-                    hintText: 'Mật khẩu',
-                    controller: _passwordController,
+                  Obx(
+                    () => AppTextField(
+                      hintText: 'password'.tr,
+                      controller: _passwordController,
+                      obscureText: _showPass.value,
+                      onObscureTextTap: () {
+                        _showPass.value = !_showPass.value;
+                      },
+                    ),
                   ),
                   SizedBox(height: 20.h),
-                  AppTextField(
-                    hintText: 'Xác nhận mật khẩu',
-                    controller: _rePasswordController,
+                  Obx(
+                    () => AppTextField(
+                      hintText: 'confirm_password'.tr,
+                      controller: _rePasswordController,
+                      obscureText: _showConfirmPass.value,
+                      onObscureTextTap: () {
+                        _showConfirmPass.value = !_showConfirmPass.value;
+                      },
+                    ),
                   ),
                   SizedBox(height: 50.h),
                   GetBuilder<SignUpController>(
                     builder: (controller) => AppButton(
-                      name: 'Register',
+                      name: 'register'.tr,
                       ontap: _register,
                     ),
                   ),

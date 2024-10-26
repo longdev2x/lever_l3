@@ -6,9 +6,19 @@ class AppTextField extends StatelessWidget {
   final String? lable;
   final String? initValue;
   final bool readOnly;
+  final bool? obscureText;
+  final Function()? onObscureTextTap;
   final Function()? onTap;
   const AppTextField(
-      {super.key, this.controller, this.hintText, this.lable, this.readOnly = false, this.onTap, this.initValue});
+      {super.key,
+      this.controller,
+      this.hintText,
+      this.lable,
+      this.readOnly = false,
+      this.onTap,
+      this.initValue,
+      this.obscureText,
+      this.onObscureTextTap});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +26,7 @@ class AppTextField extends StatelessWidget {
       controller: controller,
       readOnly: readOnly,
       onTap: onTap,
+      obscureText: obscureText ?? false,
       initialValue: initValue,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -25,6 +36,13 @@ class AppTextField extends StatelessWidget {
                   width: 1, color: Color.fromRGBO(244, 244, 244, 1)),
               borderRadius: BorderRadius.circular(15)),
           hintText: hintText,
+          suffixIcon: obscureText == null
+              ? null
+              : IconButton(
+                  onPressed: onObscureTextTap,
+                  icon: Icon(
+                      obscureText! ? Icons.visibility : Icons.visibility_off),
+                ),
           label: lable != null ? Text(lable!) : null,
           hintStyle: const TextStyle(color: Colors.grey)),
     );
@@ -41,7 +59,15 @@ class AppTextAreaField extends StatelessWidget {
   final int? maxLength;
   final Function()? onTap;
   const AppTextAreaField(
-      {super.key, this.controller, this.hintText, this.lable, this.readOnly = false, this.onTap, this.initValue, this.maxLines = 10, this.maxLength = 500});
+      {super.key,
+      this.controller,
+      this.hintText,
+      this.lable,
+      this.readOnly = false,
+      this.onTap,
+      this.initValue,
+      this.maxLines = 10,
+      this.maxLength = 500});
 
   @override
   Widget build(BuildContext context) {

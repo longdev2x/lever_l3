@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/data/api/api_checker.dart';
@@ -18,29 +17,6 @@ class TrackingController extends GetxController implements GetxService {
 
   bool get loading => _loading;
   CheckInEntity? get objCheckIn => _objCheckIn;
-
-  Future<CheckInEntity?> getCheckin() async {
-    String ip = '';
-    final ipResponse =
-        await http.get(Uri.parse('https://api.ipify.org?format=json'));
-    if (ipResponse.statusCode == 200) {
-      ip = jsonDecode(ipResponse.body)['ip'];
-    } else {
-      return null;
-    }
-
-    Response response = await repo.getInfoCheckIn(ip);
-
-    if (response.statusCode == 200) {
-      _objCheckIn = CheckInEntity.fromJson(response.body);
-    } else {
-      ApiChecker.checkApi(response);
-      return null;
-    }
-
-    update();
-    return _objCheckIn;
-  }
 
   Future<List<TrackingEntity>> getTracking() async {
     _loading = true;

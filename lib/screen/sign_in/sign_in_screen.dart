@@ -51,9 +51,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                                   child: Column(
                                     children: [
-                                      const Text(
-                                        "Login To Your Account",
-                                        style: TextStyle(
+                                      Text(
+                                        'login_to_your_account'.tr,
+                                        style: const TextStyle(
                                             fontSize: 20,
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
@@ -72,7 +72,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                                       color:
                                                       Color.fromRGBO(244, 244, 244, 1)),
                                                   borderRadius: BorderRadius.circular(15)),
-                                              hintText: "Email",
+                                              hintText: 'email'.tr,
                                               hintStyle: const TextStyle(
                                                   color: Colors.grey)),
                                         ),
@@ -102,7 +102,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                                             244, 244, 244, 1)),
                                                     borderRadius: BorderRadius.circular(15),
                                                   ),
-                                                  hintText: "Password",
+                                                  hintText: 'password'.tr,
                                                   hintStyle: const TextStyle(
                                                       color:
                                                       Colors.grey)),
@@ -112,7 +112,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         alignment: Alignment.centerRight,
                                         child: TextButton(onPressed: () {
                                           Get.to(const SignUpScreen1(), transition: Transition.size, curve: Curves.bounceIn);
-                                        }, child: const Text('You havn\'t an account?',),),),
+                                        }, child: Text('you_have_not_an_account'.tr,),),),
                                       Container(
                                         margin: const EdgeInsets.only(top: 20),
                                         child: ElevatedButton(
@@ -126,8 +126,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                           child: Container(
                                             padding:
                                             const EdgeInsets.fromLTRB(40, 18, 40, 18),
-                                            child: const Text("Login",
-                                                style: TextStyle(
+                                            child: Text('login'.tr,
+                                                style: const TextStyle(
                                                     fontSize: 16,
                                                     color: Color.fromRGBO(
                                                         191, 252, 226, 1.0))),
