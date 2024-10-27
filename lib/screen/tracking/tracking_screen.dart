@@ -97,7 +97,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
         preferredSize: Size(double.infinity, 80.h),
         child: SafeArea(
           child: Container(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary,
               boxShadow: [
@@ -112,7 +112,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
             ),
             child: Row(
               children: [
-                AppText18(
+                AppText24(
                   'Tracking',
                   color: theme.colorScheme.onPrimary,
                   fontWeight: FontWeight.bold,

@@ -3,7 +3,7 @@
   "minutes_ago" : "phút trước",
   "days_ago" : "ngày trước",
   "hours_ago" : "giờ trước",
-  "security_information" : "Security information",
+  "security_information" : "Thông tin bảo mật",
   "edits_will_not_be_saved" : "Các chỉnh sửa sẽ không được lưu",
   "must_be_between" : "phải trong khoảng từ @number1 đến @number2",
   "must_be_greater" : "phải lớn hơn @number ký tự",

@@ -22,7 +22,7 @@ class PostItem extends StatelessWidget {
   void _onLike() {
     Get.find<PostController>().likePost(DateTime.now(), objPost);
   }
-  
+
   String _getDateFormat(DateTime? date) {
     if (date == null) return 'no_data_found'.tr;
     DateTime now = DateTime.now();
@@ -49,7 +49,7 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('zdfsfds-${objPost.date}');
+    ThemeData theme = Theme.of(context);
     int? currentId = Get.find<AuthController>().user.id;
 
     return GestureDetector(
@@ -99,11 +99,13 @@ class PostItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 5.w),
               child: _reactButton(
-                  onLikeTap: _onLike,
-                  onCommentTap: () {
-                    _navigateToDetail();
-                  },
-                  isLiked: _checkLiked(currentId, objPost.likes)),
+                onLikeTap: _onLike,
+                onCommentTap: () {
+                  _navigateToDetail();
+                },
+                isLiked: _checkLiked(currentId, objPost.likes),
+                theme: theme
+              ),
             ),
             SizedBox(width: 14.w),
             Padding(
@@ -140,10 +142,10 @@ class PostItem extends StatelessWidget {
                 ]),
                 SizedBox(width: 6.w),
                 reactInfors.length > 1
-                    ? AppText10(
+                    ? AppText14(
                         'Like by ${reactInfors[0].user?.displayName} and ${reactInfors.length - 1} others',
                       )
-                    : AppText10(
+                    : AppText14(
                         'Like by ${reactInfors[0].user?.displayName}',
                       ),
               ],
@@ -152,14 +154,14 @@ class PostItem extends StatelessWidget {
         const Spacer(),
         if (commentCounts != 0)
           GestureDetector(
-              onTap: onCommentTap, child: AppText10('$commentCounts comment')),
+              onTap: onCommentTap, child: AppText14('$commentCounts comment')),
       ],
     );
   }
 
   Widget _reactIcon(String icon, List<Color> colors) => Container(
-        width: 14.w,
-        height: 14.w,
+        width: 16.w,
+        height: 16.w,
         padding: EdgeInsets.all(3.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
@@ -181,23 +183,25 @@ class PostItem extends StatelessWidget {
     required Function() onLikeTap,
     required Function() onCommentTap,
     bool isLiked = false,
+    required ThemeData theme,
   }) {
     return Row(
       children: [
         AppImageAsset(
           onTap: onLikeTap,
-          imagePath: Images.icLike,
-          height: 18,
-          width: 21,
-          color: isLiked ? Colors.blue : null,
+          imagePath: Images.icReacLike,
+          height: 25,
+          width: 25,
+          color: isLiked ? const Color.fromARGB(255, 39, 27, 207) : theme.colorScheme.onSurface,
         ),
         SizedBox(width: 30.w),
         AppImageAsset(
-            onTap: onCommentTap,
-            imagePath: Images.icCmt,
-            height: 18,
-            width: 21),
-        SizedBox(width: 30.w),
+          onTap: onCommentTap,
+          imagePath: Images.icCmt,
+          height: 25,
+          width: 25,
+          color: theme.colorScheme.onSurface,
+        ),
       ],
     );
   }

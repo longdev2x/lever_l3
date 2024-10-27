@@ -129,7 +129,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           User objUser = controller.user!;
           return SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+              padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 0),
               child: Column(
                 children: [
                   ProfileAvatarWidget(avatar: objUser.image),
@@ -181,6 +181,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   SizedBox(height: 10.h),
                   AppTextField(
+                    lable: 'Ngày sinh',
                     controller: _dobController,
                     readOnly: true,
                     onTap: _onDatePicker,
@@ -209,7 +210,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   GestureDetector(
                     onTap: () {},
                     child: AppText16(
-                      '${'edit'.tr} ${'security_information'.tr}!',
+                      '${'edit'.tr} ${'security_information'.tr.toLowerCase()}!',
                       fontWeight: FontWeight.bold,
                     ),
                   ),
