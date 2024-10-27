@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:timesheet/screen/notify/widgets/notification_list.dart';
-import 'package:timesheet/utils/color_resources.dart';
+
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
@@ -20,8 +21,7 @@ class NotifyScreen extends StatelessWidget {
             child: Row(
               children: [
                 AppText24(
-                  'Thông báo',
-                  color: ColorResources.getTextColor(),
+                  'notification'.tr,
                   fontWeight: FontWeight.bold,
                 ),
                 const Spacer(),

@@ -20,8 +20,10 @@ class NotificationList extends StatelessWidget {
         if (controller.notifications == null) {
           return _errorWidget();
         }
-        if(controller.notifications!.isEmpty) {
-          return const Center(child: AppText16("Không có thông báo"),);
+        if (controller.notifications!.isEmpty) {
+          return Center(
+            child: AppText16('no_data_found'.tr),
+          );
         }
         return ListView.builder(
           itemBuilder: (ctx, index) =>
@@ -31,8 +33,8 @@ class NotificationList extends StatelessWidget {
     );
   }
 
-  Widget _errorWidget() => const Center(
-        child: AppText18('Lỗi khi load thông báo'),
+  Widget _errorWidget() => Center(
+        child: AppText18('error'.tr),
       );
 
   Widget _loadingWidget(NotificationController controller) => Visibility(

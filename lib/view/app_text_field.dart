@@ -66,7 +66,7 @@ class AppTextAreaField extends StatelessWidget {
       this.readOnly = false,
       this.onTap,
       this.initValue,
-      this.maxLines = 10,
+      this.maxLines = 8,
       this.maxLength = 500});
 
   @override

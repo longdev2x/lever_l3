@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/check_in_controller.dart';
+import 'package:timesheet/controller/localization_controller.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
 import 'package:timesheet/data/model/body/check_in_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/profile/profile_screen.dart';
 import 'package:timesheet/screen/tracking/tracking_history_screen.dart';
 import 'package:timesheet/utils/color_resources.dart';
+
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_image.dart';
@@ -91,6 +93,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, 80.h),
@@ -98,10 +101,10 @@ class _TrackingScreenState extends State<TrackingScreen> {
           child: Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: ColorResources.getWhiteColor(),
+              color: theme.colorScheme.surface,
               boxShadow: [
                 BoxShadow(
-                  color: ColorResources.getShadowColor(),
+                  color: theme.colorScheme.shadow.withOpacity(0.7),
                   offset: const Offset(0, 3),
                   spreadRadius: 2,
                   blurRadius: 2,
@@ -113,7 +116,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
               children: [
                 AppText18(
                   'Tracking',
-                  color: ColorResources.getTextColor(),
+                  color: theme.colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
                 ),
                 const Spacer(),
@@ -121,7 +124,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   imagePath: Images.profile,
                   width: 25.w,
                   height: 25.w,
-                  color: ColorResources.getTextColor(),
+                  color: theme.colorScheme.onSurface,
                   onTap: () {
                     Get.to(() => const ProfileScreen());
                   },
@@ -138,10 +141,10 @@ class _TrackingScreenState extends State<TrackingScreen> {
               margin: EdgeInsets.symmetric(vertical: 10.h),
               padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
               decoration: BoxDecoration(
-                color: ColorResources.getWebsiteTextColor(),
+                color: theme.colorScheme.primary,
                 boxShadow: [
                   BoxShadow(
-                    color: ColorResources.getShadowColor(),
+                    color: theme.colorScheme.shadow.withOpacity(0.4),
                     offset: const Offset(0, 3),
                     spreadRadius: 2,
                     blurRadius: 2,
@@ -159,13 +162,13 @@ class _TrackingScreenState extends State<TrackingScreen> {
                     children: [
                       AppText14(
                         '${'today'.tr}, ${DateConverter.getWeekDay(now)}',
-                        color: ColorResources.getWhiteColor(),
+                        color: theme.colorScheme.onPrimary,
                       ),
                       SizedBox(height: 10.h),
                       AppText16(
                         DateConverter.getOnlyFomatDate(now),
                         fontWeight: FontWeight.bold,
-                        color: ColorResources.getWhiteColor(),
+                        color: theme.colorScheme.onPrimary,
                       ),
                     ],
                   ),
@@ -194,13 +197,13 @@ class _TrackingScreenState extends State<TrackingScreen> {
                         children: [
                           AppText14(
                             '${'date_attendance'.tr} ${todayCheckIn.dateAttendance?.toLocal().hour}h',
-                            color: ColorResources.getWhiteColor(),
+                            color: theme.colorScheme.onPrimary,
                           ),
                           SizedBox(height: 10.h),
                           AppText16(
                             _checkDelay(todayCheckIn.dateAttendance!.toLocal()),
                             fontWeight: FontWeight.bold,
-                            color: ColorResources.getWhiteColor(),
+                            color: theme.colorScheme.onPrimary,
                           ),
                         ],
                       );
@@ -209,17 +212,19 @@ class _TrackingScreenState extends State<TrackingScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 15.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40.w),
               child: Align(
                 alignment: Alignment.center,
                 child: DatePicker(
+                  height: 90.h,
+                  // locale: Get.find<LocalizationController>().locale.languageCode,
                   now.subtract(const Duration(days: 2)),
                   initialSelectedDate: now,
                   daysCount: 5,
-                  selectionColor: Colors.black,
-                  selectedTextColor: ColorResources.getWhiteColor(),
+                  selectionColor: theme.colorScheme.primary,
+                  selectedTextColor: theme.colorScheme.onPrimary,
                   activeDates: [now],
                   onDateChange: (selectedDate) {},
                 ),
@@ -229,17 +234,17 @@ class _TrackingScreenState extends State<TrackingScreen> {
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
                 children: [
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 25.h),
                   AppText28(
                     '${'content'.tr} tracking',
-                    color: ColorResources.getTextColor(),
+                    color: theme.colorScheme.onSurface,
                   ),
-                  SizedBox(height: 30.h),
+                  SizedBox(height: 25.h),
                   AppTextAreaField(
                     hintText: '${'today'.tr} ${('i'.tr).toLowerCase()} ...',
                     controller: _contentTrackingController,
                   ),
-                  SizedBox(height: 30.h),
+                  SizedBox(height: 25.h),
                   AppButton(
                     name: 'Tracking',
                     ontap: onTracking,
@@ -251,7 +256,8 @@ class _TrackingScreenState extends State<TrackingScreen> {
                       },
                       child: AppText16(
                         '${'history'.tr} tracking',
-                        color: ColorResources.getWebsiteTextColor(),
+                        color: theme.colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.bold,
                       )),
                 ],
               ),

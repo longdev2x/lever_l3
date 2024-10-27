@@ -6,6 +6,7 @@ import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/profile/widgets/profile_avatar_widget.dart';
 import 'package:timesheet/utils/color_resources.dart';
+
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_image.dart';
@@ -257,17 +258,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ],
             ),
           ),
-          isChose
-              ? Positioned(
-                  top: 5.h,
-                  right: 5.w,
-                  child: const AppImageAsset(
-                    imagePath: Images.icCheckTick,
-                    height: 30,
-                    width: 30,
-                  ),
-                )
-              : const SizedBox(),
+          if (isChose)
+            Positioned(
+              top: 5.h,
+              right: 5.w,
+              child: const AppImageAsset(
+                imagePath: Images.icCheckTick,
+                height: 30,
+                width: 30,
+              ),
+            ),
         ],
       ),
     );

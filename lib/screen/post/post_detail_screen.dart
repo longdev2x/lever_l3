@@ -7,7 +7,7 @@ import 'package:timesheet/data/model/body/like_entity.dart';
 import 'package:timesheet/data/model/body/post_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/post/widgets/post_detail_comment.dart';
-import 'package:timesheet/utils/color_resources.dart';
+
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
@@ -95,7 +95,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     imagePath: Images.icArrowBack,
                     width: 12.w,
                     height: 20.565.w,
-                    color: ColorResources.getTextColor(),
                     onTap: _onPop,
                   ),
                   SizedBox(width: 20.w),
@@ -123,7 +122,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     imagePath: Images.icThreeDotHori,
                     width: 17.w,
                     height: 3.86.w,
-                    color: ColorResources.getTextColor(),
                     onTap: () {},
                   ),
                 ],
@@ -172,12 +170,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: EdgeInsets.fromLTRB(16.w, 5.h, 16.w, 10.h),
-          decoration: BoxDecoration(
-            color: ColorResources.getBackgroundColor(),
+          decoration: const BoxDecoration(
             boxShadow: [
               BoxShadow(
-                  color: ColorResources.getShadowColor(),
-                  offset: const Offset(0, -1),
+                  offset: Offset(0, -1),
                   blurRadius: 0,
                   spreadRadius: 0),
             ],

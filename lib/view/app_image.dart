@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:timesheet/utils/images.dart';
@@ -87,6 +88,33 @@ class AppImageFile extends StatelessWidget {
                 fit: boxFit,
                 color: color,
               ),
+      ),
+    );
+  }
+}
+
+class AppCachedNetworkImage extends StatelessWidget {
+  final String? imageUrl;
+  final double? width;
+  final double? height;
+  final void Function()? onTap;
+  const AppCachedNetworkImage({super.key, this.imageUrl, this.width, this.height, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: CachedNetworkImage(
+        height: height?.h,
+        width: width?.w,
+        fit: BoxFit.cover,
+        imageUrl: imageUrl ?? '',
+        placeholder: (context, url) => SizedBox(
+            height: 20.h,
+            width: 20.h,
+            child: const Center(child: CircularProgressIndicator())),
+        errorWidget: (context, url, error) =>
+            Image.asset(Images.imgAvatarDefault),
       ),
     );
   }

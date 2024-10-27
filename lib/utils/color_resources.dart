@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class ColorResources {
   static Color getPrimaryColor() {
-    return Get.isDarkMode ? Colors.green :  const Color(0xFF039D55);
+    return Get.isDarkMode ? Colors.green : const Color(0xFF039D55);
   }
 
   static Color getPrimaryTextColor() {
@@ -59,7 +59,9 @@ class ColorResources {
   }
 
   static Color getLightAndDark() {
-    return Get.isDarkMode ? Theme.of(Get.context!).cardColor : const Color(0xFF000000);
+    return Get.isDarkMode
+        ? Theme.of(Get.context!).cardColor
+        : const Color(0xFF000000);
   }
 
   static Color getOccupationCardColor() {
@@ -222,7 +224,7 @@ class ColorResources {
   static Color containerShedow = const Color(0xFF757575);
   static Color websiteTextColor = const Color(0xFF344968);
   static Color nevDefaultColor = const Color(0xFFAAAAAA);
-  static const Color blueColor =  Color(0xFF5680F9);
+  static const Color blueColor = Color(0xFF5680F9);
   static Color textFieldColor = const Color(0xFFF2F2F6);
   static Color otpFieldColor = const Color(0xFFF2F2F7);
   static Color redColor = const Color(0xFFFF0000);

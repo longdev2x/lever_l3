@@ -808,5 +808,12 @@
   "scanner": "Scanner",
   "user_unavailable": "User Unavailable",
   "lang_vi": "Vietnamese",
-  "lang_en": "English"
+  "lang_en": "English",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday"
 }

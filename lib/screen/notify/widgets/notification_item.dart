@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:timesheet/data/model/body/notification_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/utils/images.dart';
@@ -11,23 +12,23 @@ class NotificationItem extends StatelessWidget {
   const NotificationItem({super.key, required this.objNotify});
 
   String _getDateFormat(DateTime? date) {
-    if (date == null) return 'No Infor';
+    if (date == null) return 'no_data_found'.tr;
     DateTime now = DateTime.now();
 
     int difference = now.difference(date).inMinutes;
 
     if (difference < 60) {
-      return '$difference phút trước';
+      return '$difference ${'minutes_ago'.tr}';
     }
     if (difference < 1440) {
       int hours = now.difference(date).inHours;
-      return '$hours phút trước';
+      return '$hours ${'hours_ago'.tr}';
     }
     if (difference < 10080) {
       int days = now.difference(date).inDays;
-      return '$days ngày trước';
+      return '$days ${'days_ago'.tr}';
     }
-    return '${DateConverter.getWeekDay(date)} - Ngày ${DateConverter.getOnlyFomatDate(date)}';
+    return '${DateConverter.getWeekDay(objNotify.date!)} - ${'days'} ${DateConverter.getOnlyFomatDate(objNotify.date!)}';
   }
 
   @override

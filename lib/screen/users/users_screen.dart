@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:timesheet/screen/users/widgets/user_list_widget.dart';
-import 'package:timesheet/utils/color_resources.dart';
+
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
@@ -19,9 +19,8 @@ class UsersScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Row(
               children: [
-                AppText24(
+                const AppText24(
                   'Tracking',
-                  color: ColorResources.getTextColor(),
                   fontWeight: FontWeight.bold,
                 ),
                 const Spacer(),

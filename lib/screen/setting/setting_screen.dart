@@ -1,20 +1,47 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
+import 'package:timesheet/controller/localization_controller.dart';
 import 'package:timesheet/screen/sign_in/sign_in_screen.dart';
 import 'package:timesheet/theme/theme_controller.dart';
-import 'package:timesheet/utils/color_resources.dart';
+import 'package:timesheet/utils/app_constants.dart';
+
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
+import 'package:timesheet/view/app_toast.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
 
   void _onToggleTheme() {
     Get.find<ThemeController>().toggleTheme();
+  }
+
+  void _onLanguageChange(bool isVN) {
+    Locale locale;
+    if (isVN) {
+      locale = Locale(AppConstants.languages[0].languageCode,
+          AppConstants.languages[0].countryCode);
+    } else {
+      locale = Locale(AppConstants.languages[1].languageCode,
+          AppConstants.languages[1].countryCode);
+    }
+    Get.find<LocalizationController>().setLanguage(locale);
+  }
+
+  void _onExit(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AppConfirm(
+        title: '${'exit'.tr} app?',
+        // SystemNavigator.pop();
+        onConfirm: () => exit(0),
+      ),
+    );
   }
 
   @override
@@ -25,9 +52,9 @@ class SettingScreen extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Text(
-          'Settings',
+          'settings'.tr,
           style:
-              TextStyle(color: ColorResources.getBlackColor(), fontSize: 24.sp),
+              TextStyle(fontSize: 24.sp),
         ),
       ),
       body: Padding(
@@ -38,7 +65,7 @@ class SettingScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const AppText18('Theme Mode'),
+                  AppText18('dark_theme'.tr),
                   SizedBox(width: 20.w),
                   GetBuilder<ThemeController>(
                     builder: (controller) => Switch(
@@ -51,17 +78,69 @@ class SettingScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20.h),
-              Row(
-                children: [
-                  const AppText18('Ngôn ngữ'),
-                  SizedBox(width: 20.w),
-                  Switch(value: true, onChanged: (value) {}),
-                ],
+              GetBuilder<LocalizationController>(
+                builder: (controller) {
+                  bool isVN = controller.locale.languageCode ==
+                      AppConstants.languages[0].languageCode;
+                  return Row(
+                    children: [
+                      AppText18('select_language'.tr),
+                      SizedBox(width: 20.w),
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          AppImageAsset(
+                            onTap: () {
+                              _onLanguageChange(true);
+                            },
+                            imagePath: controller.languages[0].imageUrl,
+                            width: 40,
+                            height: 40,
+                          ),
+                          if (isVN)
+                            Positioned(
+                              top: -6.h,
+                              right: -6.w,
+                              child: const AppImageAsset(
+                                imagePath: Images.icCheckTick,
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                        ],
+                      ),
+                      SizedBox(width: 20.w),
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          AppImageAsset(
+                            onTap: () {
+                              _onLanguageChange(false);
+                            },
+                            imagePath: controller.languages[1].imageUrl,
+                            width: 50,
+                            height: 50,
+                          ),
+                          if (!isVN)
+                            Positioned(
+                              top: -6.h,
+                              right: -6.w,
+                              child: const AppImageAsset(
+                                imagePath: Images.icCheckTick,
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
               ),
               SizedBox(height: 20.h),
               Row(
                 children: [
-                  const AppText18('Đăng xuất'),
+                  AppText18('logout'.tr),
                   SizedBox(width: 20.w),
                   AppImageAsset(
                     onTap: () {
@@ -80,14 +159,21 @@ class SettingScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 50.h),
-              AppImageAsset(
-                onTap: () {
-                  // SystemNavigator.pop();
-                  exit(0);
-                },
-                imagePath: Images.icOut,
-                width: 50,
-                height: 50,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AppText24('exit'.tr),
+                  SizedBox(width: 5.w),
+                  AppImageAsset(
+                    onTap: () {
+                      _onExit(context);
+                    },
+                    imagePath: Images.icOut,
+                    width: 50,
+                    height: 50,
+                    // color: ColorResources.BACKGROUND_BAR_LIGHT_GRAY,
+                  ),
+                ],
               ),
             ],
           ),

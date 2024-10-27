@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/post_controller.dart';
 import 'package:timesheet/data/model/body/post_entity.dart';
@@ -19,7 +20,10 @@ class _PostContentState extends State<PostContent> {
       builder: (controller) {
         final List<PostEntity>? posts = controller.posts;
         if (controller.isFirstLoad) {
-          return const Center(child: CircularProgressIndicator());
+          return SizedBox(
+            height: 1.sh - 200.h,
+            child: const Center(child: CircularProgressIndicator()),
+          );
         }
         if (posts == null) {
           return Center(

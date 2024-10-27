@@ -6,7 +6,6 @@ import 'package:timesheet/screen/post/post_screen.dart';
 import 'package:timesheet/screen/setting/setting_screen.dart';
 import 'package:timesheet/screen/tracking/tracking_screen.dart';
 import 'package:timesheet/screen/users/users_screen.dart';
-import 'package:timesheet/utils/color_resources.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_image.dart';
 
@@ -23,6 +22,7 @@ class HomeBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     final HomeController homeController = Get.find<HomeController>();
     return Obx(
       () => BottomNavigationBar(
@@ -31,9 +31,9 @@ class HomeBottomNavBar extends StatelessWidget {
           homeController.onSelected(value);
         },
         items: listBottoms
-            .map((objBottom) => _bottomItem(objBottom: objBottom))
+            .map((objBottom) => _bottomItem(objBottom: objBottom, theme: theme))
             .toList(),
-        backgroundColor: ColorResources.getBackgroundColor(),
+        backgroundColor: theme.bottomNavigationBarTheme.backgroundColor,
         elevation: 0,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
@@ -44,18 +44,17 @@ class HomeBottomNavBar extends StatelessWidget {
 
   BottomNavigationBarItem _bottomItem({
     required BottomItemEntity objBottom,
+    required ThemeData theme,
   }) =>
       BottomNavigationBarItem(
         icon: AppImageAsset(
           imagePath: objBottom.icon,
-          color: ColorResources.getGreyBaseGray1(),
           height: 25,
           width: 25,
         ),
         label: objBottom.name,
         activeIcon: AppImageAsset(
           imagePath: objBottom.icon,
-          color: ColorResources.getBalanceTextColor(),
           height: 25,
           width: 25,
         ),

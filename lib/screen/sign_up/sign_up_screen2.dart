@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/controller/sign_up_controller.dart';
 import 'package:timesheet/screen/home/home_screen.dart';
-import 'package:timesheet/utils/color_resources.dart';
+
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_text_field.dart';
@@ -61,7 +61,6 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorResources.BACKGROUND_BAR_LIGHT_GRAY,
         elevation: 0,
         foregroundColor: Colors.black,
       ),

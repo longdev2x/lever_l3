@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:timesheet/utils/color_resources.dart';
+
 
 class AppButton extends StatelessWidget {
   final double? height;
@@ -21,12 +21,13 @@ class AppButton extends StatelessWidget {
     this.width = double.infinity,
     this.name = "",
     this.bgColor,
-    this.textColor = Colors.white,
+    this.textColor,
     this.fontSize = 19,
   });
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: ontap,
       child: AnimatedContainer(
@@ -38,8 +39,8 @@ class AppButton extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              bgColor ?? ColorResources.getGreyBunkerColor(),
-              (bgColor ?? ColorResources.getGreyBunkerColor()).withOpacity(0.9),
+              theme.colorScheme.primary.withOpacity(0.6),
+              theme.colorScheme.primary.withOpacity(0.9),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -47,9 +48,9 @@ class AppButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius!),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: theme.colorScheme.shadow,
               spreadRadius: 1,
-              blurRadius: 5,
+              blurRadius: 1,
               offset: const Offset(0, 3),
             ),
           ],
@@ -57,7 +58,7 @@ class AppButton extends StatelessWidget {
         child: Text(
           name!,
           style: TextStyle(
-            color: textColor,
+            color: textColor ?? theme.colorScheme.onPrimary,
             fontWeight: FontWeight.w600,
             fontSize: fontSize!.sp,
           ),

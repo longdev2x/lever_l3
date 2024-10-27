@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:timesheet/utils/color_resources.dart';
+
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
 
@@ -28,7 +28,6 @@ class UserParameterWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
         margin: EdgeInsets.only(bottom: 5.h),
         decoration: BoxDecoration(
-          color: ColorResources.getOthersCardColor(),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(isFirst! ? 12 : 0),
             topRight: Radius.circular(isFirst! ? 12 : 0),
@@ -41,12 +40,11 @@ class UserParameterWidget extends StatelessWidget {
           children: [
             AppImageAsset(imagePath: icon, width: 28, height: 28,),
             SizedBox(width: 5.w),
-            AppText16(name, color: ColorResources.getTextColor()),
+            AppText16(name),
             const Spacer(),
             AppText16(
               prameter,
               fontWeight: FontWeight.bold,
-              color: ColorResources.getTextColor(),
             ),
           ],
         ),
