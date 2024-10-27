@@ -51,9 +51,10 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
     }
     int statusCode = await Get.find<AuthController>()
         .signUp(Get.find<SignUpController>().user);
+
     if (statusCode == 200) {
-      AppToast.showToast('Đăng ký thành công, vui lòng đăng nhập lại');
-      Get.to(const SignInScreen());
+      AppToast.showToast('Đăng ký thành công, vui lòng đăng nhập');
+      Get.to(() => const SignInScreen());
     }
   }
 

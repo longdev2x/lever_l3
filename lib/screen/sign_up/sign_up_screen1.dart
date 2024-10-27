@@ -55,7 +55,9 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
       AppToast.showToast(error);
       return;
     }
-    Get.to(const SignUpScreen2());
+    Get.to(
+      () => const SignUpScreen2(),
+    );
   }
 
   void _showDatePicker() async {

@@ -87,8 +87,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                       border: OutlineInputBorder(
                                         borderSide: const BorderSide(
                                             width: 1,
-                                            color:
-                                                Color.fromRGBO(244, 244, 244, 1)),
+                                            color: Color.fromRGBO(
+                                                244, 244, 244, 1)),
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       hintText: 'password'.tr,
@@ -100,9 +100,11 @@ class _SignInScreenState extends State<SignInScreen> {
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {
-                                Get.to(const SignUpScreen1(),
-                                    transition: Transition.size,
-                                    curve: Curves.bounceIn);
+                                Get.to(
+                                  () => const SignUpScreen1(),
+                                  transition: Transition.size,
+                                  curve: Curves.bounceIn,
+                                );
                               },
                               child: Text(
                                 'you_have_not_an_account'.tr,
@@ -110,7 +112,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(100, 18, 100, 18),
+                            padding:
+                                const EdgeInsets.fromLTRB(100, 18, 100, 18),
                             child: AppButton(
                               name: 'login'.tr,
                               ontap: _login,
@@ -147,10 +150,12 @@ class _SignInScreenState extends State<SignInScreen> {
       Get.find<AuthController>().login(username, password).then((value) => {
             if (value == 200)
               {
-                Get.to(const HomeScreen(),
-                    transition: Transition.size,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn)
+                Get.to(
+                  () => const HomeScreen(),
+                  transition: Transition.size,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn,
+                )
               }
             else if (value == 400)
               {

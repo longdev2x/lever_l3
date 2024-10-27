@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -40,6 +39,7 @@ class PostController extends GetxController implements GetxService {
     _user = Get.find<AuthController>().user;
     getPosts(keyWord: null, pageIndex: 0, size: 300, status: null);
   }
+
 
   Future<int> getPosts({
     String? keyWord,

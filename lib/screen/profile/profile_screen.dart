@@ -39,6 +39,7 @@ class ProfileScreen extends StatelessWidget {
           }
 
           User objUser = controller.user!;
+
           return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
