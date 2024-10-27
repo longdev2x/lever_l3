@@ -22,8 +22,8 @@ class _PostContentState extends State<PostContent> {
           return const Center(child: CircularProgressIndicator());
         }
         if (posts == null) {
-          return const Center(
-            child: Text('Lỗi khi tải dữ liệu'),
+          return Center(
+            child: Text('error'.tr),
           );
         }
         return ListView.separated(

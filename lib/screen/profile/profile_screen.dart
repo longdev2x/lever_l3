@@ -20,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text('profile'.tr),
         actions: [
           IconButton(
               onPressed: () {
@@ -50,7 +50,7 @@ class ProfileScreen extends StatelessWidget {
                     ProfileAvatarWidget(avatar: objUser.image),
                     SizedBox(height: 15.h),
                     AppText20(
-                        '${objUser.username} (${isAdmin ? 'ADMIN' : 'USER'})',
+                        '${objUser.username} (${isAdmin ? 'ADMIN' : 'user'.tr.toUpperCase()})',
                         fontWeight: FontWeight.bold),
                     SizedBox(height: 5.h),
                     AppText16(objUser.email),
@@ -59,69 +59,69 @@ class ProfileScreen extends StatelessWidget {
                         ontap: () {
                           Get.to(() => const EditProfileScreen());
                         },
-                        name: 'Cập nhật hồ sơ',
+                        name: 'edit_profile'.tr,
                         width: 250),
                     SizedBox(height: 20.h),
                     if (objUser.username != null)
                       UserParameterWidget(
-                        name: 'Tên tài khoản',
+                        name: 'username'.tr,
                         icon: Images.icSocial,
                         prameter: objUser.username!,
                         isFirst: true,
                       ),
                     if (objUser.email != null)
                       UserParameterWidget(
-                        name: 'Email',
+                        name: 'email'.tr,
                         icon: Images.icSocial,
                         prameter: objUser.email!,
                       ),
                     if (objUser.lastName != null || objUser.firstName != null)
                       UserParameterWidget(
-                        name: 'Họ & Tên',
+                        name: 'full_name'.tr,
                         icon: Images.icSocial,
                         prameter: '${objUser.lastName} ${objUser.firstName}',
                       ),
                     if (objUser.dob != null)
                       UserParameterWidget(
-                        name: 'Ngày sinh',
+                        name: 'date_of_birth'.tr,
                         icon: Images.icSocial,
                         prameter: objUser.dob != null
                             ? DateConverter.getOnlyFomatDate(objUser.dob!)
-                            : 'No infor',
+                            : 'no_data_found'.tr,
                       ),
                     if (objUser.gender != null)
                       UserParameterWidget(
-                        name: 'Giới tính',
+                        name: 'gender'.tr,
                         icon: Images.icSocial,
                         prameter: objUser.gender!,
                       ),
                     if (objUser.birthPlace != null)
                       UserParameterWidget(
-                        name: 'Nơi sinh',
+                        name: 'birth_place'.tr,
                         icon: Images.icSocial,
                         prameter: objUser.birthPlace!,
                       ),
                     if (objUser.university != null)
                       UserParameterWidget(
-                        name: 'Trường đại học',
+                        name: 'university'.tr,
                         icon: Images.icSocial,
                         prameter: objUser.university!,
                       ),
                     if (objUser.year != null)
                       UserParameterWidget(
-                        name: 'Năm học',
+                        name: 'year_student'.tr,
                         icon: Images.icSocial,
                         prameter: objUser.year.toString(),
                       ),
                     UserParameterWidget(
-                      name: 'Số ngày checkin',
+                      name: 'count_day_check_in'.tr,
                       icon: Images.icSocial,
                       prameter: objUser.countDayCheckin != null
                           ? objUser.countDayCheckin.toString()
                           : '0',
                     ),
                     UserParameterWidget(
-                      name: 'Số ngày tracking',
+                      name: 'count_day_tracking'.tr,
                       icon: Images.icSocial,
                       prameter: objUser.countDayTracking != null
                           ? objUser.countDayTracking.toString()

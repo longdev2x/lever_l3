@@ -22,25 +22,25 @@ class PostItem extends StatelessWidget {
   void _onLike() {
     Get.find<PostController>().likePost(DateTime.now(), objPost);
   }
-
+  
   String _getDateFormat(DateTime? date) {
-    if (date == null) return 'No Infor';
+    if (date == null) return 'no_data_found'.tr;
     DateTime now = DateTime.now();
 
     int difference = now.difference(date).inMinutes;
 
     if (difference < 60) {
-      return '$difference phút trước';
+      return '$difference ${'minutes_ago'.tr}';
     }
     if (difference < 1440) {
       int hours = now.difference(date).inHours;
-      return '$hours phút trước';
+      return '$hours ${'hours_ago'.tr}';
     }
     if (difference < 10080) {
       int days = now.difference(date).inDays;
-      return '$days ngày trước';
+      return '$days ${'days_ago'.tr}';
     }
-    return '${DateConverter.getWeekDay(objPost.date!)} - Ngày ${DateConverter.getOnlyFomatDate(objPost.date!)}';
+    return '${DateConverter.getWeekDay(objPost.date!)} - ${'days'} ${DateConverter.getOnlyFomatDate(objPost.date!)}';
   }
 
   void _navigateToDetail() {
@@ -49,6 +49,7 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('zdfsfds-${objPost.date}');
     int? currentId = Get.find<AuthController>().user.id;
 
     return GestureDetector(

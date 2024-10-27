@@ -33,7 +33,6 @@ class PostEntity {
       content: json?['content'],
       date: json?['date'] != null
           ? _convertDateFromTimestamp(json!['date'])
-              .toLocal()
           : null,
       likes: json?['likes'] != null
           ? (json?['likes'] as List)
@@ -51,7 +50,6 @@ class PostEntity {
       'id': id,
       'comments': comments.map((comment) => comment.toJson()).toList(),
       'content': content,
-      //Gửi lên luôn đưa về Utc không múi giờ, get về thì toLocal()
       'date': date?.toIso8601String(),
       'likes': likes.map((like) => like.toJson()).toList(),
       'media': media.map((e) => e.toJson()).toList(),
@@ -64,7 +62,7 @@ class PostEntity {
   if (timestamp.toString().length == 10) {
     timestamp *= 1000;
   }  
-  return DateTime.fromMillisecondsSinceEpoch(timestamp, isUtc: true).toLocal();
+  return DateTime.fromMillisecondsSinceEpoch(timestamp).toLocal();
   }
 }
 

@@ -1,4 +1,8 @@
 {
+  "what_are_you_thinking" : "What are you thingking?",
+  "minutes_ago" : "minutes ago",
+  "days_ago" : "days ago",
+  "hours_ago" : "hours ago",
   "security_information" : "Thông tin bảo mật",
   "edits_will_not_be_saved" : "Edits will not be saved",
   "must_be_between" : "must be between @number1 and @number2",

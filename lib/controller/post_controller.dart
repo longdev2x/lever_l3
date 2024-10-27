@@ -101,7 +101,7 @@ class PostController extends GetxController implements GetxService {
       id: null,
       comments: [],
       content: content,
-      date: DateTime.now(),
+      date: DateTime.now().toUtc(),
       likes: [],
       media: medias ?? [],
       user: _user,
@@ -112,7 +112,10 @@ class PostController extends GetxController implements GetxService {
 
     Response response = await repo.createPost(objPost);
 
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200) {
+      PostEntity objPost = PostEntity.fromJson(response.body['data']);
+      _posts = [objPost, ...?_posts];
+    } else {
       ApiChecker.checkApi(response);
     }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
@@ -32,7 +33,7 @@ class PostHeaderWidget extends StatelessWidget {
               radius: 25,
             ),
             SizedBox(width: 12.w),
-            const AppText16('bạn đang nghĩ gì'),
+            AppText16('what_are_you_thinking'.tr),
             const Spacer(),
             GestureDetector(
               onTap: onTapImagePicker,
