@@ -24,9 +24,12 @@ class AuthController extends GetxController implements GetxService {
 
     Response response = await repo.signUp(objUser: objUser);
     if (response.statusCode == 200) {
-      TokenResponsive tokeBody = TokenResponsive.fromJson(response.body);
-      await repo.saveUserToken(tokeBody.accessToken!);
-      await repo.setDeviceToken();
+      // TokenResponsive tokeBody = TokenResponsive.fromJson(response.body);
+      //Token trả về luôn null...
+
+      // print('z3332- ${tokeBody.accessToken}');
+      // await repo.saveUserToken(tokeBody.accessToken!);
+      // await repo.setDeviceToken();
     } else {
       ApiChecker.checkApi(response);
     }

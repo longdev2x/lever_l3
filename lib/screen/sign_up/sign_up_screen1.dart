@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/sign_up_controller.dart';
 import 'package:timesheet/screen/sign_up/sign_up_screen2.dart';
-import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_text.dart';
 import 'package:timesheet/view/app_text_field.dart';
@@ -83,6 +82,7 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -92,123 +92,120 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
               _dobController.text =
                   'ngày ${controller.user.dob?.day} tháng ${controller.user.dob?.month}, ${controller.user.dob?.year}';
               return SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(100, 10, 100, 30),
-                      color: Colors.white,
-                      child: Image.asset(Images.logo),
-                    ),
-                    AppText24('sign_up'.tr),
-                    SizedBox(height: 20.h),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: AppTextField(
-                          hintText: 'last_name'.tr,
-                          controller: _lastnameController,
-                        )),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(
-                            child: AppTextField(
-                          hintText: 'first_name'.tr,
-                          controller: _firstnameController,
-                        )),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      children: [
-                        AppText16(
-                          'gender'.tr,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        SizedBox(
-                          width: 15.w,
-                        ),
-                        AppText16('male'.tr),
-                        Radio<String>(
-                          value: 'M',
-                          groupValue: controller.user.gender ?? 'M',
-                          onChanged: (value) =>
-                              controller.updateInfor(gender: value),
-                        ),
-                        SizedBox(width: 10.w),
-                        AppText16('female'.tr),
-                        Radio<String>(
-                          value: 'F',
-                          groupValue: controller.user.gender ?? 'M',
-                          onChanged: (value) =>
-                              controller.updateInfor(gender: value),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    AppTextField(
-                      onTap: _showDatePicker,
-                      lable: 'date_of_birth_with_old'.trParams({
-                        'old': _getBirthDay(controller.user.dob ??
-                                DateTime.now()
-                                    .subtract(const Duration(days: 7260)))
-                            .toString(),
-                      }),
-                      controller: _dobController,
-                      readOnly: true,
-                    ),
-                    SizedBox(height: 20.h),
-                    AppTextField(
-                      hintText: 'birth_place'.tr,
-                      controller: _birthPlaceController,
-                    ),
-                    SizedBox(height: 20.h),
-                    AppTextField(
-                      hintText: 'email'.tr,
-                      controller: _emailController,
-                    ),
-                    SizedBox(height: 20.h),
-                    AppTextField(
-                      hintText: 'university'.tr,
-                      controller: _universityNameController,
-                    ),
-                    SizedBox(height: 20.h),
-                    AppTextField(
-                      hintText: 'year_student'.tr,
-                      controller: _yearController,
-                    ),
-                    SizedBox(height: 50.h),
-                    AppButton(
-                      name: 'next'.tr,
-                      ontap: _onContinue,
-                    ),
-                    SizedBox(height: 10.h),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: RichText(
-                        text: TextSpan(
-                            text: '${'you_already_have_an_account'.tr} ',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.sp,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'login'.tr,
-                                style: TextStyle(
-                                  color: Colors.purple,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => Get.back(),
-                              ),
-                            ]),
+                child: SizedBox(
+                  height: 1.sh - 70.h,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText24('sign_up'.tr),
+                      SizedBox(height: 20.h),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: AppTextField(
+                            hintText: 'last_name'.tr,
+                            controller: _lastnameController,
+                          )),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Expanded(
+                              child: AppTextField(
+                            hintText: 'first_name'.tr,
+                            controller: _firstnameController,
+                          )),
+                        ],
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 10.h),
+                      Row(
+                        children: [
+                          AppText16(
+                            'gender'.tr,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          SizedBox(
+                            width: 15.w,
+                          ),
+                          AppText16('male'.tr),
+                          Radio<String>(
+                            value: 'M',
+                            groupValue: controller.user.gender ?? 'M',
+                            onChanged: (value) =>
+                                controller.updateInfor(gender: value),
+                          ),
+                          SizedBox(width: 10.w),
+                          AppText16('female'.tr),
+                          Radio<String>(
+                            value: 'F',
+                            groupValue: controller.user.gender ?? 'M',
+                            onChanged: (value) =>
+                                controller.updateInfor(gender: value),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      AppTextField(
+                        onTap: _showDatePicker,
+                        lable: 'date_of_birth_with_old'.trParams({
+                          'old': _getBirthDay(controller.user.dob ??
+                                  DateTime.now()
+                                      .subtract(const Duration(days: 7260)))
+                              .toString(),
+                        }),
+                        controller: _dobController,
+                        readOnly: true,
+                      ),
+                      SizedBox(height: 20.h),
+                      AppTextField(
+                        hintText: 'birth_place'.tr,
+                        controller: _birthPlaceController,
+                      ),
+                      SizedBox(height: 20.h),
+                      AppTextField(
+                        hintText: 'email'.tr,
+                        controller: _emailController,
+                      ),
+                      SizedBox(height: 20.h),
+                      AppTextField(
+                        hintText: 'university'.tr,
+                        controller: _universityNameController,
+                      ),
+                      SizedBox(height: 20.h),
+                      AppTextField(
+                        hintText: 'year_student'.tr,
+                        controller: _yearController,
+                      ),
+                      SizedBox(height: 50.h),
+                      AppButton(
+                        name: 'next'.tr,
+                        ontap: _onContinue,
+                      ),
+                      SizedBox(height: 15.h),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: RichText(
+                          text: TextSpan(
+                              text: '${'you_already_have_an_account'.tr}  ',
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'login'.tr,
+                                  style: TextStyle(
+                                    color: theme.colorScheme.primary,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => Get.back(),
+                                ),
+                              ]),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

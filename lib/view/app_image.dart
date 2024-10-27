@@ -7,8 +7,8 @@ import 'package:timesheet/utils/images.dart';
 
 class AppImageAsset extends StatelessWidget {
   final String? imagePath;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   final double radius;
   final Function()? onTap;
   final BoxFit? boxFit;
@@ -17,8 +17,8 @@ class AppImageAsset extends StatelessWidget {
   const AppImageAsset(
       {super.key,
       this.imagePath = Images.logo,
-      this.width = 16,
-      this.height = 16,
+      this.width,
+      this.height,
       this.radius = 0,
       this.onTap,
       this.color,
@@ -35,8 +35,8 @@ class AppImageAsset extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         child: Image.asset(
           imagePath ?? Images.imgAvatarDefault,
-          width: width.w,
-          height: height.h,
+          width: width?.w,
+          height: height?.h,
           fit: boxFit,
           color: color,
         ),

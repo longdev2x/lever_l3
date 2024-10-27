@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/check_in_controller.dart';
-import 'package:timesheet/controller/localization_controller.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
 import 'package:timesheet/data/model/body/check_in_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/profile/profile_screen.dart';
 import 'package:timesheet/screen/tracking/tracking_history_screen.dart';
-import 'package:timesheet/utils/color_resources.dart';
-
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_image.dart';
@@ -64,7 +61,8 @@ class _TrackingScreenState extends State<TrackingScreen> {
   String _checkDelay(DateTime dateCheckIn) {
     //Ví dụ 7 giờ phải checkIn
     DateTime ruleTime =
-        DateTime(dateCheckIn.year, dateCheckIn.month, dateCheckIn.day, 7, 0).toLocal();
+        DateTime(dateCheckIn.year, dateCheckIn.month, dateCheckIn.day, 7, 0)
+            .toLocal();
     var difference = dateCheckIn.difference(ruleTime);
     //Tới sớm
     if (difference.inMinutes < 0) {
@@ -101,7 +99,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
           child: Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: theme.colorScheme.surface,
+              color: theme.colorScheme.primary,
               boxShadow: [
                 BoxShadow(
                   color: theme.colorScheme.shadow.withOpacity(0.7),
@@ -116,7 +114,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
               children: [
                 AppText18(
                   'Tracking',
-                  color: theme.colorScheme.onSurface,
+                  color: theme.colorScheme.onPrimary,
                   fontWeight: FontWeight.bold,
                 ),
                 const Spacer(),
@@ -124,7 +122,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   imagePath: Images.profile,
                   width: 25.w,
                   height: 25.w,
-                  color: theme.colorScheme.onSurface,
+                  color: theme.colorScheme.onPrimary,
                   onTap: () {
                     Get.to(() => const ProfileScreen());
                   },
@@ -141,7 +139,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
               margin: EdgeInsets.symmetric(vertical: 10.h),
               padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
               decoration: BoxDecoration(
-                color: theme.colorScheme.primary,
+                color: theme.colorScheme.secondary,
                 boxShadow: [
                   BoxShadow(
                     color: theme.colorScheme.shadow.withOpacity(0.4),
@@ -153,7 +151,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                 ],
               ),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
@@ -184,9 +182,22 @@ class _TrackingScreenState extends State<TrackingScreen> {
                       int nowDay = DateTime.now().toLocal().day;
 
                       if (listCheckIn.isEmpty ||
-                          listCheckIn.last.dateAttendance?.toLocal().day != nowDay) {
+                          listCheckIn.last.dateAttendance?.toLocal().day !=
+                              nowDay) {
+                        // return SizedBox(width: 130.w, child: AppButton(
+                        //   ontap: _checkIn,
+                        //   name: 'check_in'.tr,
+                        // ),);
                         return ElevatedButton(
                           onPressed: _checkIn,
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll<Color>(
+                              theme.colorScheme.onSecondary,
+                            ),
+                            foregroundColor: WidgetStatePropertyAll<Color>(
+                              theme.colorScheme.secondary,
+                            ),
+                          ),
                           child: AppText16('check_in'.tr),
                         );
                       }

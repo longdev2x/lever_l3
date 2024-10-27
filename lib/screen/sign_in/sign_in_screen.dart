@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/screen/sign_up/sign_up_screen1.dart';
 import 'package:timesheet/utils/images.dart';
+import 'package:timesheet/view/app_button.dart';
+import 'package:timesheet/view/app_image.dart';
+import 'package:timesheet/view/app_text_field.dart';
 
 import '../home/home_screen.dart';
 
@@ -25,137 +29,108 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         body: Stack(
           children: [
             Scrollbar(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(height: 100,),
-                      GetBuilder<AuthController>(
-                        builder: (controller) => Opacity(
-                          opacity: controller.loading ? 0.3 : 1,
-                          child: Container(
-                            color: Colors.white,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.fromLTRB(100, 56, 100, 60),
-                                  color: Colors.white,
-                                  child: Image.asset(Images.logo),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'login_to_your_account'.tr,
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 20),
-                                        child: TextFormField(
-                                          controller: _usernameController,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: InputDecoration(
-                                              contentPadding:
-                                              const EdgeInsets.only(left: 28),
-                                              border: OutlineInputBorder(
-                                                  borderSide: const BorderSide(
-                                                      width: 1,
-                                                      color:
-                                                      Color.fromRGBO(244, 244, 244, 1)),
-                                                  borderRadius: BorderRadius.circular(15)),
-                                              hintText: 'email'.tr,
-                                              hintStyle: const TextStyle(
-                                                  color: Colors.grey)),
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: const EdgeInsets.only(top: 20),
-                                          child: Obx(
-                                                () => TextFormField(
-                                                  textInputAction: TextInputAction.done,
-                                                  obscureText: _showPass.value,
-                                                  controller: _passwordController,
-                                                  decoration: InputDecoration(
-                                                  contentPadding:
-                                                  const EdgeInsets.only(left: 28),
-                                                  suffixIcon: IconButton(
-                                                    onPressed: () {
-                                                      _showPass.value = !_showPass.value;
-                                                    },
-                                                    icon: Icon(_showPass.value
-                                                        ? Icons.visibility
-                                                        : Icons.visibility_off),
-                                                  ),
-                                                  border: OutlineInputBorder(
-                                                    borderSide: const BorderSide(
-                                                        width: 1,
-                                                        color: Color.fromRGBO(
-                                                            244, 244, 244, 1)),
-                                                    borderRadius: BorderRadius.circular(15),
-                                                  ),
-                                                  hintText: 'password'.tr,
-                                                  hintStyle: const TextStyle(
-                                                      color:
-                                                      Colors.grey)),
-                                            ),
-                                          )),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: TextButton(onPressed: () {
-                                          Get.to(const SignUpScreen1(), transition: Transition.size, curve: Curves.bounceIn);
-                                        }, child: Text('you_have_not_an_account'.tr,),),),
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 20),
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            _login();
-                                          },
-                                          style: TextButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(15)),
-                                          ),
-                                          child: Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(40, 18, 40, 18),
-                                            child: Text('login'.tr,
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Color.fromRGBO(
-                                                        191, 252, 226, 1.0))),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
+              child: SafeArea(
+                child: GetBuilder<AuthController>(
+                  builder: (controller) => Opacity(
+                    opacity: controller.loading ? 0.3 : 1,
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 0),
+                      height: 1.sh - 50.h,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const AppImageAsset(
+                            imagePath: Images.logo,
+                            radius: 30,
+                          ),
+                          SizedBox(height: 50.h),
+                          Text(
+                            'login_to_your_account'.tr,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: theme.colorScheme.onSurface,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            child: AppTextField(
+                              hintText: 'email'.tr,
+                              controller: _usernameController,
                             ),
                           ),
-                        ),
+                          Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              child: Obx(
+                                () => TextFormField(
+                                  textInputAction: TextInputAction.done,
+                                  obscureText: _showPass.value,
+                                  controller: _passwordController,
+                                  decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.only(left: 28),
+                                      suffixIcon: IconButton(
+                                        onPressed: () {
+                                          _showPass.value = !_showPass.value;
+                                        },
+                                        icon: Icon(_showPass.value
+                                            ? Icons.visibility
+                                            : Icons.visibility_off),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            width: 1,
+                                            color:
+                                                Color.fromRGBO(244, 244, 244, 1)),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      hintText: 'password'.tr,
+                                      hintStyle:
+                                          const TextStyle(color: Colors.grey)),
+                                ),
+                              )),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                Get.to(const SignUpScreen1(),
+                                    transition: Transition.size,
+                                    curve: Curves.bounceIn);
+                              },
+                              child: Text(
+                                'you_have_not_an_account'.tr,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(100, 18, 100, 18),
+                            child: AppButton(
+                              name: 'login'.tr,
+                              ontap: _login,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                )
-            ),
-            Center(
-              child: GetBuilder<AuthController>(
-                builder: (controller) {
-                  return Visibility(
-                    visible: controller.loading,
-                    child: const CircularProgressIndicator(),
-                  );
-                },
-              )
-            )
+                ),
+              ),
+            )),
+            Center(child: GetBuilder<AuthController>(
+              builder: (controller) {
+                return Visibility(
+                  visible: controller.loading,
+                  child: const CircularProgressIndicator(),
+                );
+              },
+            ))
           ],
         ));
   }
@@ -171,7 +146,12 @@ class _SignInScreenState extends State<SignInScreen> {
     } else {
       Get.find<AuthController>().login(username, password).then((value) => {
             if (value == 200)
-              {Get.to(const HomeScreen(),transition: Transition.size,duration: const Duration(milliseconds: 500),curve: Curves.easeIn)}
+              {
+                Get.to(const HomeScreen(),
+                    transition: Transition.size,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn)
+              }
             else if (value == 400)
               {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -22,6 +22,8 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return TextFormField(
       controller: controller,
       readOnly: readOnly,
@@ -30,21 +32,25 @@ class AppTextField extends StatelessWidget {
       initialValue: initValue,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.only(left: 28),
-          border: OutlineInputBorder(
-              borderSide: const BorderSide(
-                  width: 1, color: Color.fromRGBO(244, 244, 244, 1)),
-              borderRadius: BorderRadius.circular(15)),
-          hintText: hintText,
-          suffixIcon: obscureText == null
-              ? null
-              : IconButton(
-                  onPressed: onObscureTextTap,
-                  icon: Icon(
-                      obscureText! ? Icons.visibility : Icons.visibility_off),
-                ),
-          label: lable != null ? Text(lable!) : null,
-          hintStyle: const TextStyle(color: Colors.grey)),
+        contentPadding: const EdgeInsets.only(left: 28),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 1,
+            color: theme.colorScheme.outlineVariant,
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        hintText: hintText,
+        suffixIcon: obscureText == null
+            ? null
+            : IconButton(
+                onPressed: onObscureTextTap,
+                icon: Icon(
+                    obscureText! ? Icons.visibility : Icons.visibility_off),
+              ),
+        label: lable != null ? Text(lable!) : null,
+        hintStyle: const TextStyle(color: Colors.grey),
+      ),
     );
   }
 }
@@ -71,6 +77,8 @@ class AppTextAreaField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return TextFormField(
       controller: controller,
       readOnly: readOnly,
@@ -81,14 +89,18 @@ class AppTextAreaField extends StatelessWidget {
       initialValue: initValue,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(16),
-          border: OutlineInputBorder(
-              borderSide: const BorderSide(
-                  width: 1, color: Color.fromRGBO(244, 244, 244, 1)),
-              borderRadius: BorderRadius.circular(15)),
-          hintText: hintText,
-          label: lable != null ? Text(lable!) : null,
-          hintStyle: const TextStyle(color: Colors.grey)),
+        contentPadding: const EdgeInsets.all(16),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 1,
+            color: theme.colorScheme.outlineVariant,
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        hintText: hintText,
+        label: lable != null ? Text(lable!) : null,
+        hintStyle: const TextStyle(color: Colors.grey),
+      ),
     );
   }
 }

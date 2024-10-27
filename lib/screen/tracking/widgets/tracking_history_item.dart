@@ -10,19 +10,24 @@ class TrackingHistoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Container(
       width: double.infinity,
       height: 100.h,
       padding: EdgeInsets.all(10.w),
       margin: EdgeInsets.only(bottom: 10.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant
+        ),
         boxShadow: [
           BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              offset: const Offset(0, 2),
-              spreadRadius: 5,
-              blurRadius: 5),
+            color: theme.colorScheme.shadow.withOpacity(0.2),
+            offset: const Offset(0, 2),
+            spreadRadius: 2,
+            blurRadius: 2,
+          ),
         ],
       ),
       child: Row(
@@ -30,20 +35,19 @@ class TrackingHistoryItem extends StatelessWidget {
           if (objTracking.date != null)
             Column(
               children: [
-                AppText14(
-                    '${DateConverter.getWeekDay(objTracking.date!)}, ${DateConverter.getOnlyFomatDate(objTracking.date!)}'),
+                AppText14('${DateConverter.getWeekDay(objTracking.date!)}, ${DateConverter.getOnlyFomatDate(objTracking.date!)}', fontWeight: FontWeight.bold,),
                 const Spacer(),
                 AppText28(DateConverter.getHoursMinutes(objTracking.date!)),
                 const Spacer(),
               ],
             ),
-          SizedBox(width: 5.w),
+          SizedBox(width: 10.w),
           Container(
-            width: 1,
+            width: 2,
             height: double.infinity,
-            color: Colors.grey,
+            color: theme.dividerColor,
           ),
-          SizedBox(width: 5.w),
+          SizedBox(width: 10.w),
           Expanded(
             child: Align(
               alignment: Alignment.topLeft,
