@@ -38,6 +38,7 @@ class _UserListWidgetState extends State<UserListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     Get.find<UserSearchController>();
     return GetBuilder<UserSearchController>(
       builder: (controller) {
@@ -65,7 +66,10 @@ class _UserListWidgetState extends State<UserListWidget> {
               });
         } else {
           return Center(
-            child: AppText24('error'.tr),
+            child: AppText24(
+              'error'.tr,
+              color: theme.colorScheme.error,
+            ),
           );
         }
       },

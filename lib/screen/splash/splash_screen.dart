@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,13 +17,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late StreamSubscription<ConnectivityResult> _onConnectivityChanged;
+  // late StreamSubscription<ConnectivityResult> _onConnectivityChanged;
 
   @override
   void initState() {
     super.initState();
     bool firstTime = true;
-    _onConnectivityChanged = Connectivity()
+    Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
       if (!firstTime) {

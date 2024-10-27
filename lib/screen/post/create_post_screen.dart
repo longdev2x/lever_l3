@@ -88,10 +88,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         title: const AppText20('Tạo bài viết', fontWeight: FontWeight.bold),
         centerTitle: true,
         actions: [
-          ElevatedButton(
+          TextButton(
             onPressed: _onPost,
             child: const AppText20('Đăng'),
           ),
+          SizedBox(width: 16.w),
         ],
       ),
       body: Stack(

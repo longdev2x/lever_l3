@@ -46,6 +46,7 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -120,6 +121,7 @@ class SettingScreen extends StatelessWidget {
                             imagePath: controller.languages[1].imageUrl,
                             width: 50,
                             height: 50,
+                            color: theme.colorScheme.primary,
                           ),
                           if (!isVN)
                             Positioned(
@@ -171,7 +173,7 @@ class SettingScreen extends StatelessWidget {
                     imagePath: Images.icOut,
                     width: 50,
                     height: 50,
-                    // color: ColorResources.BACKGROUND_BAR_LIGHT_GRAY,
+                    color: theme.colorScheme.primary,
                   ),
                 ],
               ),
