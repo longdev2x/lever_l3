@@ -40,7 +40,7 @@ class NotificationEntity {
         json?['title'],
         json?['type'],
         json?['body'],
-        json?['date'],
+        json?['date'] != null ? DateTime.parse(json!['date']).toLocal() : null,
         json?['user'],
       );
 

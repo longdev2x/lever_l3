@@ -115,7 +115,7 @@ class User {
       birthPlace: json?['birthPlace'],
       confirmPassword: json?['confirmPassword'],
       displayName: json?['displayName'],
-      dob: json?['dob'] != null ? DateTime.tryParse(json?['dob']) : null,
+      dob: json?['dob'] != null ? DateTime.fromMillisecondsSinceEpoch(json?['dob']).toLocal() : null,
       email: json?['email'],
       firstName: json?['firstName'],
       lastName: json?['lastName'],

@@ -1,4 +1,12 @@
 {
+  "empty_list" : "Danh sách trống",
+  "i" : "Tôi",
+  "content" : "Nội dung",
+  "on_time" : "Đúng giờ",
+  "late" : "muộn ",
+  "early" : "sớm",
+  "date_attendance" : "Giờ vào",
+  "check_in" : "Điểm danh",
   "username" : "Tên đăng nhập",
   "display_name" : "Tên hiển thị",
   "year_student" : "Sinh viên năm",

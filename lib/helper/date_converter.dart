@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class DateConverter {
 
   static String getWeekDay(DateTime date) {
-    final List<String> weekdays = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'];
+    final List<String> weekdays = ['monday'.tr, 'tuesday'.tr, 'wednesday'.tr, 'thursday'.tr, 'friday'.tr, 'saturday'.tr, 'sunday'.tr];
     return weekdays[date.weekday - 1];
   }
 

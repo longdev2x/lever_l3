@@ -19,7 +19,7 @@ class LikeEntity {
   factory LikeEntity.fromJson(Map<String, dynamic>? json) {
     return LikeEntity(
       id: json?['id'],
-      date: json?['date'] != null ? DateTime.fromMillisecondsSinceEpoch(json?['date']) : null,
+      date: json?['date'] != null ? DateTime.fromMillisecondsSinceEpoch(json?['date']).toLocal() : null,
       type: json?['type'],
       user: User.fromJson(json?['user']),
       objPost: PostEntity.fromJson(json?['post']),

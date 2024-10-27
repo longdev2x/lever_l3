@@ -1,4 +1,12 @@
 {
+  "empty_list" : "Empty list",
+  "i" : "I",
+  "content" : "Content",
+  "on_time" : "On time",
+  "late" : "late ",
+  "early" : "early",
+  "date_attendance" : "Date attendance",
+  "check_in" : "Check in",
   "username" : "Username",
   "display_name" : "Display name",
   "year_student" : "Year student",

@@ -62,31 +62,31 @@ class _TrackingScreenState extends State<TrackingScreen> {
   String _checkDelay(DateTime dateCheckIn) {
     //Ví dụ 7 giờ phải checkIn
     DateTime ruleTime =
-        DateTime(dateCheckIn.year, dateCheckIn.month, dateCheckIn.day, 7, 0);
+        DateTime(dateCheckIn.year, dateCheckIn.month, dateCheckIn.day, 7, 0).toLocal();
     var difference = dateCheckIn.difference(ruleTime);
     //Tới sớm
     if (difference.inMinutes < 0) {
       difference = -difference;
       if (difference.inMinutes == 60) {
-        return 'CheckIn sớm 1h';
+        return '${'check_in'.tr} ${'early'.tr} 1h';
       } else if (difference.inMinutes > 60) {
-        return 'CheckIn sớm ${difference.inMinutes ~/ 60}h - ${difference.inMinutes % 60}p';
+        return '${'check_in'.tr} ${'early'.tr} ${difference.inMinutes ~/ 60}h - ${difference.inMinutes % 60}p';
       } else {
-        return 'CheckIn sớm ${difference.inMinutes}p';
+        return '${'check_in'.tr} ${'early'.tr} ${difference.inMinutes}p';
       }
     }
     // Tới muộn
     if (difference.inMinutes > 0) {
       if (difference.inMinutes == 60) {
-        return 'CheckIn muộn 1h';
+        return '${'check_in'.tr} ${'late'.tr} 1h';
       } else if (difference.inMinutes > 60) {
-        return 'CheckIn muộn ${difference.inMinutes ~/ 60}h - ${difference.inMinutes % 60}p';
+        return '${'check_in'.tr} ${'late'.tr} ${difference.inMinutes ~/ 60}h - ${difference.inMinutes % 60}p';
       } else {
-        return 'CheckIn muộn ${difference.inMinutes}p';
+        return '${'check_in'.tr} ${'late'.tr} ${difference.inMinutes}p';
       }
     }
     //Đúng giờ
-    return 'CheckIn Đúng giờ';
+    return '${'check_in'.tr} ${'on_time'.tr}';
   }
 
   @override
@@ -103,11 +103,8 @@ class _TrackingScreenState extends State<TrackingScreen> {
                 BoxShadow(
                   color: ColorResources.getShadowColor(),
                   offset: const Offset(0, 3),
-                  //kích thước bóng
                   spreadRadius: 2,
-                  //Độ mờ bóng
                   blurRadius: 2,
-                  //kiểu mờ của bóng
                   blurStyle: BlurStyle.normal,
                 ),
               ],
@@ -146,11 +143,8 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   BoxShadow(
                     color: ColorResources.getShadowColor(),
                     offset: const Offset(0, 3),
-                    //kích thước bóng
                     spreadRadius: 2,
-                    //Độ mờ bóng
                     blurRadius: 2,
-                    //kiểu mờ của bóng
                     blurStyle: BlurStyle.normal,
                   ),
                 ],
@@ -164,7 +158,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       AppText14(
-                        'Hôm nay, ${DateConverter.getWeekDay(now)}',
+                        '${'today'.tr}, ${DateConverter.getWeekDay(now)}',
                         color: ColorResources.getWhiteColor(),
                       ),
                       SizedBox(height: 10.h),
@@ -184,27 +178,27 @@ class _TrackingScreenState extends State<TrackingScreen> {
                       }
 
                       List<CheckInEntity> listCheckIn = controller.listCheckIn;
-                      int nowDay = DateTime.now().day;
+                      int nowDay = DateTime.now().toLocal().day;
 
                       if (listCheckIn.isEmpty ||
-                          listCheckIn.first.dateAttendance?.day != nowDay) {
+                          listCheckIn.last.dateAttendance?.toLocal().day != nowDay) {
                         return ElevatedButton(
                           onPressed: _checkIn,
-                          child: const AppText16('CheckIn'),
+                          child: AppText16('check_in'.tr),
                         );
                       }
-                      CheckInEntity todayCheckIn = listCheckIn.first;
+                      CheckInEntity todayCheckIn = listCheckIn.last;
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppText14(
-                            'Giờ vào ${todayCheckIn.dateAttendance?.hour}h',
+                            '${'date_attendance'.tr} ${todayCheckIn.dateAttendance?.toLocal().hour}h',
                             color: ColorResources.getWhiteColor(),
                           ),
                           SizedBox(height: 10.h),
                           AppText16(
-                            _checkDelay(todayCheckIn.dateAttendance!),
+                            _checkDelay(todayCheckIn.dateAttendance!.toLocal()),
                             fontWeight: FontWeight.bold,
                             color: ColorResources.getWhiteColor(),
                           ),
@@ -237,12 +231,12 @@ class _TrackingScreenState extends State<TrackingScreen> {
                 children: [
                   SizedBox(height: 20.h),
                   AppText28(
-                    'Nội dung tracking',
+                    '${'content'.tr} tracking',
                     color: ColorResources.getTextColor(),
                   ),
                   SizedBox(height: 30.h),
                   AppTextAreaField(
-                    hintText: 'Hôm nay tôi ...',
+                    hintText: '${'today'.tr} ${('i'.tr).toLowerCase()} ...',
                     controller: _contentTrackingController,
                   ),
                   SizedBox(height: 30.h),
@@ -256,7 +250,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                         Get.to(() => const TrackingHistoryScreen());
                       },
                       child: AppText16(
-                        'Lịch sử tracking',
+                        '${'history'.tr} tracking',
                         color: ColorResources.getWebsiteTextColor(),
                       )),
                 ],

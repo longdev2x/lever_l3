@@ -52,7 +52,7 @@ class PostEntity {
       'comments': comments.map((comment) => comment.toJson()).toList(),
       'content': content,
       //Gửi lên luôn đưa về Utc không múi giờ, get về thì toLocal()
-      'date': date?.toUtc().toIso8601String(),
+      'date': date?.toIso8601String(),
       'likes': likes.map((like) => like.toJson()).toList(),
       'media': media.map((e) => e.toJson()).toList(),
       'user': user?.toJson(),

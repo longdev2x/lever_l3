@@ -19,7 +19,7 @@ class CommentEntity {
   factory CommentEntity.fromJson(Map<String, dynamic>? json) {
     return CommentEntity(
       content: json?['content'],
-      date: json?['date'] != null ? DateTime.fromMillisecondsSinceEpoch(json?['date']) : null,
+      date: json?['date'] != null ? DateTime.fromMillisecondsSinceEpoch(json?['date']).toLocal() : null,
       id: json?['id'],
       user: User.fromJson(json?['user']),
       objPost: PostEntity.fromJson(json?['post']),
@@ -29,7 +29,7 @@ class CommentEntity {
   Map<String, dynamic> toJson() {
     return {
       'content': content,
-      'date': date?.toUtc().toIso8601String(),
+      'date': date?.toIso8601String(),
       'id': id,
       'user': user?.toJson(),
       //Lặp vô tận

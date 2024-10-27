@@ -13,7 +13,9 @@ class CheckInEntity {
         json?['ip'],
         json?['message'],
         json?['offline'],
-        json?['dateAttendance'] != null ? DateTime.parse(json!['dateAttendance']).toLocal() : null,
+        json?['dateAttendance'] != null
+            ? DateTime.parse(json!['dateAttendance']).toLocal()
+            : null,
       );
 }
 

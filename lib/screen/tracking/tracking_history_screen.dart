@@ -13,7 +13,7 @@ class TrackingHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lịch sử tracking'),
+        title: Text('${'history'.tr} tracking'),
       ),
       body: FutureBuilder<List<TrackingEntity>>(
         future: Get.find<TrackingController>().getTracking(),
@@ -34,8 +34,8 @@ class TrackingHistoryScreen extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(
-              child: AppText24('Hiện chưa ghi nhận lịch sử tracking'),
+            return Center(
+              child: AppText24('empty_list'.tr),
             );
           }
         },
