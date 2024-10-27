@@ -150,7 +150,7 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
                     SizedBox(height: 10.h),
                     AppTextField(
                       onTap: _showDatePicker,
-                      lable: 'date_of_birth'.trParams({
+                      lable: 'date_of_birth_with_old'.trParams({
                         'old': _getBirthDay(controller.user.dob ??
                                 DateTime.now()
                                     .subtract(const Duration(days: 7260)))

@@ -62,12 +62,17 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
   void _onSubmit() {
     int? year;
     if (_displayNameController.text.trim().length < 5) {
-      AppToast.showToast('Tên hiển thị phải từ 5 ký tự');
+      AppToast.showToast('${'display_name'.tr} ${'must_be_greater'.trParams({
+        'number' : '4'
+      })}');
       return;
     }
     year = int.tryParse(_yearController.text);
     if (year == null || year < 1 || year > 7) {
-      AppToast.showToast('Sinh viên năm nằm trong khoảng từ 1 đến 7');
+      AppToast.showToast('${'year_student'} ${'must_be_between'.trParams({
+        'number1' : '1',
+        'number2' : '7'
+      })}');
       return;
     }
 
@@ -100,7 +105,7 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
             showDialog(
               context: context,
               builder: (ctx) => AppConfirm(
-                title: 'Chỉnh sửa sẽ không được lưu',
+                title: 'edits_will_not_be_saved'.tr,
                 onConfirm: () {
                   Navigator.of(ctx).pop();
                   Navigator.of(context).pop();
@@ -110,7 +115,7 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: const Text('Chỉnh sửa thông tin'),
+        title: Text('edit_profile'.tr),
       ),
       body: GetBuilder<ProfileController>(
         builder: (controller) {
@@ -125,7 +130,7 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
                     children: [
                       Expanded(
                         child: AppTextField(
-                          lable: 'Họ',
+                          lable: 'last_name'.tr,
                           controller: _lastNameController,
                         ),
                       ),
@@ -134,7 +139,7 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
                       ),
                       Expanded(
                         child: AppTextField(
-                          lable: 'Tên',
+                          lable: 'first_name'.tr,
                           controller: _firstNameController,
                         ),
                       ),
@@ -142,7 +147,7 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
                   ),
                   SizedBox(height: 10.h),
                   AppTextField(
-                    lable: 'Tên hiển thị',
+                    lable: 'display_name'.tr,
                     controller: _displayNameController,
                   ),
                   SizedBox(height: 10.h),
@@ -154,7 +159,7 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
                             _onGenderPick('M');
                           },
                           iconPath: Images.icGenderMan,
-                          text: 'Nam',
+                          text: 'male'.tr,
                           isChose: widget.objUser.gender == 'M'),
                       SizedBox(width: 10.w),
                       _genderPicker(
@@ -162,7 +167,7 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
                             _onGenderPick('F');
                           },
                           iconPath: Images.icGenderWoman,
-                          text: 'Nữ',
+                          text: 'female'.tr,
                           isChose: widget.objUser.gender == 'F'),
                     ],
                   ),
@@ -174,29 +179,29 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
                   ),
                   SizedBox(height: 10.h),
                   AppTextField(
-                    lable: 'Nơi sinh',
+                    lable: 'birth_place'.tr,
                     controller: _birthPlaceController,
                   ),
                   SizedBox(height: 10.h),
                   AppTextField(
-                    lable: 'Trường đại học',
+                    lable: 'university'.tr,
                     controller: _universityController,
                   ),
                   SizedBox(height: 10.h),
                   AppTextField(
-                    lable: 'Sinh viên năm',
+                    lable: 'year_student'.tr,
                     controller: _yearController,
                   ),
                   SizedBox(height: 20.h),
                   AppButton(
-                    name: 'Cập Nhật',
+                    name: 'update'.tr,
                     ontap: _onSubmit,
                   ),
                   SizedBox(height: 15.h),
                   GestureDetector(
                     onTap: () {},
-                    child: const AppText16(
-                      'Chỉnh sửa thông tin bảo mật!',
+                    child: AppText16(
+                      '${'edit'.tr} ${'security_information'.tr}!',
                       fontWeight: FontWeight.bold,
                     ),
                   ),

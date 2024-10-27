@@ -57,25 +57,26 @@ class UserDetailScreen extends StatelessWidget {
             SizedBox(height: 25.h),
             if (isAdmin)
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.w),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Expanded(
                       child: AppButton(
                         ontap: () {
                           Get.to(() => EditMemberUserScreen(objUser: user));
                         },
-                        name: 'Change',
+                        name: 'edit_profile'.tr,
                         height: 37,
                       ),
                     ),
-                    SizedBox(width: 30.w),
+                    SizedBox(width: 10.w),
                     Expanded(
                       child: AppButton(
                         ontap: () {
                           blockUser(user, context);
                         },
-                        name: 'Block',
+                        name: 'block_user'.tr,
                         height: 37,
                       ),
                     ),
@@ -85,64 +86,64 @@ class UserDetailScreen extends StatelessWidget {
             SizedBox(height: 35.h),
             if (user.username != null)
               UserParameterWidget(
-                name: 'Tên tài khoản',
+                name: 'username'.tr,
                 icon: Images.icSocial,
                 prameter: user.username!,
                 isFirst: true,
               ),
             if (user.email != null)
               UserParameterWidget(
-                name: 'Email',
+                name: 'email'.tr,
                 icon: Images.icSocial,
                 prameter: user.email!,
               ),
             if (user.lastName != null || user.firstName != null)
               UserParameterWidget(
-                name: 'Họ & Tên',
+                name: 'full_name'.tr,
                 icon: Images.icSocial,
                 prameter: '${user.lastName} ${user.firstName}',
               ),
             if (user.dob != null)
               UserParameterWidget(
-                name: 'Ngày sinh',
+                name: 'date_of_birth'.tr,
                 icon: Images.icSocial,
                 prameter: user.dob != null
                     ? DateConverter.getOnlyFomatDate(user.dob!)
-                    : 'No infor',
+                    : 'unavailable'.tr,
               ),
             if (user.gender != null)
               UserParameterWidget(
-                name: 'Giới tính',
+                name: 'gender'.tr,
                 icon: Images.icSocial,
                 prameter: user.gender!,
               ),
             if (user.birthPlace != null)
               UserParameterWidget(
-                name: 'Nơi sinh',
+                name: 'birth_place'.tr,
                 icon: Images.icSocial,
                 prameter: user.birthPlace!,
               ),
             if (user.university != null)
               UserParameterWidget(
-                name: 'Trường đại học',
+                name: 'university'.tr,
                 icon: Images.icSocial,
                 prameter: user.university!,
               ),
             if (user.year != null)
               UserParameterWidget(
-                name: 'Năm học',
+                name: 'year_student'.tr,
                 icon: Images.icSocial,
                 prameter: user.year.toString(),
               ),
             UserParameterWidget(
-              name: 'Số ngày checkin',
+              name: 'count_day_check_in'.tr,
               icon: Images.icSocial,
               prameter: user.countDayCheckin != null
                   ? user.countDayCheckin.toString()
                   : '0',
             ),
             UserParameterWidget(
-              name: 'Số ngày tracking',
+              name: 'count_day_tracking'.tr,
               icon: Images.icSocial,
               prameter: user.countDayTracking != null
                   ? user.countDayTracking.toString()

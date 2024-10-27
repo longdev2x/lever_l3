@@ -47,8 +47,8 @@ class _UserListWidgetState extends State<UserListWidget> {
           );
         } else if (controller.users != null) {
           if (controller.users!.isEmpty) {
-            return const Center(
-              child: AppText24('Danh sách trống'),
+            return Center(
+              child: AppText24('empty_list'.tr),
             );
           }
           return ListView.builder(
@@ -64,8 +64,8 @@ class _UserListWidgetState extends State<UserListWidget> {
                 }
               });
         } else {
-          return const Center(
-            child: AppText24('Lỗi khi tải dữ liệu'),
+          return Center(
+            child: AppText24('error'.tr),
           );
         }
       },
