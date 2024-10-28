@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
 import 'package:timesheet/data/model/body/tracking_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
+import 'package:timesheet/utils/color_resources.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_text_field.dart';
 import 'package:timesheet/view/app_toast.dart';
@@ -36,12 +37,41 @@ class _TrackingDetailState extends State<TrackingDetail> {
       AppToast.showToast('input_field_is_empty'.tr);
       return;
     }
-    int statusCode = await Get.find<TrackingController>().editTracking(widget.objTracking, newContent: _controller.text);
+    int statusCode = await Get.find<TrackingController>()
+        .editTracking(widget.objTracking, newContent: _controller.text);
 
     if (statusCode == 200) {
       AppToast.showToast('update_successful'.tr);
       Get.back();
     }
+  }
+
+  void _onDelete() async {
+    if (widget.objTracking.id == null) {
+      AppToast.showToast('Can\'t delete');
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AppConfirm(
+        title: 'are_you_sure_to_delete_this_schedule'.tr,
+        onConfirm: () async {
+          int statusCode = await Get.find<TrackingController>()
+              .deleteTracking(id: widget.objTracking.id!);
+
+          if (statusCode == 200) {
+            AppToast.showToast('delete_successful'.tr);
+          } else {
+            AppToast.showToast('delete_not_successful'.tr);
+          }
+
+          if (context.mounted) {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          }
+        },
+      ),
+    );
   }
 
   @override
@@ -68,6 +98,12 @@ class _TrackingDetailState extends State<TrackingDetail> {
             AppButton(
               name: 'update'.tr,
               ontap: _onSubmit,
+            ),
+            SizedBox(height: 30.h),
+            AppButton(
+              name: 'Delete'.tr,
+              ontap: _onDelete,
+              bgColor: ColorResources.getRedColor(),
             ),
           ],
         ),

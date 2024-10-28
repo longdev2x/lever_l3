@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class AppButton extends StatelessWidget {
   final double? height;
@@ -38,10 +36,15 @@ class AppButton extends StatelessWidget {
         width: width!.w,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              theme.colorScheme.primary.withOpacity(0.6),
-              theme.colorScheme.primary.withOpacity(0.9),
-            ],
+            colors: bgColor == null
+                ? [
+                    theme.colorScheme.primary.withOpacity(0.6),
+                    theme.colorScheme.primary.withOpacity(0.9),
+                  ]
+                : [
+                    bgColor!.withOpacity(0.6),
+                    bgColor!.withOpacity(0.9),
+                  ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

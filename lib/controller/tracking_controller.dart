@@ -94,6 +94,7 @@ class TrackingController extends GetxController implements GetxService {
 
     if (response.statusCode == 200) {
       _trackings!.removeWhere((e) => e.id == id);
+      update();
     } else {
       ApiChecker.checkApi(response);
     }
