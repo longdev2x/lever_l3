@@ -24,11 +24,18 @@ class TrackingScreen extends StatefulWidget {
 
 class _TrackingScreenState extends State<TrackingScreen> {
   late final TextEditingController _contentTrackingController;
+  final DatePickerController _datePickerController = DatePickerController();
+
   DateTime now = DateTime.now();
   @override
   void initState() {
     super.initState();
     _contentTrackingController = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        _datePickerController.animateToDate(DateTime.now());
+      },
+    );
   }
 
   @override
@@ -57,19 +64,17 @@ class _TrackingScreenState extends State<TrackingScreen> {
           await Get.find<TrackingController>().saveTracking(content: content);
       if (statusCode == 200) {
         _contentTrackingController.clear();
-        if (statusCode == 200) {
-          AppToast.showToast('Tracking thành công');
-        }
+        AppToast.showToast('Tracking thành công');
         Get.to(() => const TrackingHistoryScreen());
       }
     }
   }
 
   void _onHistory(BuildContext context, DateTime? date) async {
-    if (date == null) {
-      await Get.find<TrackingController>().getTracking();
+    if (date != null) {
+      Get.find<TrackingController>().filterList(date);
     } else {
-      await Get.find<TrackingController>().filterList(date);
+      Get.find<TrackingController>().filterList(null);
     }
     Get.to(() => const TrackingHistoryScreen());
   }
@@ -77,8 +82,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
   String _checkDelay(DateTime dateCheckIn) {
     //Ví dụ 7 giờ phải checkIn
     DateTime ruleTime =
-        DateTime(dateCheckIn.year, dateCheckIn.month, dateCheckIn.day, 7, 0)
-            .toLocal();
+        DateTime(dateCheckIn.year, dateCheckIn.month, dateCheckIn.day, 7, 0);
     var difference = dateCheckIn.difference(ruleTime);
     //Tới sớm
     if (difference.inMinutes < 0) {
@@ -219,13 +223,13 @@ class _TrackingScreenState extends State<TrackingScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppText14(
-                            '${'date_attendance'.tr} ${todayCheckIn.dateAttendance?.toLocal().hour}h',
+                            '${'date_attendance'.tr} ${todayCheckIn.dateAttendance?.hour}h',
                             color: theme.colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
                           ),
                           SizedBox(height: 10.h),
                           AppText16(
-                            _checkDelay(todayCheckIn.dateAttendance!.toLocal()),
-                            fontWeight: FontWeight.bold,
+                            _checkDelay(todayCheckIn.dateAttendance!),
                             color: theme.colorScheme.onPrimary,
                           ),
                         ],
@@ -241,11 +245,11 @@ class _TrackingScreenState extends State<TrackingScreen> {
               child: Align(
                 alignment: Alignment.center,
                 child: DatePicker(
+                  now.subtract(const Duration(days: 27)),
                   height: 90.h,
-                  // locale: Get.find<LocalizationController>().locale.languageCode,
-                  now.subtract(const Duration(days: 2)),
+                  controller: _datePickerController,
                   initialSelectedDate: now,
-                  daysCount: 5,
+                  daysCount: 30,
                   selectionColor: theme.colorScheme.primary,
                   selectedTextColor: theme.colorScheme.onPrimary,
                   onDateChange: (selectedDate) {

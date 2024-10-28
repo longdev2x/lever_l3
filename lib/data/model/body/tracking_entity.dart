@@ -24,7 +24,7 @@ class TrackingEntity {
         id: json['id'],
         content: json['content'],
         date: json['date'] != null
-            ? DateTime.tryParse(json['date'])?.toLocal()
+            ? DateTime.tryParse(json['date'])
             : null,
         user: User.fromJson(json['user']),
       );

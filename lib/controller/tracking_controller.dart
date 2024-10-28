@@ -36,17 +36,9 @@ class TrackingController extends GetxController implements GetxService {
     return response.statusCode!;
   }
 
-  Future<int> filterList(DateTime date) async {
+  void filterList(DateTime? date) async {
     _dateFilter = date;
     update();
-
-    int statusCode = await getTracking();
-    if (statusCode != 200) {
-      return statusCode;
-    }
-    _trackings = _trackings?.where((e) => e.date?.day == date.day).toList();
-    update();
-    return 200;
   }
 
   Future<int> saveTracking({required String content}) async {
@@ -63,7 +55,10 @@ class TrackingController extends GetxController implements GetxService {
     update();
 
     Response response = await repo.updateCurrentUserTracking(objTracking);
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200) {
+      TrackingEntity objTracking = TrackingEntity.fromJson(response.body);
+      _trackings = [...?_trackings, objTracking];
+    } else {
       ApiChecker.checkApi(response);
     }
     _loading = false;

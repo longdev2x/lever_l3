@@ -106,7 +106,7 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
                         children: [
                           Expanded(
                               child: AppTextField(
-                            hintText: 'last_name'.tr,
+                            lable: 'last_name'.tr,
                             controller: _lastnameController,
                           )),
                           SizedBox(
@@ -114,7 +114,7 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
                           ),
                           Expanded(
                               child: AppTextField(
-                            hintText: 'first_name'.tr,
+                            lable: 'first_name'.tr,
                             controller: _firstnameController,
                           )),
                         ],
@@ -160,22 +160,22 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
                       ),
                       SizedBox(height: 20.h),
                       AppTextField(
-                        hintText: 'birth_place'.tr,
+                        lable: 'birth_place'.tr,
                         controller: _birthPlaceController,
                       ),
                       SizedBox(height: 20.h),
                       AppTextField(
-                        hintText: 'email'.tr,
+                        lable: 'email'.tr,
                         controller: _emailController,
                       ),
                       SizedBox(height: 20.h),
                       AppTextField(
-                        hintText: 'university'.tr,
+                        lable: 'university'.tr,
                         controller: _universityNameController,
                       ),
                       SizedBox(height: 20.h),
                       AppTextField(
-                        hintText: 'year_student'.tr,
+                        lable: 'year_student'.tr,
                         controller: _yearController,
                       ),
                       SizedBox(height: 50.h),

@@ -41,12 +41,9 @@ class TrackingHistoryScreen extends StatelessWidget {
       initialDate: now,
     );
     if (date != null) {
-      int code = await Get.find<TrackingController>().filterList(date);
-      if (code == 200) {
-        AppToast.showToast('apply_filters'.tr);
-      }
+      Get.find<TrackingController>().filterList(date);
     } else {
-      await Get.find<TrackingController>().getTracking();
+      Get.find<TrackingController>().filterList(null);
     }
   }
 
@@ -69,7 +66,7 @@ class TrackingHistoryScreen extends StatelessWidget {
         ],
       ),
       body: GetBuilder<TrackingController>(
-        // initState: (state) => Get.find<TrackingController>().getTracking(),
+        initState: (state) => Get.find<TrackingController>().getTracking(),
         builder: (controller) {
           List<TrackingEntity>? list = controller.trackings?.reversed.toList();
 
@@ -78,7 +75,21 @@ class TrackingHistoryScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          if (list == null || list.isEmpty) {
+
+          if (list == null) {
+            return Center(
+              child: AppText20('error'.tr),
+            );
+          }
+
+          //Filter
+          if (controller.dateFilter != null) {
+            list = list
+                .where((e) => e.date?.day == controller.dateFilter?.day)
+                .toList();
+          }
+
+          if (list.isEmpty) {
             return Center(
               child: AppText20('empty_list'.tr),
             );
@@ -90,14 +101,14 @@ class TrackingHistoryScreen extends StatelessWidget {
               itemCount: list.length,
               itemBuilder: (context, index) {
                 return Dismissible(
-                  key: ValueKey(list[index].id),
+                  key: ValueKey(list![index].id),
                   confirmDismiss: (direction) async {
                     return await showDialog(
                       context: context,
                       builder: (context) => AppConfirm(
                         title: 'are_you_sure_to_delete_this_schedule'.tr,
                         onConfirm: () async {
-                          bool result = await _onDelete(list[index].id);
+                          bool result = await _onDelete(list![index].id);
 
                           if (context.mounted) {
                             Navigator.pop(context, result);
@@ -108,11 +119,9 @@ class TrackingHistoryScreen extends StatelessWidget {
                   },
                   background: Container(
                     margin: EdgeInsets.only(bottom: 9.h),
-                    // padding: EdgeInsets.only(bottom: 10.h),
                     decoration: BoxDecoration(
                         color: ColorResources.getRedColor(),
                         borderRadius: BorderRadius.circular(16)),
-                    // padding: EdgeInsets.only(right: 100.w),
                     child: Align(
                       alignment: Alignment.center,
                       child: AppText20(

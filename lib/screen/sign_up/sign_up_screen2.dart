@@ -79,18 +79,18 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AppTextField(
-                          hintText: 'display_name'.tr,
+                          lable: 'display_name'.tr,
                           controller: _displayNameController,
                         ),
                         SizedBox(height: 20.h),
                         AppTextField(
-                          hintText: 'username'.tr,
+                          lable: 'username'.tr,
                           controller: _usernameController,
                         ),
                         SizedBox(height: 20.h),
                         Obx(
                           () => AppTextField(
-                            hintText: 'password'.tr,
+                            lable: 'password'.tr,
                             controller: _passwordController,
                             obscureText: _showPass.value,
                             onObscureTextTap: () {
@@ -101,7 +101,7 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                         SizedBox(height: 20.h),
                         Obx(
                           () => AppTextField(
-                            hintText: 'confirm_password'.tr,
+                            lable: 'confirm_password'.tr,
                             controller: _rePasswordController,
                             obscureText: _showConfirmPass.value,
                             onObscureTextTap: () {
