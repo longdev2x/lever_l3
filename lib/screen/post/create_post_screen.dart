@@ -37,8 +37,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       AppToast.showToast('Chưa có nội dung');
       return;
     }
-    int statusCode =
-        await Get.find<PostController>().createPost(content: content);
+    int statusCode = await Get.find<PostController>().createPost(content: content);
+
     if (statusCode == 200 && mounted) {
       Get.find<PostController>().removeXfile();
       Navigator.pop(context);
@@ -124,7 +124,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               onPressed: () {
                                 Get.find<PostController>().getImage();
                               },
-                              child: const Text('Check Get Iagmes')),
+                              child: const Text('Check Get Img, Do sever k lưu')),
                         ],
                       ),
                       SizedBox(height: 20.h),

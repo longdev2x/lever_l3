@@ -40,7 +40,6 @@ class PostController extends GetxController implements GetxService {
     getPosts(keyWord: null, pageIndex: 0, size: 300, status: null);
   }
 
-
   Future<int> getPosts({
     String? keyWord,
     required int pageIndex,
@@ -92,7 +91,11 @@ class PostController extends GetxController implements GetxService {
     List<MediaEntity>? medias;
     if (_mediaFiles != null) {
       print('zzu- 1 - start');
-      medias = await uploadImages(_mediaFiles!);
+      MediaEntity? objMedia = await uploadImages(_mediaFiles!);
+      if (objMedia != null) {
+        //Để tạm thời
+        medias = [objMedia];
+      } else {}
       print('zzu- 2 - done upload - $medias');
       print('zzu- 3 - check name file- ${medias?[0].name}');
     }
@@ -110,6 +113,8 @@ class PostController extends GetxController implements GetxService {
     _loading = true;
     update();
 
+    return 400;
+
     Response response = await repo.createPost(objPost);
 
     if (response.statusCode == 200) {
@@ -124,18 +129,17 @@ class PostController extends GetxController implements GetxService {
     return response.statusCode!;
   }
 
-  Future<List<MediaEntity>?> uploadImages(List<XFile> xFiles) async {
+  Future<MediaEntity?> uploadImages(List<XFile> xFiles) async {
     // Thằng này trả về Media json
     Response response = await repo.uploadImages(xFiles);
     print('zzu- 1. 2 - start - ${response.body}');
 
     if (response.statusCode == 200) {
       if (response.body != null) {
-        return (response.body as List)
-            .map((e) => MediaEntity.fromJson(e))
-            .toList();
+        _filePath = response.body['name'];
+        return MediaEntity.fromJson(response.body);
       }
-      _filePath = response.body['name'];
+
       print('zzz -1 .3 $_filePath');
     } else {
       ApiChecker.checkApi(response);

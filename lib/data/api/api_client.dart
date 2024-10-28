@@ -94,7 +94,6 @@ class ApiClient extends GetxService {
 
   Future<Response> postData(
       String uri, dynamic body, Map<String, String>? headers, {int? id}) async {
-         print('zzzz');
      String fullUri = appBaseUrl + uri;
     if(id != null) {
       fullUri = fullUri.replaceFirst('{id}', id.toString());

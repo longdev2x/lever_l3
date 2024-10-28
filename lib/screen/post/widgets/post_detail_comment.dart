@@ -10,6 +10,7 @@ class PostDetailComment extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: comments.length,
       itemBuilder: (ctx, index) => CommentItem(objComment: comments[index],),);
   }

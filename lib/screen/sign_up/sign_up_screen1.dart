@@ -191,6 +191,7 @@ class _SignUpScreen1State extends State<SignUpScreen1> {
                               text: '${'you_already_have_an_account'.tr}  ',
                               style: TextStyle(
                                 fontSize: 18.sp,
+                                color: theme.colorScheme.onSurfaceVariant
                               ),
                               children: [
                                 TextSpan(

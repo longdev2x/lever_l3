@@ -136,8 +136,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           builder: (controller) {
             return Stack(
               children: [
-                SizedBox(
+                Container(
                   height: 1.sh,
+                  padding: EdgeInsets.only(bottom: 60.h),
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 0),
