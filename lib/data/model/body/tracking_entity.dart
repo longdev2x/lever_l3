@@ -8,6 +8,18 @@ class TrackingEntity {
 
   TrackingEntity({this.id, this.content, this.date, this.user});
 
+  TrackingEntity copyWith({
+    String? content,
+    DateTime? date,
+    User? user,
+  }) =>
+      TrackingEntity(
+        id: id,
+        content: content ?? this.content,
+        date: date ?? this.date,
+        user: user ?? this.user,
+      );
+
   factory TrackingEntity.fromJson(Map<String, dynamic> json) => TrackingEntity(
         id: json['id'],
         content: json['content'],

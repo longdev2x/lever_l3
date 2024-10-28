@@ -15,6 +15,8 @@ class AppConstants {
   static const String GET_CHECK_IN = '/mita/time-sheets';
   static const String CHECK_IN = '/mita/time-sheets/check-in';
   static const String TRACKING = '/mita/tracking';
+  static const String EDIT_TRACKING = '/mita/tracking/{id}';
+  static const String DELETE_TRACKING = '/mita/tracking/{id}';
   static const String SEARCH_USER = '/mita/users/searchByPage';
   static const String UPDATE_INFO = '/mita/users/update-myself/';
   static const String UPDATE_USER_FOR_ADMIN = '/mita/users/update/{id}';
@@ -25,6 +27,8 @@ class AppConstants {
   static const String LIKE_POST = '/mita/posts/likes/{id}';
   static const String SEND_COMMENT = '/mita/posts/comments/{id}';
   static const String GET_NOTIFICATION = '/mita/notifications';
+  static const String ROLE_USER= 'ROLE_USER';
+  static const String ROLE_ADMIN= 'ROLE_ADMIN';
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';

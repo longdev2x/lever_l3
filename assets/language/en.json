@@ -1,4 +1,7 @@
 {
+  "update_successful" : "Update Successful",
+  "delete_successful" : "Delete successful",
+  "delete_not_successful" : "Delete not successful",
   "what_are_you_thinking" : "What are you thingking?",
   "minutes_ago" : "minutes ago",
   "days_ago" : "days ago",

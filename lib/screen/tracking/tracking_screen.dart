@@ -13,6 +13,7 @@ import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
 import 'package:timesheet/view/app_text_field.dart';
+import 'package:timesheet/view/app_toast.dart';
 
 class TrackingScreen extends StatefulWidget {
   const TrackingScreen({super.key});
@@ -42,8 +43,11 @@ class _TrackingScreenState extends State<TrackingScreen> {
     _contentTrackingController.dispose();
   }
 
-  void _checkIn() {
-    Get.find<CheckInController>().checkIn();
+  void _checkIn() async {
+    int statusCode = await Get.find<CheckInController>().checkIn();
+    if (statusCode == 200) {
+      AppToast.showToast('CheckIn thành công');
+    }
   }
 
   void onTracking() async {
@@ -53,9 +57,21 @@ class _TrackingScreenState extends State<TrackingScreen> {
           await Get.find<TrackingController>().saveTracking(content: content);
       if (statusCode == 200) {
         _contentTrackingController.clear();
+        if (statusCode == 200) {
+          AppToast.showToast('Tracking thành công');
+        }
         Get.to(() => const TrackingHistoryScreen());
       }
     }
+  }
+
+  void _onHistory(BuildContext context, DateTime? date) async {
+    if (date == null) {
+      await Get.find<TrackingController>().getTracking();
+    } else {
+      await Get.find<TrackingController>().filterList(date);
+    }
+    Get.to(() => const TrackingHistoryScreen());
   }
 
   String _checkDelay(DateTime dateCheckIn) {
@@ -184,10 +200,6 @@ class _TrackingScreenState extends State<TrackingScreen> {
                       if (listCheckIn.isEmpty ||
                           listCheckIn.last.dateAttendance?.toLocal().day !=
                               nowDay) {
-                        // return SizedBox(width: 130.w, child: AppButton(
-                        //   ontap: _checkIn,
-                        //   name: 'check_in'.tr,
-                        // ),);
                         return ElevatedButton(
                           onPressed: _checkIn,
                           style: ButtonStyle(
@@ -236,8 +248,9 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   daysCount: 5,
                   selectionColor: theme.colorScheme.primary,
                   selectedTextColor: theme.colorScheme.onPrimary,
-                  activeDates: [now],
-                  onDateChange: (selectedDate) {},
+                  onDateChange: (selectedDate) {
+                    _onHistory(context, selectedDate);
+                  },
                 ),
               ),
             ),
@@ -263,7 +276,7 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   SizedBox(height: 10.h),
                   GestureDetector(
                       onTap: () {
-                        Get.to(() => const TrackingHistoryScreen());
+                        _onHistory(context, null);
                       },
                       child: AppText16(
                         '${'history'.tr} tracking',

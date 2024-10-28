@@ -1,8 +1,6 @@
-
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/data/api/api_checker.dart';
-import 'package:timesheet/data/model/body/check_in_entity.dart';
 import 'package:timesheet/data/model/body/tracking_entity.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/data/repository/tracking_repo.dart';
@@ -13,19 +11,21 @@ class TrackingController extends GetxController implements GetxService {
   TrackingController({required this.repo});
 
   bool _loading = false;
-  CheckInEntity? _objCheckIn;
+  List<TrackingEntity>? _trackings;
+  DateTime? _dateFilter;
 
   bool get loading => _loading;
-  CheckInEntity? get objCheckIn => _objCheckIn;
+  DateTime? get dateFilter => _dateFilter;
+  List<TrackingEntity>? get trackings => _trackings;
 
-  Future<List<TrackingEntity>> getTracking() async {
+  Future<int> getTracking() async {
     _loading = true;
     update();
 
     Response response = await repo.getCurrentUserTracking();
 
     if (response.statusCode == 200) {
-      return List.from(response.body)
+      _trackings = List.from(response.body)
           .map((json) => TrackingEntity.fromJson(json))
           .toList();
     } else {
@@ -33,7 +33,20 @@ class TrackingController extends GetxController implements GetxService {
     }
     _loading = false;
     update();
-    return [];
+    return response.statusCode!;
+  }
+
+  Future<int> filterList(DateTime date) async {
+    _dateFilter = date;
+    update();
+
+    int statusCode = await getTracking();
+    if (statusCode != 200) {
+      return statusCode;
+    }
+    _trackings = _trackings?.where((e) => e.date?.day == date.day).toList();
+    update();
+    return 200;
   }
 
   Future<int> saveTracking({required String content}) async {
@@ -55,6 +68,41 @@ class TrackingController extends GetxController implements GetxService {
     }
     _loading = false;
     update();
+    return response.statusCode!;
+  }
+
+  Future<int> editTracking(TrackingEntity objTracking,
+      {required String newContent}) async {
+    objTracking = objTracking.copyWith(
+      content: newContent,
+    );
+
+    _loading = true;
+    update();
+
+    Response response = await repo.editTracking(objTracking);
+
+    if (response.statusCode == 200) {
+      int index = _trackings!.indexWhere((e) => e.id == objTracking.id);
+      _trackings![index] = objTracking;
+    } else {
+      ApiChecker.checkApi(response);
+    }
+
+    _loading = false;
+    update();
+    return response.statusCode!;
+  }
+
+  Future<int> deleteTracking({required int id}) async {
+    Response response = await repo.deleteTracking(id);
+
+    if (response.statusCode == 200) {
+      _trackings!.removeWhere((e) => e.id == id);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+
     return response.statusCode!;
   }
 }

@@ -60,7 +60,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     Get.find<ProfileController>().updateInfo(gender: gender);
   }
 
-  void _onSubmit() {
+  void _onSubmit() async {
     int? year;
     if (_displayNameController.text.trim().length < 5) {
       AppToast.showToast('${'display_name'.tr} ${'must_be_greater'.trParams({
@@ -77,7 +77,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return;
     }
 
-    Get.find<ProfileController>().updateInfo(
+    int statusCode = await Get.find<ProfileController>().updateInfo(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
       displayName: _displayNameController.text.trim(),
@@ -85,6 +85,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       university: _universityController.text.trim(),
       year: year,
     );
+
+    if(statusCode == 200) {
+      AppToast.showToast('Cập nhật thành công');
+      Get.back();
+    }
   }
 
   void _onDatePicker() async {

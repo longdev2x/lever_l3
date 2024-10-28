@@ -112,9 +112,7 @@ class PostController extends GetxController implements GetxService {
 
     _loading = true;
     update();
-
-    return 400;
-
+    
     Response response = await repo.createPost(objPost);
 
     if (response.statusCode == 200) {

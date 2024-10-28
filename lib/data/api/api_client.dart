@@ -189,16 +189,21 @@ class ApiClient extends GetxService {
     }
   }
 
-  Future<Response> deleteData(String uri,
+  Future<Response> deleteData(String uri, int? id,
       {Map<String, String>? headers}) async {
+
+    String fullURL = appBaseUrl + uri;
+    if(id != null) {
+      fullURL = fullURL.replaceFirst('{id}', id.toString());
+    }
     try {
       if (foundation.kDebugMode) {
         logger.i(
-            'Delete Request: ${appBaseUrl + uri}\nHeader: ${headers ?? _mainHeaders}');
+            'Delete Request: ${fullURL}\nHeader: ${headers ?? _mainHeaders}');
       }
       http.Response response = await http
           .delete(
-            Uri.parse(appBaseUrl + uri),
+            Uri.parse(fullURL),
             headers: headers ?? _mainHeaders,
           )
           .timeout(Duration(seconds: timeoutInSeconds));

@@ -71,7 +71,7 @@ class AuthRepo extends GetxService{
   }
 
   Future<Response> logOut() async {
-    return await apiClient.deleteData(AppConstants.LOG_OUT);
+    return await apiClient.deleteData(AppConstants.LOG_OUT, null);
   }
 
   Future<Response> getCurrentUser() async {

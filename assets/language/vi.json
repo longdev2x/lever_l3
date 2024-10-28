@@ -1,4 +1,7 @@
 {
+  "update_successful" : "Sửa thành công",
+  "delete_successful" : "Xoá thành công",
+  "delete_not_successful" : "Xoá thất bại",
   "what_are_you_thinking" : "Bạn đang nghĩ gì?",
   "minutes_ago" : "phút trước",
   "days_ago" : "ngày trước",

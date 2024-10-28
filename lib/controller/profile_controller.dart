@@ -13,7 +13,10 @@ class ProfileController extends GetxController implements GetxService {
   ProfileController({required this.repo});
 
   User? _user;
+  bool _loading = false;
+
   User? get user => _user;
+  bool get loading => _loading;
 
   @override
   void onInit() {
@@ -69,16 +72,20 @@ class ProfileController extends GetxController implements GetxService {
       year: year,
     );
 
+    _loading = true;
     update();
 
     Response response = await repo.updateInfo(_user!);
 
     if (response.statusCode == 200) {
+      _user = User.fromJson(response.body);
+      
       Get.find<AuthController>().updateUser(_user!);
     } else {
       ApiChecker.checkApi(response);
     }
 
+    _loading = false;
     update();
     return response.statusCode!;
   }
@@ -135,32 +142,32 @@ class ProfileController extends GetxController implements GetxService {
     User oldUser = objUser;
 
     objUser = objUser.copyWith(
-        active: active,
-        changePass: changePass,
-        setPassword: setPassword,
-        hasPhoto: hasPhoto,
-        tokenDevice: tokenDevice,
-        birthPlace: birthPlace,
-        confirmPassword: confirmPassword,
-        countDayCheckin: countDayCheckin,
-        countDayTracking: countDayTracking,
-        displayName: displayName,
-        dob: dob,
-        email: email,
-        firstName: firstName,
-        gender: gender,
-        image: image,
-        lastName: lastName,
-        password: password,
-        roles: roles,
-        university: university,
-        username: username,
-        year: year ,
+      active: active,
+      changePass: changePass,
+      setPassword: setPassword,
+      hasPhoto: hasPhoto,
+      tokenDevice: tokenDevice,
+      birthPlace: birthPlace,
+      confirmPassword: confirmPassword,
+      countDayCheckin: countDayCheckin,
+      countDayTracking: countDayTracking,
+      displayName: displayName,
+      dob: dob,
+      email: email,
+      firstName: firstName,
+      gender: gender,
+      image: image,
+      lastName: lastName,
+      password: password,
+      roles: roles,
+      university: university,
+      username: username,
+      year: year,
     );
     update();
 
     Response response = await repo.updateUserForAdmin(objUser);
-    if(response.statusCode != 200) {
+    if (response.statusCode != 200) {
       ApiChecker.checkApi(response);
       objUser = oldUser;
     }
@@ -168,6 +175,5 @@ class ProfileController extends GetxController implements GetxService {
     update();
 
     return response.statusCode!;
-
   }
 }

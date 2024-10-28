@@ -4,6 +4,7 @@ import 'package:timesheet/data/model/body/role.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/data/model/response/token_resposive.dart';
 import 'package:timesheet/data/repository/auth_repo.dart';
+import 'package:timesheet/utils/app_constants.dart';
 
 class AuthController extends GetxController implements GetxService {
   final AuthRepo repo;
@@ -17,7 +18,8 @@ class AuthController extends GetxController implements GetxService {
   User get user => _user;
 
   Future<int> signUp(User objUser) async {
-    Role role = Role(null, 'ROLE_USER', 'ROLE_USER');
+    Role role = Role(null, AppConstants.ROLE_USER, AppConstants.ROLE_USER);
+
     objUser = objUser.copyWith(active: true, changePass: true, roles: [role]);
     _loading = true;
     update();
