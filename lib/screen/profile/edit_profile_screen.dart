@@ -174,7 +174,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           },
                           iconPath: Images.icGenderMan,
                           text: 'male'.tr,
-                          isChose: objUser.gender == 'M'),
+                          isChose: objUser.gender == 'M' || (objUser.gender != 'M' && objUser.gender != 'F')),
                       SizedBox(width: 10.w),
                       _genderPicker(
                           onTap: () {

@@ -57,6 +57,7 @@ class HomeBottomNavBar extends StatelessWidget {
           imagePath: objBottom.icon,
           height: 25,
           width: 25,
+          color: theme.colorScheme.onSurface,
         ),
       );
 }
