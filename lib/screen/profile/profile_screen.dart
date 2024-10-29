@@ -48,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    ProfileAvatarWidget(avatar: objUser.image),
+                    const ProfileAvatarWidget(),
                     SizedBox(height: 15.h),
                     AppText20(
                         '${objUser.username} (${isAdmin ? 'ADMIN' : 'user'.tr.toUpperCase()})',

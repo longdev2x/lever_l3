@@ -1,11 +1,10 @@
-
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/data/api/api_client.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/utils/app_constants.dart';
 
-class ProfileRepo extends GetxService{
+class ProfileRepo extends GetxService {
   final ApiClient apiClient;
 
   ProfileRepo({required this.apiClient});
@@ -27,6 +26,13 @@ class ProfileRepo extends GetxService{
     );
   }
 
+  Future<Response> getFile(String filePath) async {
+    return await apiClient.getImageData(
+      AppConstants.GET_FILE,
+      nameFile: filePath,
+    );
+  }
+
   Future<Response> uploadFile(XFile xFile) async {
     return await apiClient.postMultipartData(
       AppConstants.UPLOAD_FILE,
@@ -35,14 +41,4 @@ class ProfileRepo extends GetxService{
       headers: null,
     );
   }
-
-  Future<Response> getFile(String nameFile) async {
-    return await apiClient.getImageData(
-      AppConstants.GET_FILE,
-      nameFile: nameFile,
-      headers: null,
-    );
-  }
-
-
 }

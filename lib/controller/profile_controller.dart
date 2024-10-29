@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/data/api/api_checker.dart';
 import 'package:timesheet/data/model/body/file_entity.dart';
@@ -14,9 +17,11 @@ class ProfileController extends GetxController implements GetxService {
 
   User? _user;
   bool _loading = false;
+  File? _fileAvatar;
 
   User? get user => _user;
   bool get loading => _loading;
+  File? get fileAvatar => _fileAvatar;
 
   @override
   void onInit() {
@@ -175,5 +180,28 @@ class ProfileController extends GetxController implements GetxService {
     update();
 
     return response.statusCode!;
+  }
+
+
+  Future<void> getImage() async {
+    if(_user?.image == null) {
+      return;
+    }
+
+    Response response = await repo.getFile(_user!.image!);
+
+    if (response.statusCode == 200) {
+      //Tạo file
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/testName');
+
+      //Ghi dữ liệu vào file
+      if (response.bodyString != null) {
+        _fileAvatar = await file.writeAsBytes(response.bodyString!.codeUnits);
+        update();
+      }
+    } else {
+      ApiChecker.checkApi(response);
+    }
   }
 }

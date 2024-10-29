@@ -126,7 +126,7 @@ class _EditMemberUserScreenState extends State<EditMemberUserScreen> {
               padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
               child: Column(
                 children: [
-                  ProfileAvatarWidget(avatar: widget.objUser.image),
+                  const ProfileAvatarWidget(),
                   SizedBox(height: 20.h),
                   Row(
                     children: [

@@ -124,11 +124,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           const Spacer(),
                           TextButton(
                             onPressed: () {
-                              if (Get.find<PostController>().filePath == null) {
-                                AppToast.showToast(
-                                    'Ấn đăng xong quay lại mới test được ạ');
-                                return;
-                              }
                               Get.find<PostController>().getImage();
                             },
                             child: const Text('Test Get Img'),
@@ -145,6 +140,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       SizedBox(height: 20.h),
                       //Hàng ảnh
                       const CreatePostImageWidget(maxImages: 5),
+                      //Khu Test Ảnh
                       GetBuilder<PostController>(
                         builder: (controller) {
                           if (controller.filePng != null) {

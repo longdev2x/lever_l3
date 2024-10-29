@@ -78,7 +78,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
 
     int statusCode = await Get.find<ProfileController>().updateInfo(
-      image: 'src/main/resources/uploads/images/2024-10-29 06:24:27.664070.png',
+      image: '2024-10-29 06:24:27.664070.png',
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
       displayName: _displayNameController.text.trim(),
@@ -138,7 +138,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 0),
               child: Column(
                 children: [
-                  ProfileAvatarWidget(avatar: objUser.image),
+                  const ProfileAvatarWidget(),
                   SizedBox(height: 20.h),
                   Row(
                     children: [
