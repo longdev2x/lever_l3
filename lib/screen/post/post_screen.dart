@@ -52,6 +52,11 @@ class _PostScreenState extends State<PostScreen> {
 
     final ImagePicker picker = ImagePicker();
     final List<XFile> xFiles = await picker.pickMultiImage();
+
+    if (xFiles.isNotEmpty) {
+      Get.find<PostController>().addXFile(xFiles);
+      await Get.find<PostController>().uploadImages(xFiles);
+    }
     if (kDebugMode) {
       print(xFiles);
     }

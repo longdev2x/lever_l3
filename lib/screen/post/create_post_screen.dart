@@ -37,7 +37,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       AppToast.showToast('Chưa có nội dung');
       return;
     }
-    int statusCode = await Get.find<PostController>().createPost(content: content);
+    int statusCode =
+        await Get.find<PostController>().createPost(content: content);
 
     if (statusCode == 200 && mounted) {
       Get.find<PostController>().removeXfile();
@@ -69,6 +70,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     final List<XFile> xFiles = await picker.pickMultiImage();
     if (xFiles.isNotEmpty) {
       Get.find<PostController>().addXFile(xFiles);
+      await Get.find<PostController>().uploadImages(xFiles);
     }
     if (kDebugMode) {
       print(xFiles);
@@ -121,10 +123,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               fontWeight: FontWeight.bold),
                           const Spacer(),
                           TextButton(
-                              onPressed: () {
-                                Get.find<PostController>().getImage();
-                              },
-                              child: const Text('Check Get Img, Do sever k lưu')),
+                            onPressed: () {
+                              if (Get.find<PostController>().filePath == null) {
+                                AppToast.showToast(
+                                    'Ấn đăng xong quay lại mới test được ạ');
+                                return;
+                              }
+                              Get.find<PostController>().getImage();
+                            },
+                            child: const Text('Test Get Img'),
+                          ),
                         ],
                       ),
                       SizedBox(height: 20.h),

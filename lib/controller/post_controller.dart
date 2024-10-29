@@ -32,6 +32,7 @@ class PostController extends GetxController implements GetxService {
   bool get hasMoreData => _hasMoreData;
   List<XFile>? get xMediaFiles => _mediaFiles;
   File? get filePng => _filePng;
+  String? get filePath => _filePath;
 
   @override
   void onInit() {
@@ -250,7 +251,7 @@ class PostController extends GetxController implements GetxService {
 
       final index = _posts!.indexWhere((e) => e.id == objPost.id);
       posts![index] = objPost;
-      
+
     } else {
       ApiChecker.checkApi(response);
     }
