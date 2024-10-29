@@ -8,7 +8,7 @@ import 'package:timesheet/data/model/body/post_entity.dart';
 import 'package:timesheet/data/model/body/request/search_request.dart';
 import 'package:timesheet/utils/app_constants.dart';
 
-class PostRepo extends GetxService{
+class PostRepo extends GetxService {
   final ApiClient apiClient;
 
   PostRepo({required this.apiClient});
@@ -56,10 +56,16 @@ class PostRepo extends GetxService{
 
   Future<Response> comment(CommentEntity objComment) async {
     return await apiClient.postData(
-      AppConstants.SEND_COMMENT,
-      objComment.toJson(),
+        AppConstants.SEND_COMMENT, objComment.toJson(), null,
+        id: objComment.objPost?.id);
+  }
+
+  Future<Response> editPost(PostEntity objPost) async {
+    return await apiClient.postData(
+      AppConstants.EDIT_POST,
+      objPost.toJson(),
       null,
-      id: objComment.objPost?.id
+      id: objPost.id,
     );
   }
 }

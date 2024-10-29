@@ -112,7 +112,7 @@ class PostController extends GetxController implements GetxService {
 
     _loading = true;
     update();
-    
+
     Response response = await repo.createPost(objPost);
 
     if (response.statusCode == 200) {
@@ -217,6 +217,41 @@ class PostController extends GetxController implements GetxService {
     print('zzz89');
     if (response.statusCode != 200) {
       objPost.comments.remove(objComment);
+      ApiChecker.checkApi(response);
+    }
+
+    update();
+    return response.statusCode!;
+  }
+
+  Future<int> editPost(
+    PostEntity objPost,
+    String newContent,
+  ) async {
+    objPost = objPost.copyWith(content: newContent, media: [
+      //Em để test ạ
+      MediaEntity(
+        id: 0,
+        contentType: 'application/octet-stream',
+        contentSize: 237056,
+        name: '2024-10-29 06:24:27.664070.png',
+        extension: null,
+        filePath:
+            'src/main/resources/uploads/images/2024-10-29 06:24:27.664070.png',
+        isVideo: null,
+        objPost: null,
+      ),
+    ]);
+
+    Response response = await repo.editPost(objPost);
+
+    if (response.statusCode == 200) {
+      objPost = PostEntity.fromJson(response.body['data']);
+
+      final index = _posts!.indexWhere((e) => e.id == objPost.id);
+      posts![index] = objPost;
+      
+    } else {
       ApiChecker.checkApi(response);
     }
 

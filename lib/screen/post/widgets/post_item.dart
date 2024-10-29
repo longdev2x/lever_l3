@@ -8,19 +8,35 @@ import 'package:timesheet/data/model/body/post_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/post/post_detail_screen.dart';
 import 'package:timesheet/utils/images.dart';
+import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
+import 'package:timesheet/view/app_text_field.dart';
+import 'package:timesheet/view/app_toast.dart';
 
-class PostItem extends StatelessWidget {
+class PostItem extends StatefulWidget {
   final PostEntity objPost;
   const PostItem({super.key, required this.objPost});
+
+  @override
+  State<PostItem> createState() => _PostItemState();
+}
+
+class _PostItemState extends State<PostItem> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   bool _checkLiked(int? currentId, List<LikeEntity> likes) {
     return likes.any((e) => e.user?.id == currentId);
   }
 
   void _onLike() {
-    Get.find<PostController>().likePost(DateTime.now(), objPost);
+    Get.find<PostController>().likePost(DateTime.now(), widget.objPost);
   }
 
   String _getDateFormat(DateTime? date) {
@@ -40,11 +56,75 @@ class PostItem extends StatelessWidget {
       int days = now.difference(date).inDays;
       return '$days ${'days_ago'.tr}';
     }
-    return '${DateConverter.getWeekDay(objPost.date!)} - ${'days'} ${DateConverter.getOnlyFomatDate(objPost.date!)}';
+    return '${DateConverter.getWeekDay(widget.objPost.date!)} - ${'days'} ${DateConverter.getOnlyFomatDate(widget.objPost.date!)}';
   }
 
   void _navigateToDetail() {
-    Get.to(() => const PostDetailScreen(), arguments: {'objPost': objPost});
+    Get.to(() => const PostDetailScreen(),
+        arguments: {'postId': widget.objPost.id});
+  }
+
+  void _onEditPost() {
+    _controller.text = widget.objPost.content ?? '';
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const AppText20('Chỉnh sửa'),
+                SizedBox(height: 10.h),
+                AppTextAreaField(
+                  lable: 'Nội dung',
+                  controller: _controller,
+                  maxLength: 1000,
+                  maxLines: 5,
+                ),
+                SizedBox(height: 20.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppButton(
+                        name: 'Submit',
+                        ontap: () async {
+                          if (_controller.text.isEmpty) {
+                            AppToast.showToast('Chưa có nội dung');
+                            return;
+                          }
+                          int statusCode =
+                              await Get.find<PostController>().editPost(
+                            widget.objPost,
+                            _controller.text,
+                          );
+                          if (statusCode == 200) {
+                            AppToast.showToast('Update thành công');
+                          }
+                          Get.back();
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 20.w),
+                    Expanded(
+                      child: AppButton(
+                        name: 'Canclle',
+                        ontap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -64,8 +144,8 @@ class PostItem extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: objPost.user?.image != null
-                      ? NetworkImage(objPost.user!.image!)
+                  backgroundImage: widget.objPost.user?.image != null
+                      ? NetworkImage(widget.objPost.user!.image!)
                       : const AssetImage(Images.imgAvatarDefault)
                           as ImageProvider,
                   radius: 25,
@@ -75,37 +155,36 @@ class PostItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText16(
-                      objPost.user?.displayName,
+                      widget.objPost.user?.displayName,
                       fontWeight: FontWeight.bold,
                     ),
-                    AppText14(_getDateFormat(objPost.date)),
+                    AppText14(_getDateFormat(widget.objPost.date)),
                   ],
                 ),
                 const Spacer(),
                 AppImageAsset(
-                  onTap: () {},
-                  imagePath: Images.icThreeDotVeti,
-                  width: 3,
-                  height: 15,
+                  onTap: _onEditPost,
+                  imagePath: Images.icEditPost,
+                  width: 30,
+                  height: 30,
                 ),
               ],
             ),
             SizedBox(height: 10.h),
             AppText20(
-              objPost.content,
+              widget.objPost.content,
               maxLines: null,
             ),
             SizedBox(height: 50.h),
             Padding(
               padding: EdgeInsets.only(left: 5.w),
               child: _reactButton(
-                onLikeTap: _onLike,
-                onCommentTap: () {
-                  _navigateToDetail();
-                },
-                isLiked: _checkLiked(currentId, objPost.likes),
-                theme: theme
-              ),
+                  onLikeTap: _onLike,
+                  onCommentTap: () {
+                    _navigateToDetail();
+                  },
+                  isLiked: _checkLiked(currentId, widget.objPost.likes),
+                  theme: theme),
             ),
             SizedBox(width: 14.w),
             Padding(
@@ -115,8 +194,8 @@ class PostItem extends StatelessWidget {
                   onCommentTap: () {
                     _navigateToDetail();
                   },
-                  reactInfors: objPost.likes,
-                  commentCounts: objPost.comments.length),
+                  reactInfors: widget.objPost.likes,
+                  commentCounts: widget.objPost.comments.length),
             ),
           ],
         ),
@@ -192,7 +271,9 @@ class PostItem extends StatelessWidget {
           imagePath: Images.icReacLike,
           height: 25,
           width: 25,
-          color: isLiked ? const Color.fromARGB(255, 39, 27, 207) : theme.colorScheme.onSurface,
+          color: isLiked
+              ? const Color.fromARGB(255, 39, 27, 207)
+              : theme.colorScheme.onSurface,
         ),
         SizedBox(width: 30.w),
         AppImageAsset(

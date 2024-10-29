@@ -28,6 +28,7 @@ class Images {
   static const String icArrowBack = 'assets/image/icArrowBack.png';
   static const String icSend = 'assets/image/icSend.png';
   static const String icOut = 'assets/image/icOut.png';
+  static const String icEditPost = 'assets/image/icEditPost.png';
   //Profile
   static const String icGenderMan= 'assets/image/ic_gender_man.png';
   static const String icGenderWoman= 'assets/image/ic_gender_woman.png';

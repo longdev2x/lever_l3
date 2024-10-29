@@ -9,9 +9,11 @@ import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/post/widgets/post_detail_comment.dart';
 
 import 'package:timesheet/utils/images.dart';
+import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_text.dart';
 import 'package:timesheet/view/app_text_field.dart';
+import 'package:timesheet/view/app_toast.dart';
 
 class PostDetailScreen extends StatefulWidget {
   const PostDetailScreen({super.key});
@@ -21,13 +23,13 @@ class PostDetailScreen extends StatefulWidget {
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
-  late final PostEntity objPost;
+  late final int postId;
   final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    objPost = Get.arguments['objPost'] as PostEntity;
+    postId = Get.arguments['postId'] as int;
   }
 
   @override
@@ -36,7 +38,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     _controller.dispose();
   }
 
-  void _onLike() {
+  void _onLike(PostEntity objPost) {
     Get.find<PostController>().likePost(DateTime.now(), objPost);
   }
 
@@ -44,7 +46,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     return likes.any((e) => e.user?.id == currentId);
   }
 
-  String _getDateFormat(DateTime? date) {
+  String _getDateFormat(DateTime? date, PostEntity objPost) {
     if (date == null) return 'no_data_found'.tr;
     DateTime now = DateTime.now();
 
@@ -68,7 +70,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     Navigator.of(context).pop();
   }
 
-  void _onCommentSend() async {
+  void _onCommentSend(PostEntity objPost) async {
     String comment = _controller.text;
     if (comment.trim().isEmpty) return;
     int statusCode =
@@ -78,149 +80,218 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     }
   }
 
+  void _onEditPost(PostEntity objPost) {
+    _controller.text = objPost.content ?? '';
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const AppText20('Chỉnh sửa'),
+                SizedBox(height: 10.h),
+                AppTextAreaField(
+                  lable: 'Nội dung',
+                  controller: _controller,
+                  maxLength: 1000,
+                  maxLines: 5,
+                ),
+                SizedBox(height: 20.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppButton(
+                        name: 'Submit',
+                        ontap: () async {
+                          if (_controller.text.isEmpty) {
+                            AppToast.showToast('Chưa có nội dung');
+                            return;
+                          }
+                          int statusCode =
+                              await Get.find<PostController>().editPost(
+                            objPost,
+                            _controller.text,
+                          );
+                          if (statusCode == 200) {
+                            AppToast.showToast('Update thành công');
+                          }
+                          Get.back();
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 20.w),
+                    Expanded(
+                      child: AppButton(
+                        name: 'Canclle',
+                        ontap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     int? currentId = Get.find<AuthController>().user.id;
-    return Scaffold(
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.transparent,
-          flexibleSpace: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  AppImageAsset(
-                    imagePath: Images.icArrowBack,
-                    width: 12.w,
-                    height: 20.565.w,
-                    onTap: _onPop,
-                    color: theme.appBarTheme.foregroundColor,
-                  ),
-                  SizedBox(width: 20.w),
-                  CircleAvatar(
-                    backgroundImage: objPost.user?.image != null
-                        ? NetworkImage(objPost.user!.image!)
-                        : const AssetImage(Images.imgAvatarDefault)
-                            as ImageProvider,
-                    radius: 25,
-                  ),
-                  SizedBox(width: 12.w),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppText16(
-                        objPost.user?.displayName,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      AppText14(_getDateFormat(objPost.date)),
-                    ],
-                  ),
-                  const Spacer(),
-                  AppImageAsset(
-                    imagePath: Images.icThreeDotHori,
-                    width: 17.w,
-                    height: 3.86.w,
-                    onTap: () {},
-                    color: theme.appBarTheme.foregroundColor,
-                  ),
-                ],
+
+    return GetBuilder<PostController>(builder: (controller) {
+      PostEntity objPost = controller.posts!.firstWhere(
+        (objPost) => objPost.id == postId,
+      );
+
+      return Scaffold(
+        appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.transparent,
+            flexibleSpace: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    AppImageAsset(
+                      imagePath: Images.icArrowBack,
+                      width: 12.w,
+                      height: 20.565.w,
+                      onTap: _onPop,
+                      color: theme.appBarTheme.foregroundColor,
+                    ),
+                    SizedBox(width: 20.w),
+                    CircleAvatar(
+                      backgroundImage: objPost.user?.image != null
+                          ? NetworkImage(objPost.user!.image!)
+                          : const AssetImage(Images.imgAvatarDefault)
+                              as ImageProvider,
+                      radius: 25,
+                    ),
+                    SizedBox(width: 12.w),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText16(
+                          objPost.user?.displayName,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        AppText14(_getDateFormat(objPost.date, objPost)),
+                      ],
+                    ),
+                    const Spacer(),
+                    AppImageAsset(
+                      imagePath: Images.icEditPost,
+                      onTap: () => _onEditPost(objPost),
+                      width: 30,
+                      height: 30,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )),
-      body: SafeArea(
-        child: GetBuilder<PostController>(
-          builder: (controller) {
-            return Stack(
-              children: [
-                Container(
-                  height: 1.sh,
-                  padding: EdgeInsets.only(bottom: 60.h),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppText20(
-                            objPost.content,
-                            maxLines: null,
-                          ),
-                          SizedBox(height: 50.h),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5.w),
-                            child: _reactButton(
-                              onLikeTap: _onLike,
-                              onCommentTap: () {},
-                              theme: theme,
-                              isLiked: _checkLiked(
-                                currentId,
-                                objPost.likes,
+            )),
+        body: SafeArea(
+          child: GetBuilder<PostController>(
+            builder: (controller) {
+              return Stack(
+                children: [
+                  Container(
+                    height: 1.sh,
+                    padding: EdgeInsets.only(bottom: 60.h),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText20(
+                              objPost.content,
+                              maxLines: null,
+                            ),
+                            SizedBox(height: 50.h),
+                            Padding(
+                              padding: EdgeInsets.only(left: 5.w),
+                              child: _reactButton(
+                                onLikeTap: () => _onLike(objPost),
+                                onCommentTap: () {},
+                                theme: theme,
+                                isLiked: _checkLiked(
+                                  currentId,
+                                  objPost.likes,
+                                ),
                               ),
                             ),
+                            SizedBox(width: 14.w),
+                            Padding(
+                              padding: EdgeInsets.only(top: 14.h, bottom: 20.h),
+                              child: _reactInfor(
+                                  onLikeTap: () {},
+                                  onCommentTap: () {},
+                                  reactInfors: objPost.likes,
+                                  commentCounts: objPost.comments.length),
+                            ),
+                            SizedBox(height: 20.h),
+                            PostDetailComment(comments: objPost.comments),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(16.w, 5.h, 16.w, 10.h),
+                      decoration: BoxDecoration(
+                        color: theme.scaffoldBackgroundColor,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 1,
+                            spreadRadius: 1,
+                            color: theme.colorScheme.shadow.withOpacity(0.2),
+                            offset: const Offset(0, -1),
                           ),
-                          SizedBox(width: 14.w),
-                          Padding(
-                            padding: EdgeInsets.only(top: 14.h, bottom: 20.h),
-                            child: _reactInfor(
-                                onLikeTap: () {},
-                                onCommentTap: () {},
-                                reactInfors: objPost.likes,
-                                commentCounts: objPost.comments.length),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: AppTextField(
+                              controller: _controller,
+                              hintText: 'Viết bình luận...',
+                            ),
                           ),
-                          SizedBox(height: 20.h),
-                          PostDetailComment(comments: objPost.comments),
+                          SizedBox(width: 20.w),
+                          AppImageAsset(
+                            imagePath: Images.icSend,
+                            onTap: () => _onCommentSend(objPost),
+                            width: 45,
+                            height: 45,
+                            color: theme.colorScheme.primary,
+                          ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(16.w, 5.h, 16.w, 10.h),
-                    decoration: BoxDecoration(
-                      color: theme.scaffoldBackgroundColor,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 1,
-                          spreadRadius: 1,
-                          color: theme.colorScheme.shadow.withOpacity(0.2),
-                          offset: const Offset(0, -1),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: AppTextField(
-                            controller: _controller,
-                            hintText: 'Viết bình luận...',
-                          ),
-                        ),
-                        SizedBox(width: 20.w),
-                        AppImageAsset(
-                          imagePath: Images.icSend,
-                          onTap: _onCommentSend,
-                          width: 45,
-                          height: 45,
-                          color: theme.colorScheme.primary,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _reactInfor(
@@ -291,8 +362,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           imagePath: Images.icReacLike,
           height: 25,
           width: 25,
-          color:
-              isLiked ? Colors.blue : theme.colorScheme.secondary,
+          color: isLiked ? Colors.blue : theme.colorScheme.secondary,
         ),
         SizedBox(width: 30.w),
         AppImageAsset(

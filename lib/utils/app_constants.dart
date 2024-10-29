@@ -26,6 +26,7 @@ class AppConstants {
   static const String CREATE_POST = '/mita/posts/create';
   static const String LIKE_POST = '/mita/posts/likes/{id}';
   static const String SEND_COMMENT = '/mita/posts/comments/{id}';
+  static const String EDIT_POST = '/mita/posts/update/{id}';
   static const String GET_NOTIFICATION = '/mita/notifications';
   static const String ROLE_USER= 'ROLE_USER';
   static const String ROLE_ADMIN= 'ROLE_ADMIN';

@@ -22,6 +22,24 @@ class PostEntity {
     required this.user,
   });
 
+  PostEntity copyWith({
+    String? content,
+    DateTime? date,
+    List<MediaEntity>? media,
+    List<LikeEntity>? likes,
+    List<CommentEntity>? comments,
+    User? user,
+  }) =>
+      PostEntity(
+        id: id,
+        comments: comments ?? this.comments,
+        content: content ?? this.content,
+        date: date,
+        likes: likes ?? this.likes,
+        media: media ?? this.media,
+        user: user,
+      );
+
   factory PostEntity.fromJson(Map<String, dynamic>? json) {
     return PostEntity(
       id: json?['id'],
@@ -39,10 +57,13 @@ class PostEntity {
               .map((like) => LikeEntity.fromJson(like))
               .toList()
           : [],
-      media: json?['media'] != null ? (json!['media'] as List).map((e) => MediaEntity.fromJson(e)).toList() : [],
+      media: json?['media'] != null
+          ? (json!['media'] as List)
+              .map((e) => MediaEntity.fromJson(e))
+              .toList()
+          : [],
       user: json?['user'] != null ? User.fromJson(json?['user']) : null,
     );
-
   }
 
   Map<String, dynamic> toJson() {
@@ -58,11 +79,10 @@ class PostEntity {
   }
 
   static DateTime _convertDateFromTimestamp(int timestamp) {
-  
-  if (timestamp.toString().length == 10) {
-    timestamp *= 1000;
-  }  
-  return DateTime.fromMillisecondsSinceEpoch(timestamp).toLocal();
+    if (timestamp.toString().length == 10) {
+      timestamp *= 1000;
+    }
+    return DateTime.fromMillisecondsSinceEpoch(timestamp).toLocal();
   }
 }
 
