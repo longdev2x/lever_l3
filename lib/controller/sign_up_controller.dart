@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 import 'package:timesheet/data/model/body/user.dart';
+import 'package:timesheet/utils/app_constants.dart';
 
 class SignUpController extends GetxController implements GetxService {
   User user = User(
-    gender: 'M',
+    gender: AppConstants.MALE,
     dob: DateTime.now().subtract(const Duration(days: 7260)),
   );
 

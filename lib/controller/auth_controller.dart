@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:timesheet/controller/post_controller.dart';
+import 'package:timesheet/controller/profile_controller.dart';
 import 'package:timesheet/data/api/api_checker.dart';
 import 'package:timesheet/data/model/body/role.dart';
 import 'package:timesheet/data/model/body/user.dart';
@@ -12,10 +14,22 @@ class AuthController extends GetxController implements GetxService {
   AuthController({required this.repo});
 
   bool _loading = false;
-  User _user = User();
+  final Rx<User> _user = User().obs;
 
   bool get loading => _loading;
-  User get user => _user;
+  User get user => _user.value;
+
+  @override
+  void onInit() {
+    super.onInit();
+    ever(
+      _user,
+      (callback) {
+        Get.find<ProfileController>().updateUser(_user.value);
+        Get.find<PostController>().updateUser(_user.value);
+      },
+    );
+  }
 
   Future<int> signUp(User objUser) async {
     Role role = Role(null, AppConstants.ROLE_USER, AppConstants.ROLE_USER);
@@ -25,7 +39,7 @@ class AuthController extends GetxController implements GetxService {
     update();
 
     Response response = await repo.signUp(objUser: objUser);
-    
+
     if (response.statusCode != 200) {
       ApiChecker.checkApi(response);
     }
@@ -70,7 +84,7 @@ class AuthController extends GetxController implements GetxService {
   Future<int> getCurrentUser() async {
     Response response = await repo.getCurrentUser();
     if (response.statusCode == 200) {
-      _user = User.fromJson(response.body);
+      _user.value = User.fromJson(response.body);
       update();
     } else {
       ApiChecker.checkApi(response);
@@ -79,11 +93,11 @@ class AuthController extends GetxController implements GetxService {
   }
 
   void updateUser(User userUpdate) {
-    _user = userUpdate;
+    _user.value = userUpdate;
   }
 
   void clearData() {
     _loading = false;
-    _user = User();
+    _user.value = User();
   }
 }

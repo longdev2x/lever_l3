@@ -203,12 +203,15 @@ class ProfileController extends GetxController implements GetxService {
         print('zzzz - Ok update _fileAvatar');
         update();
       }
-
     } else {
       ApiChecker.checkApi(response);
     }
 
     _imgLoading = false;
     update();
+  }
+
+  void updateUser(User userUpdate) {
+    _user = userUpdate;
   }
 }

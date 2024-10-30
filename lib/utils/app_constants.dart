@@ -30,6 +30,8 @@ class AppConstants {
   static const String GET_NOTIFICATION = '/mita/notifications';
   static const String ROLE_USER= 'ROLE_USER';
   static const String ROLE_ADMIN= 'ROLE_ADMIN';
+  static const String MALE = 'MALE';
+  static const String FEMALE = 'MALE';
   // Shared Key
   static const String THEME = 'theme';
   static const String TOKEN = 'token';

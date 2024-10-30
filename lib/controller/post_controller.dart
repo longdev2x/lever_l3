@@ -282,4 +282,8 @@ class PostController extends GetxController implements GetxService {
 
     return null;
   }
+
+  void updateUser(User userUpdate) {
+    _user = userUpdate;
+  }
 }

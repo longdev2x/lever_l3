@@ -10,6 +10,7 @@ import 'package:timesheet/screen/profile/edit_profile_screen.dart';
 import 'package:timesheet/screen/profile/widgets/profile_avatar_widget.dart';
 import 'package:timesheet/screen/sign_in/sign_in_screen.dart';
 import 'package:timesheet/screen/users/widgets/user_parameter_widget.dart';
+import 'package:timesheet/utils/app_constants.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_text.dart';
@@ -51,7 +52,7 @@ class ProfileScreen extends StatelessWidget {
 
           if (controller.user?.roles != null &&
               controller.user!.roles!.isNotEmpty) {
-            isAdmin = controller.user!.roles?[0].name == 'ROLE_ADMIN';
+            isAdmin = controller.user!.roles?[0].name == AppConstants.ROLE_ADMIN;
           }
 
           User objUser = controller.user!;
@@ -67,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                     const ProfileAvatarWidget(),
                     SizedBox(height: 15.h),
                     AppText20(
-                        '${objUser.username} (${isAdmin ? 'ADMIN' : 'user'.tr.toUpperCase()})',
+                        '${objUser.displayName} (${isAdmin ? AppConstants.ROLE_ADMIN : 'user'.tr.toUpperCase()})',
                         fontWeight: FontWeight.bold),
                     SizedBox(height: 5.h),
                     AppText16(objUser.email),
