@@ -138,66 +138,69 @@ class _PostItemState extends State<PostItem> {
       },
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: widget.objPost.user?.image != null
-                      ? NetworkImage(widget.objPost.user!.image!)
-                      : const AssetImage(Images.imgAvatarDefault)
-                          as ImageProvider,
-                  radius: 25,
-                ),
-                SizedBox(width: 12.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppText16(
-                      widget.objPost.user?.displayName,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    AppText14(_getDateFormat(widget.objPost.date)),
-                  ],
-                ),
-                const Spacer(),
-                AppImageAsset(
-                  onTap: _onEditPost,
-                  imagePath: Images.icEditPost,
-                  width: 30,
-                  height: 30,
-                ),
-              ],
-            ),
-            SizedBox(height: 10.h),
-            AppText20(
-              widget.objPost.content,
-              maxLines: null,
-            ),
-            SizedBox(height: 50.h),
-            Padding(
-              padding: EdgeInsets.only(left: 5.w),
-              child: _reactButton(
-                  onLikeTap: _onLike,
-                  onCommentTap: () {
-                    _navigateToDetail();
-                  },
-                  isLiked: _checkLiked(currentId, widget.objPost.likes),
-                  theme: theme),
-            ),
-            SizedBox(width: 14.w),
-            Padding(
-              padding: EdgeInsets.only(top: 14.h, bottom: 20.h),
-              child: _reactInfor(
-                  onLikeTap: () {},
-                  onCommentTap: () {
-                    _navigateToDetail();
-                  },
-                  reactInfors: widget.objPost.likes,
-                  commentCounts: widget.objPost.comments.length),
-            ),
-          ],
+        child: GetBuilder<PostController>(
+          builder: (controller) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 25.r,
+                    // backgroundImage: controller.filePng != null
+                    //     ? FileImage(controller.filePng!)
+                    //     : const AssetImage(Images.imgAvatarDefault)
+                    //         as ImageProvider,
+                    backgroundImage: const AssetImage(Images.imgAvatarDefault),
+                  ),
+                  SizedBox(width: 12.w),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText16(
+                        widget.objPost.user?.displayName,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      AppText14(_getDateFormat(widget.objPost.date)),
+                    ],
+                  ),
+                  const Spacer(),
+                  AppImageAsset(
+                    onTap: _onEditPost,
+                    imagePath: Images.icEditPost,
+                    width: 30,
+                    height: 30,
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              AppText20(
+                widget.objPost.content,
+                maxLines: null,
+              ),
+              SizedBox(height: 50.h),
+              Padding(
+                padding: EdgeInsets.only(left: 5.w),
+                child: _reactButton(
+                    onLikeTap: _onLike,
+                    onCommentTap: () {
+                      _navigateToDetail();
+                    },
+                    isLiked: _checkLiked(currentId, widget.objPost.likes),
+                    theme: theme),
+              ),
+              SizedBox(width: 14.w),
+              Padding(
+                padding: EdgeInsets.only(top: 14.h, bottom: 20.h),
+                child: _reactInfor(
+                    onLikeTap: () {},
+                    onCommentTap: () {
+                      _navigateToDetail();
+                    },
+                    reactInfors: widget.objPost.likes,
+                    commentCounts: widget.objPost.comments.length),
+              ),
+            ],
+          ),
         ),
       ),
     );

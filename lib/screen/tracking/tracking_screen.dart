@@ -8,6 +8,7 @@ import 'package:timesheet/data/model/body/check_in_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/profile/profile_screen.dart';
 import 'package:timesheet/screen/tracking/tracking_history_screen.dart';
+import 'package:timesheet/utils/color_resources.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_image.dart';
@@ -252,6 +253,9 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   daysCount: 30,
                   selectionColor: theme.colorScheme.primary,
                   selectedTextColor: theme.colorScheme.onPrimary,
+                  dateTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontWeight: FontWeight.bold,),
+                  dayTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontWeight: FontWeight.bold,),
+                  monthTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontWeight: FontWeight.bold,),
                   onDateChange: (selectedDate) {
                     _onHistory(context, selectedDate);
                   },
