@@ -26,19 +26,19 @@ class ProfileRepo extends GetxService {
     );
   }
 
-  Future<Response> getFile(String filePath) async {
-    return await apiClient.getImageData(
-      AppConstants.GET_FILE,
-      nameFile: filePath,
-    );
-  }
-
   Future<Response> uploadFile(XFile xFile) async {
     return await apiClient.postMultipartData(
       AppConstants.UPLOAD_FILE,
       {},
       [MultipartBody('uploadfile', xFile)],
       headers: null,
+    );
+  }
+
+  Future<Response> getFile(String filePath) async {
+    return await apiClient.getImageData(
+      AppConstants.GET_FILE,
+      nameFile: filePath,
     );
   }
 }

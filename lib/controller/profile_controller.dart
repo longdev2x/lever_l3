@@ -1,11 +1,9 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/data/api/api_checker.dart';
-import 'package:timesheet/data/model/body/file_entity.dart';
 import 'package:timesheet/data/model/body/media_entity.dart';
 import 'package:timesheet/data/model/body/role.dart';
 import 'package:timesheet/data/model/body/user.dart';
@@ -17,10 +15,12 @@ class ProfileController extends GetxController implements GetxService {
 
   User? _user;
   bool _loading = false;
+  bool _imgLoading = false;
   File? _fileAvatar;
 
   User? get user => _user;
   bool get loading => _loading;
+  bool get imgLoading => _imgLoading;
   File? get fileAvatar => _fileAvatar;
 
   @override
@@ -84,7 +84,7 @@ class ProfileController extends GetxController implements GetxService {
 
     if (response.statusCode == 200) {
       _user = User.fromJson(response.body);
-      
+
       Get.find<AuthController>().updateUser(_user!);
     } else {
       ApiChecker.checkApi(response);
@@ -93,31 +93,6 @@ class ProfileController extends GetxController implements GetxService {
     _loading = false;
     update();
     return response.statusCode!;
-  }
-
-  Future<int> changeAvatar(XFile xFile) async {
-    Response response = await repo.uploadFile(xFile);
-    if (response.statusCode != 200) {
-      ApiChecker.checkApi(response);
-    }
-    MediaEntity? objPostDetail = MediaEntity.fromJson(response.body);
-    String? nameFile = objPostDetail.name;
-    if (nameFile == null) return 400;
-
-    Response getFileResponse = await repo.getFile(nameFile);
-    if (getFileResponse.statusCode != 200) {
-      ApiChecker.checkApi(response);
-      return getFileResponse.statusCode!;
-    }
-
-    FileEntity objFile = FileEntity.fromJson(getFileResponse.body);
-    if (objFile.url == null) {
-      return 400;
-    }
-
-    int updateInforStatuscode = await updateInfo(image: nameFile);
-
-    return updateInforStatuscode;
   }
 
   Future<int> updateUserForAdmin(
@@ -182,9 +157,37 @@ class ProfileController extends GetxController implements GetxService {
     return response.statusCode!;
   }
 
+  Future<int> uploadAvatar(XFile xFile) async {
+    _imgLoading = true;
+    update();
+
+    Response response = await repo.uploadFile(xFile);
+
+    if (response.statusCode == 200) {
+      MediaEntity? objMedia = MediaEntity.fromJson(response.body);
+      _user = _user!.copyWith(
+        image: objMedia.name,
+      );
+
+      Response updateResponse = await repo.updateInfo(_user!);
+
+      if (updateResponse.statusCode == 200) {
+        await getImage();
+      } else {
+        ApiChecker.checkApi(response);
+        return updateResponse.statusCode!;
+      }
+    } else {
+      _imgLoading = false;
+      update();
+      ApiChecker.checkApi(response);
+    }
+
+    return response.statusCode!;
+  }
 
   Future<void> getImage() async {
-    if(_user?.image == null) {
+    if (_user?.image == null) {
       return;
     }
 
@@ -198,10 +201,14 @@ class ProfileController extends GetxController implements GetxService {
       //Ghi dữ liệu vào file
       if (response.bodyString != null) {
         _fileAvatar = await file.writeAsBytes(response.bodyString!.codeUnits);
-        update();
+        print('zzzz - Ok update _fileAvatar');
       }
+
     } else {
       ApiChecker.checkApi(response);
     }
+
+    _imgLoading = false;
+    update();
   }
 }
