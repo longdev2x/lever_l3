@@ -20,6 +20,7 @@ class UserParameterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
         
@@ -38,8 +39,8 @@ class UserParameterWidget extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppImageAsset(imagePath: icon, width: 28, height: 28,),
-            SizedBox(width: 5.w),
+            AppImageAsset(imagePath: icon, width: 28, height: 28, color: theme.colorScheme.onSurface,),
+            SizedBox(width: 10.w),
             AppText16(name),
             const Spacer(),
             AppText16(

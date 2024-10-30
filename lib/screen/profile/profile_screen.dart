@@ -83,14 +83,14 @@ class ProfileScreen extends StatelessWidget {
                     if (objUser.username != null)
                       UserParameterWidget(
                         name: 'username'.tr,
-                        icon: Images.icSocial,
+                        icon: Images.icUsername,
                         prameter: objUser.username!,
                         isFirst: true,
                       ),
                     if (objUser.email != null)
                       UserParameterWidget(
                         name: 'email'.tr,
-                        icon: Images.icSocial,
+                        icon: Images.icEmail,
                         prameter: objUser.email!,
                       ),
                     if (objUser.lastName != null || objUser.firstName != null)
@@ -122,25 +122,25 @@ class ProfileScreen extends StatelessWidget {
                     if (objUser.university != null)
                       UserParameterWidget(
                         name: 'university'.tr,
-                        icon: Images.icSocial,
+                        icon: Images.icUniversity,
                         prameter: objUser.university!,
                       ),
                     if (objUser.year != null)
                       UserParameterWidget(
                         name: 'year_student'.tr,
-                        icon: Images.icSocial,
+                        icon: Images.icYear,
                         prameter: objUser.year.toString(),
                       ),
                     UserParameterWidget(
                       name: 'count_day_check_in'.tr,
-                      icon: Images.icSocial,
+                      icon: Images.icCheckIn,
                       prameter: objUser.countDayCheckin != null
                           ? objUser.countDayCheckin.toString()
                           : '0',
                     ),
                     UserParameterWidget(
                       name: 'count_day_tracking'.tr,
-                      icon: Images.icSocial,
+                      icon: Images.icTracking,
                       prameter: objUser.countDayTracking != null
                           ? objUser.countDayTracking.toString()
                           : '0',

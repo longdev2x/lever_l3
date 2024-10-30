@@ -33,5 +33,11 @@ class Images {
   static const String icGenderMan= 'assets/image/ic_gender_man.png';
   static const String icGenderWoman= 'assets/image/ic_gender_woman.png';
   static const String icCheckTick= 'assets/image/ic_check_tick.png';
+  static const String icUsername= 'assets/image/icUsername.png';
+  static const String icEmail= 'assets/image/icEmail.png';
+  static const String icUniversity= 'assets/image/icUniversity.png';
+  static const String icYear= 'assets/image/icYear.png';
+  static const String icCheckIn = 'assets/image/icCheckIn.png';
+  static const String icTracking = 'assets/image/icTracking.png';
 
 }
