@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
+import 'package:timesheet/controller/home_controller.dart';
 import 'package:timesheet/controller/localization_controller.dart';
 import 'package:timesheet/screen/sign_in/sign_in_screen.dart';
 import 'package:timesheet/theme/theme_controller.dart';
@@ -52,6 +53,7 @@ class SettingScreen extends StatelessWidget {
         onConfirm: () async {
           if (await Get.find<AuthController>().logOut() == 200) {
             Get.offAll(() => const SignInScreen());
+            Get.find<HomeController>().bottomIndexSelected.value = 0;
           }
         },
       ),
