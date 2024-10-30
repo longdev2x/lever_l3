@@ -12,9 +12,24 @@ import 'package:timesheet/screen/users/widgets/user_parameter_widget.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_text.dart';
+import 'package:timesheet/view/app_toast.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
+
+  void _logout(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) => AppConfirm(
+        title: 'Bạn muốn đăng xuất?',
+        onConfirm: () async {
+          if (await Get.find<AuthController>().logOut() == 200) {
+            Get.offAll(() => const SignInScreen());
+          }
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +38,7 @@ class ProfileScreen extends StatelessWidget {
         title: Text('profile'.tr),
         actions: [
           IconButton(
-              onPressed: () {
-                _logout();
-              },
+              onPressed: () => _logout(context),
               icon: const Icon(Icons.logout)),
           SizedBox(width: 10.w),
         ],
@@ -34,7 +47,8 @@ class ProfileScreen extends StatelessWidget {
         builder: (controller) {
           bool isAdmin = false;
 
-          if (controller.user?.roles != null && controller.user!.roles!.isNotEmpty) {
+          if (controller.user?.roles != null &&
+              controller.user!.roles!.isNotEmpty) {
             isAdmin = controller.user!.roles?[0].name == 'ROLE_ADMIN';
           }
 
@@ -137,11 +151,5 @@ class ProfileScreen extends StatelessWidget {
         },
       ),
     );
-  }
-
-  void _logout() async {
-    if (await Get.find<AuthController>().logOut() == 200) {
-      Get.to(() => const SignInScreen());
-    }
   }
 }

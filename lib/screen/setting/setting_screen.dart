@@ -44,6 +44,20 @@ class SettingScreen extends StatelessWidget {
     );
   }
 
+  void _logout(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) => AppConfirm(
+        title: 'Bạn muốn đăng xuất?',
+        onConfirm: () async {
+          if (await Get.find<AuthController>().logOut() == 200) {
+            Get.offAll(() => const SignInScreen());
+          }
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -54,8 +68,7 @@ class SettingScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: Text(
           'settings'.tr,
-          style:
-              TextStyle(fontSize: 24.sp),
+          style: TextStyle(fontSize: 24.sp),
         ),
       ),
       body: Padding(
@@ -145,15 +158,7 @@ class SettingScreen extends StatelessWidget {
                   AppText18('logout'.tr),
                   SizedBox(width: 20.w),
                   AppImageAsset(
-                    onTap: () {
-                      Get.find<AuthController>().logOut();
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => const SignInScreen(),
-                        ),
-                        (route) => false,
-                      );
-                    },
+                    onTap: () => _logout(context),
                     imagePath: Images.icLogout,
                     width: 30,
                     height: 30,
