@@ -14,4 +14,9 @@ class UserSearchRepo extends GetxService{
       null,
     );
   }
+
+    Future<Response> getImage(String nameFile) async {
+    return await apiClient.getImageData(AppConstants.GET_FILE,
+        nameFile: nameFile,);
+  }
 }

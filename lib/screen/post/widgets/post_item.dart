@@ -146,11 +146,13 @@ class _PostItemState extends State<PostItem> {
                 children: [
                   CircleAvatar(
                     radius: 25.r,
-                    // backgroundImage: controller.filePng != null
-                    //     ? FileImage(controller.filePng!)
-                    //     : const AssetImage(Images.imgAvatarDefault)
-                    //         as ImageProvider,
-                    backgroundImage: const AssetImage(Images.imgAvatarDefault),
+                    backgroundImage:
+                        controller.mapFileAvatar[widget.objPost.user?.image] !=
+                                null
+                            ? FileImage(controller
+                                .mapFileAvatar[widget.objPost.user?.image]!)
+                            : const AssetImage(Images.imgAvatarDefault)
+                                as ImageProvider,
                   ),
                   SizedBox(width: 12.w),
                   Column(
@@ -175,7 +177,7 @@ class _PostItemState extends State<PostItem> {
               SizedBox(height: 10.h),
               AppText20(
                 widget.objPost.content,
-                maxLines: null,
+                maxLines: 5,
               ),
               SizedBox(height: 50.h),
               Padding(

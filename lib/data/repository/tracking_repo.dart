@@ -14,7 +14,10 @@ class TrackingRepo extends GetxService {
 
   Future<Response> updateCurrentUserTracking(TrackingEntity objTracking) async {
     return await apiClient.postData(
-        AppConstants.TRACKING, objTracking.toJson(), null);
+      AppConstants.TRACKING,
+      objTracking.toJson(),
+      null,
+    );
   }
 
   Future<Response> editTracking(TrackingEntity objTracking) async {

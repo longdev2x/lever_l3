@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
+import 'package:timesheet/controller/user_search_controller.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/screen/profile/edit_profile_screen.dart';
 import 'package:timesheet/screen/users/user_detail_screen.dart';
@@ -48,12 +49,16 @@ class UserItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
           child: Row(
             children: [
-              AppImageAsset(
-                imagePath: objUser.image,
-                boxFit: BoxFit.contain,
-                height: 40,
-                width: 40,
-                radius: 40,
+              GetBuilder<UserSearchController>(
+                builder: (controller) => CircleAvatar(
+                  radius: 25.r,
+                  backgroundImage:
+                      controller.mapFileAvatar[objUser.image] != null
+                          ? FileImage(
+                              controller.mapFileAvatar[objUser.image]!)
+                          : const AssetImage(Images.imgAvatarDefault)
+                              as ImageProvider,
+                ),
               ),
               SizedBox(width: 20.w),
               Column(

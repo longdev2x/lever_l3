@@ -40,9 +40,9 @@ class PostRepo extends GetxService {
     );
   }
 
-  Future<Response> getImage(String filePath) async {
+  Future<Response> getImage(String nameFile) async {
     return await apiClient.getImageData(AppConstants.GET_FILE,
-        nameFile: filePath);
+        nameFile: nameFile,);
   }
 
   Future<Response> likePost(LikeEntity objLike) async {

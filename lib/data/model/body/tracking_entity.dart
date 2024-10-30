@@ -24,7 +24,7 @@ class TrackingEntity {
         id: json['id'],
         content: json['content'],
         date: json['date'] != null
-            ? DateTime.tryParse(json['date'])
+            ? DateTime.fromMillisecondsSinceEpoch(json['date']).toUtc()
             : null,
         user: User.fromJson(json['user']),
       );

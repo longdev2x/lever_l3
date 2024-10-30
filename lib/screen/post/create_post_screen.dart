@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/controller/post_controller.dart';
+import 'package:timesheet/controller/profile_controller.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/screen/post/widgets/create_post_image.dart';
 import 'package:timesheet/utils/images.dart';
@@ -111,23 +112,20 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            backgroundImage: objUser.image != null
-                                ? NetworkImage(objUser.image!)
-                                : const AssetImage(Images.imgAvatarDefault)
-                                    as ImageProvider,
-                            radius: 25,
+                          GetBuilder<ProfileController>(
+                            initState: (state) =>
+                                Get.find<ProfileController>().getImage(),
+                            builder: (controller) => CircleAvatar(
+                              radius: 25.r,
+                              backgroundImage: controller.fileAvatar != null
+                                  ? FileImage(controller.fileAvatar!)
+                                  : const AssetImage(Images.imgAvatarDefault)
+                                      as ImageProvider,
+                            ),
                           ),
                           SizedBox(width: 10.w),
                           AppText16(objUser.displayName,
                               fontWeight: FontWeight.bold),
-                          const Spacer(),
-                          TextButton(
-                            onPressed: () {
-                              Get.find<PostController>().getImage();
-                            },
-                            child: const Text('Test Get Img'),
-                          ),
                         ],
                       ),
                       SizedBox(height: 20.h),

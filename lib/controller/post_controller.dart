@@ -25,6 +25,7 @@ class PostController extends GetxController implements GetxService {
   List<XFile>? _mediaFiles;
   String? _filePath;
   File? _filePng;
+  final Map<String, File> _mapFileAvatar = {};
 
   List<PostEntity>? get posts => _posts;
   bool get isFirstLoad => _isFirstLoad;
@@ -33,12 +34,13 @@ class PostController extends GetxController implements GetxService {
   List<XFile>? get xMediaFiles => _mediaFiles;
   File? get filePng => _filePng;
   String? get filePath => _filePath;
+  Map<String, File> get mapFileAvatar => _mapFileAvatar;
 
   @override
   void onInit() {
     super.onInit();
     _user = Get.find<AuthController>().user;
-    getPosts(keyWord: null, pageIndex: 0, size: 300, status: null);
+    getPosts(keyWord: null, pageIndex: 0, size: 10, status: null);
   }
 
   Future<int> getPosts({
@@ -61,6 +63,24 @@ class PostController extends GetxController implements GetxService {
       PostSearchEntity objPostSearch = PostSearchEntity.fromJson(response.body);
       List<PostEntity> newPosts = objPostSearch.posts;
 
+      //Get avatar
+      for (PostEntity objPost in newPosts) {
+        if (objPost.user?.image != null &&
+            !_mapFileAvatar.containsKey(objPost.user?.image)) {
+          await getImage(objPost.user!.image!);
+        }
+
+        //Get image commenter
+        if (objPost.comments.isNotEmpty) {
+          for (CommentEntity objComment in objPost.comments) {
+            if (objComment.user!.image != null &&
+                !_mapFileAvatar.containsKey(objComment.user?.image)) {
+              await getImage(objComment.user!.image!);
+            }
+          }
+        }
+      }
+
       newPosts.sort((a, b) {
         if (a.date == null && b.date == null) {
           return 0; // cả 2 null => bằng nhau
@@ -81,6 +101,7 @@ class PostController extends GetxController implements GetxService {
 
     _isFirstLoad = false;
     _loading = false;
+
     update();
 
     return response.statusCode!;
@@ -147,25 +168,16 @@ class PostController extends GetxController implements GetxService {
     return null;
   }
 
-  Future<void> getImage() async {
-    Response response = await repo.getImage(_filePath!);
-    print('zzyy- ${response.body}');
+  Future<void> getImage(String nameFile) async {
+    Response response = await repo.getImage(nameFile);
 
     if (response.statusCode == 200) {
-      // 2. Tạo file tạm để lưu dữ liệu
-      print('zzz6');
-      final tempDir =
-          await getTemporaryDirectory(); // import 'package:path_provider/path_provider.dart';
-      print('zzz7');
-      final file = File('${tempDir.path}/testName');
-      print('zzz7.8');
-      // 3. Ghi dữ liệu vào file
-      if (response.bodyString != null) {
-        print('zzz8');
-        _filePng = await file.writeAsBytes(response.bodyString!.codeUnits);
-        update();
+      final Directory tempDir = await getTemporaryDirectory();
+      File file = File('${tempDir.path}/$nameFile');
 
-        print('zzz82');
+      if (response.bodyString != null) {
+        file = await file.writeAsBytes(response.bodyString!.codeUnits);
+        _mapFileAvatar[nameFile] = file;
       }
     } else {
       ApiChecker.checkApi(response);
@@ -251,7 +263,6 @@ class PostController extends GetxController implements GetxService {
 
       final index = _posts!.indexWhere((e) => e.id == objPost.id);
       posts![index] = objPost;
-
     } else {
       ApiChecker.checkApi(response);
     }

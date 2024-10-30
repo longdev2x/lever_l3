@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:timesheet/controller/post_controller.dart';
 import 'package:timesheet/data/model/body/comment_entity.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_text.dart';
@@ -15,11 +17,15 @@ class CommentItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            backgroundImage: objComment.user?.image != null
-                ? NetworkImage(objComment.user!.image!)
-                : const AssetImage(Images.imgAvatarDefault) as ImageProvider,
-            radius: 25,
+          GetBuilder<PostController>(
+            builder: (controller) => CircleAvatar(
+              radius: 25.r,
+              backgroundImage: controller
+                          .mapFileAvatar[objComment.user?.image] !=
+                      null
+                  ? FileImage(controller.mapFileAvatar[objComment.user?.image]!)
+                  : const AssetImage(Images.imgAvatarDefault) as ImageProvider,
+            ),
           ),
           SizedBox(width: 12.w),
           Expanded(

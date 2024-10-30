@@ -253,9 +253,9 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   daysCount: 30,
                   selectionColor: theme.colorScheme.primary,
                   selectedTextColor: theme.colorScheme.onPrimary,
-                  dateTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontWeight: FontWeight.bold,),
-                  dayTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontWeight: FontWeight.bold,),
-                  monthTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontWeight: FontWeight.bold,),
+                  dateTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontWeight: FontWeight.w500, fontSize: 21.sp),
+                  dayTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontSize: 10.sp),
+                  monthTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontSize: 12.sp),
                   onDateChange: (selectedDate) {
                     _onHistory(context, selectedDate);
                   },

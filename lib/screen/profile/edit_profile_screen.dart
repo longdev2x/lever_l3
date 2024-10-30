@@ -78,7 +78,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
 
     int statusCode = await Get.find<ProfileController>().updateInfo(
-      image: '2024-10-29 06:24:27.664070.png',
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
       displayName: _displayNameController.text.trim(),
@@ -87,7 +86,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       year: year,
     );
 
-    if(statusCode == 200) {
+    if (statusCode == 200) {
       AppToast.showToast('Cập nhật thành công');
       Get.back();
     }
@@ -106,6 +105,57 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (objUser.dob != null) {
       _dobController.text = DateConverter.getOnlyFomatDate(objUser.dob!);
     }
+  }
+
+  Widget _genderPicker({
+    required Function() onTap,
+    bool isChose = false,
+    required String iconPath,
+    required String text,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        children: [
+          Container(
+            height: 70.h,
+            width: 130.w,
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            decoration: BoxDecoration(
+                color: isChose
+                    ? ColorResources.getGreyColor()
+                    : ColorResources.getWhiteColor(),
+                borderRadius: BorderRadius.circular(16.r)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AppImageAsset(
+                  imagePath: iconPath,
+                  color: Colors.black,
+                  height: 25,
+                  width: 25,
+                ),
+                SizedBox(height: 3.h),
+                AppText14(
+                  text,
+                  fontWeight: FontWeight.bold,
+                )
+              ],
+            ),
+          ),
+          if (isChose)
+            Positioned(
+              top: 5.h,
+              right: 5.w,
+              child: const AppImageAsset(
+                imagePath: Images.icCheckTick,
+                height: 30,
+                width: 30,
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -174,7 +224,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           },
                           iconPath: Images.icGenderMan,
                           text: 'male'.tr,
-                          isChose: objUser.gender == 'M' || (objUser.gender != 'M' && objUser.gender != 'F')),
+                          isChose: objUser.gender == 'M' ||
+                              (objUser.gender != 'M' && objUser.gender != 'F')),
                       SizedBox(width: 10.w),
                       _genderPicker(
                           onTap: () {
@@ -225,57 +276,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _genderPicker({
-    required Function() onTap,
-    bool isChose = false,
-    required String iconPath,
-    required String text,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Stack(
-        children: [
-          Container(
-            height: 70.h,
-            width: 130.w,
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-            decoration: BoxDecoration(
-                color: isChose
-                    ? ColorResources.getGreyColor()
-                    : ColorResources.getWhiteColor(),
-                borderRadius: BorderRadius.circular(16.r)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AppImageAsset(
-                  imagePath: iconPath,
-                  color: Colors.black,
-                  height: 25,
-                  width: 25,
-                ),
-                SizedBox(height: 3.h),
-                AppText14(
-                  text,
-                  fontWeight: FontWeight.bold,
-                )
-              ],
-            ),
-          ),
-          if (isChose)
-            Positioned(
-              top: 5.h,
-              right: 5.w,
-              child: const AppImageAsset(
-                imagePath: Images.icCheckTick,
-                height: 30,
-                width: 30,
-              ),
-            ),
-        ],
       ),
     );
   }

@@ -37,8 +37,8 @@ class _PostScreenState extends State<PostScreen> {
       bool isTop = _scrollController.position.pixels == 0;
       if (!isTop) {
         Get.find<PostController>().getPosts(
-          pageIndex: Get.find<PostController>().posts!.length ~/ 300,
-          size: 300,
+          pageIndex: Get.find<PostController>().posts!.length ~/ 10,
+          size: 10,
           status: null,
         );
       }

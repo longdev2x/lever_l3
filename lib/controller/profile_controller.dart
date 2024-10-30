@@ -182,7 +182,6 @@ class ProfileController extends GetxController implements GetxService {
       update();
       ApiChecker.checkApi(response);
     }
-
     return response.statusCode!;
   }
 
@@ -196,12 +195,13 @@ class ProfileController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       //Tạo file
       final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/testName');
+      final file = File('${tempDir.path}/${_user!.image!}');
 
       //Ghi dữ liệu vào file
       if (response.bodyString != null) {
         _fileAvatar = await file.writeAsBytes(response.bodyString!.codeUnits);
         print('zzzz - Ok update _fileAvatar');
+        update();
       }
 
     } else {

@@ -172,11 +172,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                     SizedBox(width: 20.w),
                     CircleAvatar(
-                      backgroundImage: objPost.user?.image != null
-                          ? NetworkImage(objPost.user!.image!)
+                      radius: 25.r,
+                      backgroundImage: controller
+                                  .mapFileAvatar[objPost.user?.image] !=
+                              null
+                          ? FileImage(
+                              controller.mapFileAvatar[objPost.user?.image]!)
                           : const AssetImage(Images.imgAvatarDefault)
                               as ImageProvider,
-                      radius: 25,
                     ),
                     SizedBox(width: 12.w),
                     Column(
@@ -217,7 +220,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           children: [
                             AppText20(
                               objPost.content,
-                              maxLines: null,
+                              maxLines: 20,
                             ),
                             SizedBox(height: 50.h),
                             Padding(
