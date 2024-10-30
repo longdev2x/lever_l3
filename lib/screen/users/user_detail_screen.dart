@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
+import 'package:timesheet/controller/user_search_controller.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/users/edit_member_user_screen.dart';
 import 'package:timesheet/screen/users/widgets/user_parameter_widget.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
-import 'package:timesheet/view/app_image.dart';
 import 'package:timesheet/view/app_toast.dart';
 
 class UserDetailScreen extends StatelessWidget {
-  const UserDetailScreen({super.key});
+  final User user;
+  const UserDetailScreen({super.key, required this.user, });
 
   void blockUser(User objUser, BuildContext context) {
     showDialog(
@@ -38,21 +39,22 @@ class UserDetailScreen extends StatelessWidget {
       isAdmin = currentUser.roles?[0].name == 'ROLE_ADMIN';
     }
 
-    User user = Get.arguments as User;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(user.displayName ?? ''),
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 30.h),
+        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 20.h),
         child: Column(
           children: [
-            AppImageAsset(
-              imagePath: user.image,
-              radius: 100,
-              height: 100,
-              width: 100,
+            GetBuilder<UserSearchController>(
+              builder: (controller) => CircleAvatar(
+                radius: 80.r,
+                backgroundImage: controller.mapFileAvatar[user.image] != null
+                    ? FileImage(controller.mapFileAvatar[user.image]!)
+                    : const AssetImage(Images.imgAvatarDefault)
+                        as ImageProvider,
+              ),
             ),
             SizedBox(height: 25.h),
             if (isAdmin)

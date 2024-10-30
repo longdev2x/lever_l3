@@ -41,7 +41,7 @@ class UserItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Get.to(() => const UserDetailScreen(), arguments: objUser);
+        Get.to(() => UserDetailScreen(user: objUser));
       },
       child: Card(
         margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 10.h),
@@ -54,8 +54,7 @@ class UserItem extends StatelessWidget {
                   radius: 25.r,
                   backgroundImage:
                       controller.mapFileAvatar[objUser.image] != null
-                          ? FileImage(
-                              controller.mapFileAvatar[objUser.image]!)
+                          ? FileImage(controller.mapFileAvatar[objUser.image]!)
                           : const AssetImage(Images.imgAvatarDefault)
                               as ImageProvider,
                 ),

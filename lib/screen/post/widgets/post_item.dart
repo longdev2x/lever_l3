@@ -227,7 +227,7 @@ class _PostItemState extends State<PostItem> {
                 SizedBox(width: 6.w),
                 reactInfors.length > 1
                     ? AppText14(
-                        'Like by ${reactInfors[0].user?.displayName} and ${reactInfors.length - 1} others',
+                        'Like by ${reactInfors[0].user?.displayName?.split(' ').last} and ${reactInfors.length - 1} others',
                       )
                     : AppText14(
                         'Like by ${reactInfors[0].user?.displayName}',
