@@ -14,7 +14,7 @@ class CheckInEntity {
         json?['message'],
         json?['offline'],
         json?['dateAttendance'] != null
-            ? DateTime.parse(json!['dateAttendance']).toLocal()
+            ? DateTime.fromMillisecondsSinceEpoch(json!['dateAttendance']).toLocal()
             : null,
       );
 }
