@@ -88,24 +88,26 @@ class _TrackingDetailState extends State<TrackingDetail> {
           vertical: 20.h,
           horizontal: 16.w,
         ),
-        child: Column(
-          children: [
-            AppTextAreaField(
-              hintText: 'Nội dung',
-              controller: _controller,
-            ),
-            SizedBox(height: 50.h),
-            AppButton(
-              name: 'update'.tr,
-              ontap: _onSubmit,
-            ),
-            SizedBox(height: 30.h),
-            AppButton(
-              name: 'Delete'.tr,
-              ontap: _onDelete,
-              bgColor: ColorResources.getRedColor(),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              AppTextAreaField(
+                hintText: 'Nội dung',
+                controller: _controller,
+              ),
+              SizedBox(height: 50.h),
+              AppButton(
+                name: 'update'.tr,
+                ontap: _onSubmit,
+              ),
+              SizedBox(height: 30.h),
+              AppButton(
+                name: 'Delete'.tr,
+                ontap: _onDelete,
+                bgColor: ColorResources.getRedColor(),
+              ),
+            ],
+          ),
         ),
       ),
     );

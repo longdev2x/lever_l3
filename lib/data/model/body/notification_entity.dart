@@ -1,7 +1,7 @@
 import 'package:timesheet/data/model/body/user.dart';
 
 class NotificationEntity {
-  final String? id;
+  final int? id;
   final String? title;
   final String? type;
   final String? body;
@@ -18,7 +18,7 @@ class NotificationEntity {
   );
 
   NotificationEntity copyWith({
-    String? id,
+    int? id,
     String? title,
     String? type,
     String? body,
@@ -40,7 +40,7 @@ class NotificationEntity {
         json?['title'],
         json?['type'],
         json?['body'],
-        json?['date'] != null ? DateTime.parse(json!['date']).toLocal() : null,
+        json?['date'] != null ? DateTime.fromMillisecondsSinceEpoch(json!['date']).toLocal() : null,
         json?['user'],
       );
 
