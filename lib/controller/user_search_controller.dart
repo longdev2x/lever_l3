@@ -27,7 +27,7 @@ class UserSearchController extends GetxController implements GetxService {
   @override
   void onInit() {
     super.onInit();
-    searchUser(keyWord: null, pageIndex: 0, size: 15, status: null);
+    searchUser(keyWord: null, pageIndex: 1, size: 15, status: null);
   }
 
   Future<int> searchUser({

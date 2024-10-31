@@ -39,7 +39,7 @@ class PostController extends GetxController implements GetxService {
   void onInit() {
     super.onInit();
     _user = Get.find<AuthController>().user;
-    getPosts(keyWord: null, pageIndex: 0, size: 10, status: null);
+    getPosts(keyWord: null, pageIndex: 1, size: 5, status: null);
   }
 
   Future<int> getPosts({

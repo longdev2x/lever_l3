@@ -29,7 +29,7 @@ class _UserListWidgetState extends State<UserListWidget> {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
       Get.find<UserSearchController>().searchUser(
-        pageIndex: Get.find<UserSearchController>().users!.length ~/ 15,
+        pageIndex: Get.find<UserSearchController>().users!.length ~/ 15 + 1,
         size: 15,
         status: null,
       );
