@@ -146,6 +146,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     );
   }
 
+  bool _checkIsMe(PostEntity objPost) {
+    int? currentId = Get.find<AuthController>().user.id;
+    return currentId == objPost.user?.id;
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -197,12 +202,19 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       ],
                     ),
                     const Spacer(),
-                    AppImageAsset(
-                      imagePath: Images.icEditPost,
-                      onTap: () => _onEditPost(objPost),
-                      width: 30,
-                      height: 30,
-                    ),
+                    _checkIsMe(objPost)
+                        ? AppImageAsset(
+                            onTap: () => _onEditPost(objPost),
+                            imagePath: Images.icEditPost,
+                            width: 30,
+                            height: 30,
+                          )
+                        : AppImageAsset(
+                            onTap: () {},
+                            imagePath: Images.icThreeDotHori,
+                            width: 20,
+                            height: 4,
+                          ),
                   ],
                 ),
               ),

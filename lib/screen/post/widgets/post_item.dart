@@ -127,11 +127,15 @@ class _PostItemState extends State<PostItem> {
     );
   }
 
+  bool _checkIsMe() {
+    int? currentId = Get.find<AuthController>().user.id;
+    return currentId == widget.objPost.user?.id;
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     int? currentId = Get.find<AuthController>().user.id;
-    print('zzz - checKIage - ${widget.objPost.media.length}');
 
     return GestureDetector(
       onTap: () {
@@ -144,6 +148,7 @@ class _PostItemState extends State<PostItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
                     radius: 25.r,
@@ -167,12 +172,19 @@ class _PostItemState extends State<PostItem> {
                     ],
                   ),
                   const Spacer(),
-                  AppImageAsset(
-                    onTap: _onEditPost,
-                    imagePath: Images.icEditPost,
-                    width: 30,
-                    height: 30,
-                  ),
+                  _checkIsMe()
+                      ? AppImageAsset(
+                          onTap: _onEditPost,
+                          imagePath: Images.icEditPost,
+                          width: 30,
+                          height: 30,
+                        )
+                      : AppImageAsset(
+                          onTap: () {},
+                          imagePath: Images.icThreeDotHori,
+                          width: 20,
+                          height: 4,
+                        ),
                 ],
               ),
               SizedBox(height: 10.h),
