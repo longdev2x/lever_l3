@@ -26,6 +26,7 @@ class NotificationList extends StatelessWidget {
           );
         }
         return ListView.builder(
+          itemCount: notifications?.length,
           itemBuilder: (ctx, index) =>
               NotificationItem(objNotify: notifications![index]),
         );
