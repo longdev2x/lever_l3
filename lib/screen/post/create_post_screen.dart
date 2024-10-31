@@ -42,7 +42,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         await Get.find<PostController>().createPost(content: content);
 
     if (statusCode == 200 && mounted) {
-      Get.find<PostController>().removeXfile();
       Navigator.pop(context);
     }
   }
@@ -53,7 +52,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       builder: (ctx) => AppConfirm(
           title: 'Dữ liệu sẽ không được lưu, bạn chắc chứ?',
           onConfirm: () {
-            Get.find<PostController>().removeXfile();
+            Get.find<PostController>().removeMedia();
             Navigator.pop(context);
             Navigator.pop(context);
           }),
@@ -65,12 +64,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (isCamera) {
       final XFile? xFile = await picker.pickImage(source: ImageSource.camera);
       if (xFile != null) {
-        Get.find<PostController>().addXFile([xFile]);
+        Get.find<PostController>().uploadImages([xFile]);
       }
+      return;
     }
+
     final List<XFile> xFiles = await picker.pickMultiImage();
     if (xFiles.isNotEmpty) {
-      Get.find<PostController>().addXFile(xFiles);
+      Get.find<PostController>().uploadImages(xFiles);
       await Get.find<PostController>().uploadImages(xFiles);
     }
     if (kDebugMode) {
@@ -138,15 +139,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       SizedBox(height: 20.h),
                       //Hàng ảnh
                       const CreatePostImageWidget(maxImages: 5),
-                      //Khu Test Ảnh
-                      GetBuilder<PostController>(
-                        builder: (controller) {
-                          if (controller.filePng != null) {
-                            return Image.file(controller.filePng!);
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
                     ],
                   ),
                 ),

@@ -22,18 +22,17 @@ class PostController extends GetxController implements GetxService {
   bool _isFirstLoad = true;
   bool _loading = false;
   bool _hasMoreData = true;
-  List<XFile>? _mediaFiles;
-  String? _filePath;
-  File? _filePng;
+
+  List<XFile>? _xFiles;
   final Map<String, File> _mapFileAvatar = {};
+  final List<MediaEntity> _medias = [];
 
   List<PostEntity>? get posts => _posts;
   bool get isFirstLoad => _isFirstLoad;
   bool get loading => _loading;
   bool get hasMoreData => _hasMoreData;
-  List<XFile>? get xMediaFiles => _mediaFiles;
-  File? get filePng => _filePng;
-  String? get filePath => _filePath;
+
+  List<XFile>? get xFiles => _xFiles;
   Map<String, File> get mapFileAvatar => _mapFileAvatar;
 
   @override
@@ -212,30 +211,9 @@ class PostController extends GetxController implements GetxService {
     return response.statusCode!;
   }
 
-  void addXFile(List<XFile> xFiles) {
-    _mediaFiles = xFiles;
-    update();
-  }
-
-  void removeXfile() {
-    _mediaFiles = null;
-    update();
-  }
-
   Future<int> createPost({
     required String content,
   }) async {
-    List<MediaEntity>? medias;
-    if (_mediaFiles != null) {
-      print('zzu- 1 - start');
-      MediaEntity? objMedia = await uploadImages(_mediaFiles!);
-      if (objMedia != null) {
-        //Để tạm thời
-        medias = [objMedia];
-      } else {}
-      print('zzu- 2 - done upload - $medias');
-      print('zzu- 3 - check name file- ${medias?[0].name}');
-    }
 
     PostEntity objPost = PostEntity(
       id: null,
@@ -243,7 +221,7 @@ class PostController extends GetxController implements GetxService {
       content: content,
       date: DateTime.now().toUtc(),
       likes: [],
-      media: medias ?? [],
+      media: _medias,
       user: _user,
     );
 
@@ -264,23 +242,28 @@ class PostController extends GetxController implements GetxService {
     return response.statusCode!;
   }
 
-  Future<MediaEntity?> uploadImages(List<XFile> xFiles) async {
-    // Thằng này trả về Media json
-    Response response = await repo.uploadImages(xFiles);
-    print('zzu- 1. 2 - start - ${response.body}');
+  Future<int?> uploadImages(List<XFile> xFiles) async {
+    _xFiles = xFiles;
+    update();
 
-    if (response.statusCode == 200) {
-      if (response.body != null) {
-        _filePath = response.body['name'];
-        return MediaEntity.fromJson(response.body);
+    for (XFile xFile in xFiles) {
+      Response response = await repo.uploadImages(xFile);
+      if (response.statusCode == 200) {
+        if (response.body != null) {
+          MediaEntity objMedia = MediaEntity.fromJson(response.body);
+          _medias.add(objMedia);
+        }
+      } else {
+        ApiChecker.checkApi(response);
       }
-
-      print('zzz -1 .3 $_filePath');
-    } else {
-      ApiChecker.checkApi(response);
     }
+    return 200;
+  }
 
-    return null;
+  void removeMedia() {
+    _medias.clear();
+    _xFiles = null;
+    update();
   }
 
   void updateUser(User userUpdate) {

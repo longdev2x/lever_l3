@@ -77,6 +77,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         await Get.find<PostController>().sendComment(comment, objPost);
     if (statusCode == 200) {
       _controller.clear();
+      if (mounted) {
+        FocusScope.of(context).unfocus();
+      }
     }
   }
 
@@ -316,7 +319,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 SizedBox(width: 6.w),
                 reactInfors.length > 1
                     ? AppText14(
-                        'Like by ${reactInfors[0].user?.displayName} and ${reactInfors.length - 1} others',
+                        'Like by ${reactInfors[0].user?.displayName?.split(' ').last} and ${reactInfors.length - 1} others',
                       )
                     : AppText14(
                         'Like by ${reactInfors[0].user?.displayName}',

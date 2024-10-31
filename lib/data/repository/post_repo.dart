@@ -29,9 +29,8 @@ class PostRepo extends GetxService {
     );
   }
 
-  Future<Response> uploadImages(List<XFile> xFiles) async {
-    List<MultipartBody> multipartBodys =
-        xFiles.map((e) => MultipartBody('uploadfile', e)).toList();
+  Future<Response> uploadImages(XFile xFile) async {
+    List<MultipartBody> multipartBodys = [MultipartBody('uploadfile', xFile)];
     return await apiClient.postMultipartData(
       AppConstants.UPLOAD_FILE,
       {},
@@ -41,8 +40,10 @@ class PostRepo extends GetxService {
   }
 
   Future<Response> getImage(String nameFile) async {
-    return await apiClient.getImageData(AppConstants.GET_FILE,
-        nameFile: nameFile,);
+    return await apiClient.getImageData(
+      AppConstants.GET_FILE,
+      nameFile: nameFile,
+    );
   }
 
   Future<Response> likePost(LikeEntity objLike) async {

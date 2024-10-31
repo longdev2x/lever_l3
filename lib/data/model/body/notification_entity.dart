@@ -44,12 +44,12 @@ class NotificationEntity {
         json?['user'],
       );
 
-  // Map<String, dynamic> toJson() => {
-  //       'id': id,
-  //       'title': title,
-  //       'type': type,
-  //       'body': body,
-  //       'date': date?.toUtc().toIso8601String(),
-  //       'user': user?.toJson(),
-  //     };
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'type': type,
+        'body': body,
+        'date': date?.toUtc().toIso8601String(),
+        'user': user?.toJson(),
+      };
 }

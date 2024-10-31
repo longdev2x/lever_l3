@@ -11,4 +11,10 @@ class NotificationRepo extends GetxService {
       AppConstants.GET_NOTIFICATION,
     ); 
   }
+
+  Future<Response> testPushNotify() async {
+    return await apiClient.getData(
+      AppConstants.TEST_PUSH_NOTIFY,
+    ); 
+  }
 }

@@ -16,7 +16,8 @@ class CreatePostImageWidget extends StatelessWidget {
         double itemWith = (constraints.maxWidth - 4)/3;
         return GetBuilder<PostController>(
           builder: (controller) {
-            List<XFile>? xFiles = controller.xMediaFiles;
+            List<XFile>? xFiles = controller.xFiles;
+            
             if (xFiles == null || xFiles.isEmpty) {
               return const SizedBox();
             }

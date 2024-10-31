@@ -131,6 +131,7 @@ class _PostItemState extends State<PostItem> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     int? currentId = Get.find<AuthController>().user.id;
+    print('zzz - checKIage - ${widget.objPost.media.length}');
 
     return GestureDetector(
       onTap: () {
