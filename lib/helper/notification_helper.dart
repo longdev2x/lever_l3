@@ -26,11 +26,8 @@ class NotificationHelper {
       return;
     });
 
-    print('zzzz5 - 1');
-
     //Foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('zzzz5 - 2');
       print(
           "onMessage: ${message.notification?.title}/${message.notification?.body}/${message.notification?.titleLocKey}");
       NotificationHelper.showNotification(
@@ -44,7 +41,6 @@ class NotificationHelper {
 
     //Background
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('zzzz5 - 2');
       print(
           "onOpenApp: ${message.notification?.title}/${message.notification?.body}/${message.notification?.titleLocKey}");
       try {} catch (e) {}

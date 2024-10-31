@@ -26,7 +26,6 @@ class ProfileAvatarWidget extends StatelessWidget {
     return GetBuilder<ProfileController>(
       initState: (state) => Get.find<ProfileController>().getImage(),
       builder: (controller) {
-        print('zzzz - Ok widget update Image');
         return SizedBox(
           height: 150.w,
           width: 150.w,

@@ -200,7 +200,6 @@ class ProfileController extends GetxController implements GetxService {
       //Ghi dữ liệu vào file
       if (response.bodyString != null) {
         _fileAvatar = await file.writeAsBytes(response.bodyString!.codeUnits);
-        print('zzzz - Ok update _fileAvatar');
         update();
       }
     } else {

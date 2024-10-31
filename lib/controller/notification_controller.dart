@@ -47,7 +47,6 @@ class NotificationController extends GetxController implements GetxService {
     Response response = await repo.testPushNotify();
 
     if (response.statusCode == 200) {
-      print('zzz - ok have notify');
       _notifications = (response.body as List<dynamic>).isNotEmpty
           ? (response.body as List<dynamic>)
               .map((json) => NotificationEntity.fromJson(json))
