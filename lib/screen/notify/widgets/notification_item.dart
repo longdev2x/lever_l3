@@ -34,6 +34,9 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 12.h,
+      ),
       // decoration: BoxDecoration(
       //   color: ColorResources.getBackgroundColor(),
       // ),
@@ -48,6 +51,7 @@ class NotificationItem extends StatelessWidget {
           ),
           SizedBox(width: 12.w),
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppText16(
