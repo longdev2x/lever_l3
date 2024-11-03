@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,6 +8,7 @@ import 'package:timesheet/screen/post/create_post_screen.dart';
 import 'package:timesheet/screen/post/widgets/post_content.dart';
 import 'package:timesheet/screen/post/widgets/post_divider_widget.dart';
 import 'package:timesheet/screen/post/widgets/post_header_widget.dart';
+import 'package:timesheet/view/app_toast.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -54,11 +54,11 @@ class _PostScreenState extends State<PostScreen> {
     final List<XFile> xFiles = await picker.pickMultiImage();
 
     if (xFiles.isNotEmpty) {
-      Get.find<PostController>().uploadImages(xFiles);
-      await Get.find<PostController>().uploadImages(xFiles);
-    }
-    if (kDebugMode) {
-      print(xFiles);
+      int statusCode = await Get.find<PostController>().uploadImages(xFiles);
+      if(statusCode != 200) {
+        AppToast.showToast('Upload ảnh thất bại, hãy thử lại');
+        Get.find<PostController>().removeMedia();
+      }
     }
   }
 

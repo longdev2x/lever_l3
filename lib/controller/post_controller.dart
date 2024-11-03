@@ -25,7 +25,7 @@ class PostController extends GetxController implements GetxService {
 
   List<XFile>? _xFiles;
   final Map<String, File> _mapFileAvatar = {};
-  final List<MediaEntity> _medias = [];
+  List<MediaEntity> _medias = [];
 
   List<PostEntity>? get posts => _posts;
   bool get isFirstLoad => _isFirstLoad;
@@ -72,16 +72,18 @@ class PostController extends GetxController implements GetxService {
         //Get image commenter
         if (objPost.comments.isNotEmpty) {
           for (CommentEntity objComment in objPost.comments) {
-            if (objComment.user!.image != null && !_mapFileAvatar.containsKey(objComment.user?.image)) {
+            if (objComment.user!.image != null &&
+                !_mapFileAvatar.containsKey(objComment.user?.image)) {
               await getImage(objComment.user!.image!);
             }
           }
         }
 
         //Get image post
-        if(objPost.media.isNotEmpty) {
-          for(MediaEntity objMedia in objPost.media) {
-            if(objMedia.name != null && !_mapFileAvatar.containsKey(objMedia.name)) {
+        if (objPost.media.isNotEmpty) {
+          for (MediaEntity objMedia in objPost.media) {
+            if (objMedia.name != null &&
+                !_mapFileAvatar.containsKey(objMedia.name)) {
               await getImage(objMedia.name!);
             }
           }
@@ -222,7 +224,6 @@ class PostController extends GetxController implements GetxService {
   Future<int> createPost({
     required String content,
   }) async {
-
     PostEntity objPost = PostEntity(
       id: null,
       comments: [],
@@ -245,17 +246,21 @@ class PostController extends GetxController implements GetxService {
       ApiChecker.checkApi(response);
     }
 
+    removeMedia();
     _loading = false;
     update();
     return response.statusCode!;
   }
 
-  Future<int?> uploadImages(List<XFile> xFiles) async {
+  Future<int> uploadImages(List<XFile> xFiles) async {
+    int statusCode = 200;
     _xFiles = xFiles;
     update();
 
     for (XFile xFile in xFiles) {
-      Response response = await repo.uploadImages(xFile);
+      Response response = await repo.uploadImage(xFile);
+      statusCode = response.statusCode!;
+
       if (response.statusCode == 200) {
         if (response.body != null) {
           MediaEntity objMedia = MediaEntity.fromJson(response.body);
@@ -265,7 +270,8 @@ class PostController extends GetxController implements GetxService {
         ApiChecker.checkApi(response);
       }
     }
-    return 200;
+
+    return statusCode;
   }
 
   void removeMedia() {

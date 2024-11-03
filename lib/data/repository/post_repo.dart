@@ -29,7 +29,7 @@ class PostRepo extends GetxService {
     );
   }
 
-  Future<Response> uploadImages(XFile xFile) async {
+  Future<Response> uploadImage(XFile xFile) async {
     List<MultipartBody> multipartBodys = [MultipartBody('uploadfile', xFile)];
     return await apiClient.postMultipartData(
       AppConstants.UPLOAD_FILE,

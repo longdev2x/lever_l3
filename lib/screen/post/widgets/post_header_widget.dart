@@ -19,6 +19,7 @@ class PostHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: onTapRow,
       child: Padding(
@@ -42,10 +43,11 @@ class PostHeaderWidget extends StatelessWidget {
             const Spacer(),
             GestureDetector(
               onTap: onTapImagePicker,
-              child: const AppImageAsset(
+              child: AppImageAsset(
                 imagePath: Images.icImagePicker,
                 height: 35,
                 width: 35,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ],

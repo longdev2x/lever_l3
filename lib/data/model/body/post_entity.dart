@@ -85,29 +85,3 @@ class PostEntity {
     return DateTime.fromMillisecondsSinceEpoch(timestamp).toLocal();
   }
 }
-
-
-// {
-//   "date": "2024-10-20T01:28:40.502Z",
-//   "id": 0,
-//   "post": {
-//     "comments": [
-//       {
-//         "content": "string",
-//         "date": "2024-10-20T01:28:40.502Z",
-//         "id": 0,
-//         "user": {}
-//       }
-//     ],
-//     "content": "string",
-//     "date": "2024-10-20T01:28:40.502Z",
-//     "id": 0,
-//     "likes": [
-//       null
-//     ],
-//     "media": [],
-//     "user": {}
-//   },
-//   "type": 0,
-//   "user": {}
-// }
