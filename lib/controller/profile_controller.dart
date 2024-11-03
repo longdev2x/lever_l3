@@ -161,6 +161,17 @@ class ProfileController extends GetxController implements GetxService {
     _imgLoading = true;
     update();
 
+    // Không có quyền trên storage
+    // String? url = await FirebaseStorageRepo.uploadImage(File(xFile.path));
+    // if (url == null) {
+    //   AppToast.showToast('Lỗi khi upload ảnh');
+    //   return 400;
+    // }
+    // Response response = await repo.updateInfo(_user!);
+    // if (response.statusCode != 200) {
+    //   ApiChecker.checkApi(response);
+    // }
+
     Response response = await repo.uploadFile(xFile);
 
     if (response.statusCode == 200) {
@@ -182,6 +193,7 @@ class ProfileController extends GetxController implements GetxService {
       update();
       ApiChecker.checkApi(response);
     }
+
     return response.statusCode!;
   }
 

@@ -18,6 +18,8 @@ class ProfileAvatarWidget extends StatelessWidget {
 
     if (statusCode == 200) {
       AppToast.showToast('Upload thành công');
+    } else {
+      AppToast.showToast('Upload thất bại');
     }
   }
 

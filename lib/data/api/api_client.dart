@@ -93,9 +93,10 @@ class ApiClient extends GetxService {
   }
 
   Future<Response> postData(
-      String uri, dynamic body, Map<String, String>? headers, {int? id}) async {
-     String fullUri = appBaseUrl + uri;
-    if(id != null) {
+      String uri, dynamic body, Map<String, String>? headers,
+      {int? id}) async {
+    String fullUri = appBaseUrl + uri;
+    if (id != null) {
       fullUri = fullUri.replaceFirst('{id}', id.toString());
     }
     try {
@@ -191,9 +192,8 @@ class ApiClient extends GetxService {
 
   Future<Response> deleteData(String uri, int? id,
       {Map<String, String>? headers}) async {
-
     String fullURL = appBaseUrl + uri;
-    if(id != null) {
+    if (id != null) {
       fullURL = fullURL.replaceFirst('{id}', id.toString());
     }
     try {
@@ -251,8 +251,13 @@ class ApiClient extends GetxService {
       response0 = Response(statusCode: 0, statusText: noInternetMessage);
     }
     if (foundation.kDebugMode) {
-      logger
-          .i('API Response: [${response0.statusCode}] $uri\n${response0.body}');
+      if (uri == '/mita/public/images/' && response0.body != null) {
+        logger.i(
+            'API Response: [${response0.statusCode}] $uri ${response0.body.toString().split('\n').first}');
+      } else {
+        logger.i(
+            'API Response: [${response0.statusCode}] $uri\n${response0.body}');
+      }
     }
     return response0;
   }

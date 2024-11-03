@@ -6,7 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-
+import 'package:timesheet/controller/home_controller.dart';
 import '../utils/app_constants.dart';
 
 class NotificationHelper {
@@ -19,31 +19,35 @@ class NotificationHelper {
     var iOSInitialize = const DarwinInitializationSettings();
     var initializationsSettings =
         InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
-    flutterLocalNotificationsPlugin.initialize(initializationsSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse notificationResponse) async {
-      try {} catch (e) {}
-      return;
-    });
+    flutterLocalNotificationsPlugin.initialize(
+      initializationsSettings,
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) async {
+        try {} catch (e) {}
+        return;
+      },
+      onDidReceiveBackgroundNotificationResponse: (details) {
+        
+      },
+    );
 
     //Foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print(
-          "onMessage: ${message.notification?.title}/${message.notification?.body}/${message.notification?.titleLocKey}");
+          "onMessage Body: ${message.data['type']}/${message.data['title']}/${message.data['content']}/${message.messageId}/${message.sentTime}");
       NotificationHelper.showNotification(
-          message, flutterLocalNotificationsPlugin, false);
-      // if (Get.find<AuthController>().isLoggedIn()) {
-      //   Get.find<OrderController>().getRunningOrders(1);
-      //   Get.find<OrderController>().getHistoryOrders(1);
-      //   Get.find<NotificationController>().getNotificationList(true);
-      // }
+          message, flutterLocalNotificationsPlugin, true);
     });
 
     //Background
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print(
-          "onOpenApp: ${message.notification?.title}/${message.notification?.body}/${message.notification?.titleLocKey}");
-      try {} catch (e) {}
+          "onOpenApp: ${message.data['type']}/${message.data['title']}/${message.data['content']}/${message.messageId}/${message.sentTime}");
+      try {
+        if (message.data['type'] == 'N01') {
+          Get.find<HomeController>().onSelected(3);
+        }
+      } catch (e) {}
     });
   }
 
@@ -64,8 +68,8 @@ class NotificationHelper {
       String? image;
       if (data) {
         title = message.data['title'];
-        body = message.data['body'];
-        orderID = message.data['order_id'];
+        body = message.data['content'];
+        orderID = message.data['order_id'] ?? '';
         image = (message.data['image'] != null &&
                 message.data['image'].isNotEmpty)
             ? message.data['image'].startsWith('http')
@@ -153,14 +157,15 @@ class NotificationHelper {
       htmlFormatContentTitle: true,
     );
     AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('6ammart', '6ammart',
-            importance: Importance.max,
-            styleInformation: bigTextStyleInformation,
-            priority: Priority.max,
-            playSound: true,
-            icon: '@drawable/logo',
-            // sound: RawResourceAndroidNotificationSound('notification'),
-            );
+        AndroidNotificationDetails(
+      '6ammart', '6ammart',
+      importance: Importance.max,
+      styleInformation: bigTextStyleInformation,
+      priority: Priority.max,
+      playSound: true,
+      icon: '@drawable/logo',
+      // sound: RawResourceAndroidNotificationSound('notification'),
+    );
     NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await fln.show(0, title, body, platformChannelSpecifics, payload: orderID);
@@ -216,8 +221,7 @@ class NotificationHelper {
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
   print(
       "onBackground: ${message.notification?.title}/${message.notification?.body}/${message.notification?.titleLocKey}");
-  var androidInitialize =
-      const AndroidInitializationSettings('@drawable/logo');
+  var androidInitialize = const AndroidInitializationSettings('@drawable/logo');
   var iOSInitialize = const DarwinInitializationSettings();
   var initializationsSettings =
       InitializationSettings(android: androidInitialize, iOS: iOSInitialize);

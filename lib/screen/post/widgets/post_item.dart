@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/controller/post_controller.dart';
 import 'package:timesheet/data/model/body/like_entity.dart';
+import 'package:timesheet/data/model/body/media_entity.dart';
 import 'package:timesheet/data/model/body/post_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/post/post_detail_screen.dart';
+import 'package:timesheet/screen/post/widgets/post_images_widget.dart';
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
 import 'package:timesheet/view/app_image.dart';
@@ -103,6 +107,8 @@ class _PostItemState extends State<PostItem> {
                           );
                           if (statusCode == 200) {
                             AppToast.showToast('Update thành công');
+                          } else {
+                            AppToast.showToast('Update thất bại');
                           }
                           Get.back();
                         },
@@ -136,7 +142,7 @@ class _PostItemState extends State<PostItem> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     int? currentId = Get.find<AuthController>().user.id;
-
+    
     return GestureDetector(
       onTap: () {
         _navigateToDetail();
@@ -144,78 +150,94 @@ class _PostItemState extends State<PostItem> {
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 0),
         child: GetBuilder<PostController>(
-          builder: (controller) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 25.r,
-                    backgroundImage:
-                        controller.mapFileAvatar[widget.objPost.user?.image] !=
-                                null
-                            ? FileImage(controller
-                                .mapFileAvatar[widget.objPost.user?.image]!)
-                            : const AssetImage(Images.imgAvatarDefault)
-                                as ImageProvider,
-                  ),
-                  SizedBox(width: 12.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppText16(
-                        widget.objPost.user?.displayName,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      AppText14(_getDateFormat(widget.objPost.date)),
-                    ],
-                  ),
-                  const Spacer(),
-                  _checkIsMe()
-                      ? AppImageAsset(
-                          onTap: _onEditPost,
-                          imagePath: Images.icEditPost,
-                          width: 30,
-                          height: 30,
-                        )
-                      : AppImageAsset(
-                          onTap: () {},
-                          imagePath: Images.icThreeDotHori,
-                          width: 20,
-                          height: 4,
+          builder: (controller) {
+
+            List<File> files = [];
+            for (MediaEntity objMedia in widget.objPost.media) {
+              File? file = controller.mapFileAvatar[objMedia.name];
+              if (file != null) {
+                files.add(file);
+              }
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 25.r,
+                      backgroundImage: controller
+                                  .mapFileAvatar[widget.objPost.user?.image] !=
+                              null
+                          ? FileImage(controller
+                              .mapFileAvatar[widget.objPost.user?.image]!)
+                          : const AssetImage(Images.imgAvatarDefault)
+                              as ImageProvider,
+                    ),
+                    SizedBox(width: 12.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText16(
+                          widget.objPost.user?.displayName,
+                          fontWeight: FontWeight.bold,
                         ),
-                ],
-              ),
-              SizedBox(height: 10.h),
-              AppText20(
-                widget.objPost.content,
-                maxLines: 5,
-              ),
-              SizedBox(height: 50.h),
-              Padding(
-                padding: EdgeInsets.only(left: 5.w),
-                child: _reactButton(
-                    onLikeTap: _onLike,
-                    onCommentTap: () {
-                      _navigateToDetail();
-                    },
-                    isLiked: _checkLiked(currentId, widget.objPost.likes),
-                    theme: theme),
-              ),
-              SizedBox(width: 14.w),
-              Padding(
-                padding: EdgeInsets.only(top: 14.h, bottom: 20.h),
-                child: _reactInfor(
-                    onLikeTap: () {},
-                    onCommentTap: () {
-                      _navigateToDetail();
-                    },
-                    reactInfors: widget.objPost.likes,
-                    commentCounts: widget.objPost.comments.length),
-              ),
-            ],
-          ),
+                        AppText14(_getDateFormat(widget.objPost.date)),
+                      ],
+                    ),
+                    const Spacer(),
+                    _checkIsMe()
+                        ? AppImageAsset(
+                            onTap: _onEditPost,
+                            imagePath: Images.icEditPost,
+                            width: 30,
+                            height: 30,
+                          )
+                        : AppImageAsset(
+                            onTap: () {},
+                            imagePath: Images.icThreeDotHori,
+                            width: 20,
+                            height: 4,
+                          ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                AppText20(
+                  widget.objPost.content,
+                  maxLines: 5,
+                ),
+                SizedBox(height: 15.h),
+                if (files.isNotEmpty)
+                  PostImagesWidget(
+                    maxImages: 3,
+                    files: files,
+                  ),
+                SizedBox(height: 30.h),
+                Padding(
+                  padding: EdgeInsets.only(left: 5.w),
+                  child: _reactButton(
+                      onLikeTap: _onLike,
+                      onCommentTap: () {
+                        _navigateToDetail();
+                      },
+                      isLiked: _checkLiked(currentId, widget.objPost.likes),
+                      theme: theme),
+                ),
+                SizedBox(width: 14.w),
+                Padding(
+                  padding: EdgeInsets.only(top: 14.h, bottom: 20.h),
+                  child: _reactInfor(
+                      onLikeTap: () {},
+                      onCommentTap: () {
+                        _navigateToDetail();
+                      },
+                      reactInfors: widget.objPost.likes,
+                      commentCounts: widget.objPost.comments.length),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

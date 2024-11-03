@@ -72,9 +72,17 @@ class PostController extends GetxController implements GetxService {
         //Get image commenter
         if (objPost.comments.isNotEmpty) {
           for (CommentEntity objComment in objPost.comments) {
-            if (objComment.user!.image != null &&
-                !_mapFileAvatar.containsKey(objComment.user?.image)) {
+            if (objComment.user!.image != null && !_mapFileAvatar.containsKey(objComment.user?.image)) {
               await getImage(objComment.user!.image!);
+            }
+          }
+        }
+
+        //Get image post
+        if(objPost.media.isNotEmpty) {
+          for(MediaEntity objMedia in objPost.media) {
+            if(objMedia.name != null && !_mapFileAvatar.containsKey(objMedia.name)) {
+              await getImage(objMedia.name!);
             }
           }
         }

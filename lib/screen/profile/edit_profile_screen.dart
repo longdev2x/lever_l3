@@ -89,6 +89,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (statusCode == 200) {
       AppToast.showToast('Cập nhật thành công');
       Get.back();
+    } else {
+      AppToast.showToast('Cập nhật thất bại');
     }
   }
 

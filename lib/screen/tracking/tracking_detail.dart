@@ -43,6 +43,8 @@ class _TrackingDetailState extends State<TrackingDetail> {
     if (statusCode == 200) {
       AppToast.showToast('update_successful'.tr);
       Get.back();
+    } else {
+      AppToast.showToast('Cập nhật thất bại');
     }
   }
 

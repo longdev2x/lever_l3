@@ -29,7 +29,7 @@ class NotificationController extends GetxController implements GetxService {
       _notifications = (response.body as List<dynamic>).isNotEmpty
           ? (response.body as List<dynamic>)
               .map((json) => NotificationEntity.fromJson(json))
-              .toList()
+              .toList().reversed.toList()
           : [];
     } else {
       ApiChecker.checkApi(response);
@@ -47,12 +47,7 @@ class NotificationController extends GetxController implements GetxService {
     Response response = await repo.testPushNotify();
 
     if (response.statusCode == 200) {
-      print('zzz notify response body --- ${response.body}');
-      _notifications = (response.body as List<dynamic>).isNotEmpty
-          ? (response.body as List<dynamic>)
-              .map((json) => NotificationEntity.fromJson(json))
-              .toList()
-          : [];
+      // trả về bool
     } else {
       ApiChecker.checkApi(response);
     }

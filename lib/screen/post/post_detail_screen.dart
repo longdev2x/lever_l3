@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
 import 'package:timesheet/controller/post_controller.dart';
 import 'package:timesheet/data/model/body/like_entity.dart';
+import 'package:timesheet/data/model/body/media_entity.dart';
 import 'package:timesheet/data/model/body/post_entity.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/post/widgets/post_detail_comment.dart';
+import 'package:timesheet/screen/post/widgets/post_images_widget.dart';
 
 import 'package:timesheet/utils/images.dart';
 import 'package:timesheet/view/app_button.dart';
@@ -122,6 +126,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           );
                           if (statusCode == 200) {
                             AppToast.showToast('Update thành công');
+                          } else {
+                            AppToast.showToast('Update thất bại');
                           }
                           Get.back();
                         },
@@ -160,6 +166,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       PostEntity objPost = controller.posts!.firstWhere(
         (objPost) => objPost.id == postId,
       );
+
+      List<File> files = [];
+      for (MediaEntity objMedia in objPost.media) {
+        File? file = controller.mapFileAvatar[objMedia.name];
+        if (file != null) {
+          files.add(file);
+        }
+      }
 
       return Scaffold(
         appBar: AppBar(
@@ -237,7 +251,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                               objPost.content,
                               maxLines: 20,
                             ),
-                            SizedBox(height: 50.h),
+                            SizedBox(height: 10.h),
+                            if (files.isNotEmpty)
+                              PostImagesWidget(maxImages: 3, files: files),
+                            SizedBox(height: 30.h),
                             Padding(
                               padding: EdgeInsets.only(left: 5.w),
                               child: _reactButton(

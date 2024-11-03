@@ -55,6 +55,8 @@ class _TrackingScreenState extends State<TrackingScreen> {
     int statusCode = await Get.find<CheckInController>().checkIn();
     if (statusCode == 200) {
       AppToast.showToast('CheckIn thành công');
+    } else {
+      AppToast.showToast('CheckIn thất bại');
     }
   }
 
@@ -67,6 +69,8 @@ class _TrackingScreenState extends State<TrackingScreen> {
         _contentTrackingController.clear();
         AppToast.showToast('Tracking thành công');
         Get.to(() => const TrackingHistoryScreen());
+      } else {
+        AppToast.showToast('Tracking thất bại');
       }
     }
   }
@@ -253,9 +257,14 @@ class _TrackingScreenState extends State<TrackingScreen> {
                   daysCount: 30,
                   selectionColor: theme.colorScheme.primary,
                   selectedTextColor: theme.colorScheme.onPrimary,
-                  dateTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontWeight: FontWeight.w500, fontSize: 21.sp),
-                  dayTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontSize: 10.sp),
-                  monthTextStyle: TextStyle(color: ColorResources.getBlackColor(), fontSize: 12.sp),
+                  dateTextStyle: TextStyle(
+                      color: ColorResources.getBlackColor(),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 21.sp),
+                  dayTextStyle: TextStyle(
+                      color: ColorResources.getBlackColor(), fontSize: 10.sp),
+                  monthTextStyle: TextStyle(
+                      color: ColorResources.getBlackColor(), fontSize: 12.sp),
                   onDateChange: (selectedDate) {
                     _onHistory(context, selectedDate);
                   },

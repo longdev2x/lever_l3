@@ -111,7 +111,7 @@ class ProfileScreen extends StatelessWidget {
                       UserParameterWidget(
                         name: 'gender'.tr,
                         icon: Images.icSocial,
-                        prameter: objUser.gender!,
+                        prameter: objUser.gender! == 'M' ? 'male'.tr : 'female'.tr,
                       ),
                     if (objUser.birthPlace != null)
                       UserParameterWidget(

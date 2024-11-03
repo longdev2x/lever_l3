@@ -55,6 +55,8 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
     if (statusCode == 200) {
       AppToast.showToast('Đăng ký thành công, vui lòng đăng nhập');
       Get.to(() => const SignInScreen());
+    } else {
+      AppToast.showToast('Đăng ký thất bại, vui lòng kiểm tra lại');
     }
   }
 
