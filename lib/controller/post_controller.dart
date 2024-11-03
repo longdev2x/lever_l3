@@ -25,7 +25,7 @@ class PostController extends GetxController implements GetxService {
 
   List<XFile>? _xFiles;
   final Map<String, File> _mapFileAvatar = {};
-  List<MediaEntity> _medias = [];
+  final List<MediaEntity> _medias = [];
 
   List<PostEntity>? get posts => _posts;
   bool get isFirstLoad => _isFirstLoad;
@@ -40,6 +40,16 @@ class PostController extends GetxController implements GetxService {
     super.onInit();
     _user = Get.find<AuthController>().user;
     getPosts(keyWord: null, pageIndex: 1, size: 5, status: null);
+  }
+
+  @override
+  void onClose() {
+    _mapFileAvatar.forEach((key, file) async {
+      if (await file.exists()) {
+        await file.delete();
+      }
+    });
+    super.onClose();
   }
 
   Future<int> getPosts({

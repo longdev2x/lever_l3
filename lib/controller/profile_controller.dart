@@ -29,6 +29,14 @@ class ProfileController extends GetxController implements GetxService {
     _user = Get.find<AuthController>().user;
   }
 
+  @override
+  void onClose() async {
+    if (fileAvatar != null && await fileAvatar!.exists()) {
+      await fileAvatar!.delete();
+    }
+    super.onClose();
+  }
+
   Future<int> updateInfo({
     String? username,
     bool? active,

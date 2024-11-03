@@ -30,6 +30,16 @@ class UserSearchController extends GetxController implements GetxService {
     searchUser(keyWord: null, pageIndex: 1, size: 15, status: null);
   }
 
+  @override
+  void onClose() {
+    _mapFileAvatar.forEach((key, file) async {
+      if (await file.exists()) {
+        await file.delete();
+      }
+    });
+    super.onClose();
+  }
+
   Future<int> searchUser({
     String? keyWord,
     required int pageIndex,
