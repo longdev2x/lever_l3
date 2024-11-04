@@ -24,8 +24,8 @@ class ProfileController extends GetxController implements GetxService {
   File? get fileAvatar => _fileAvatar;
 
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
     _user = Get.find<AuthController>().user;
   }
 

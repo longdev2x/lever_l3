@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:timesheet/controller/home_controller.dart';
+import 'package:timesheet/controller/notification_controller.dart';
 import '../utils/app_constants.dart';
 
 class NotificationHelper {
@@ -17,17 +18,21 @@ class NotificationHelper {
     var androidInitialize =
         const AndroidInitializationSettings('@drawable/logo');
     var iOSInitialize = const DarwinInitializationSettings();
-    var initializationsSettings =
-        InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
+
+    var initializationsSettings = InitializationSettings(
+      android: androidInitialize,
+      iOS: iOSInitialize,
+    );
+
     flutterLocalNotificationsPlugin.initialize(
       initializationsSettings,
       onDidReceiveNotificationResponse:
           (NotificationResponse notificationResponse) async {
-        try {} catch (e) {}
-        return;
-      },
+            print('payload - ${notificationResponse.payload}');
+            //Chưa xử lý navigate do chưa có dữ liệu payload
+          },
       onDidReceiveBackgroundNotificationResponse: (details) {
-        
+        print('payload - ${details.payload}');
       },
     );
 
@@ -37,6 +42,7 @@ class NotificationHelper {
           "onMessage Body: ${message.data['type']}/${message.data['title']}/${message.data['content']}/${message.messageId}/${message.sentTime}");
       NotificationHelper.showNotification(
           message, flutterLocalNotificationsPlugin, true);
+      Get.find<NotificationController>().getNotification();
     });
 
     //Background

@@ -15,13 +15,13 @@ class AuthController extends GetxController implements GetxService {
 
   bool _loading = false;
   final Rx<User> _user = User().obs;
+  bool _everInit = false;
 
   bool get loading => _loading;
   User get user => _user.value;
 
-  @override
-  void onInit() {
-    super.onInit();
+  void _listenUserUpdate() {
+    _everInit = true;
     ever(
       _user,
       (callback) {
@@ -85,6 +85,9 @@ class AuthController extends GetxController implements GetxService {
     Response response = await repo.getCurrentUser();
     if (response.statusCode == 200) {
       _user.value = User.fromJson(response.body);
+      if (!_everInit) {
+        _listenUserUpdate();
+      }
       update();
     } else {
       ApiChecker.checkApi(response);

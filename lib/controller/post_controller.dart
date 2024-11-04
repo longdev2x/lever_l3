@@ -36,8 +36,8 @@ class PostController extends GetxController implements GetxService {
   Map<String, File> get mapFileAvatar => _mapFileAvatar;
 
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
     _user = Get.find<AuthController>().user;
     getPosts(keyWord: null, pageIndex: 1, size: 5, status: null);
   }

@@ -25,8 +25,8 @@ class UserSearchController extends GetxController implements GetxService {
   Map<String, File> get mapFileAvatar => _mapFileAvatar;
 
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
     searchUser(keyWord: null, pageIndex: 1, size: 15, status: null);
   }
 

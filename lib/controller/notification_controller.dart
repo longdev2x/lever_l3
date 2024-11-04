@@ -14,8 +14,8 @@ class NotificationController extends GetxController implements GetxService {
   List<NotificationEntity>? get notifications => _notifications;
 
   @override
-  void onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
     getNotification();
   }
 

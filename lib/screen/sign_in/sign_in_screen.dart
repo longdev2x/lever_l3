@@ -20,7 +20,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final _showPass = false.obs;
+  final _showPass = true.obs;
 
   @override
   void initState() {
