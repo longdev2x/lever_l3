@@ -40,7 +40,7 @@ class _PostContentState extends State<PostContent> {
             );
           },
           shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           separatorBuilder: (context, index) => const PostDividerWidget(),
           itemCount: posts.length + 1,
         );

@@ -18,6 +18,12 @@ class TrackingController extends GetxController implements GetxService {
   DateTime? get dateFilter => _dateFilter;
   List<TrackingEntity>? get trackings => _trackings;
 
+  Future<int> refreshData() async {
+    _trackings?.clear();
+    int statusCode = await getTracking();
+    return statusCode;
+  }
+
   Future<int> getTracking() async {
     _loading = true;
     update();

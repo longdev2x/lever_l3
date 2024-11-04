@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:timesheet/controller/notification_controller.dart';
 import 'package:timesheet/screen/notify/widgets/notification_list.dart';
 import 'package:timesheet/view/app_text.dart';
+import 'package:timesheet/view/app_toast.dart';
 
 class NotifyScreen extends StatelessWidget {
   const NotifyScreen({super.key});
@@ -14,31 +15,41 @@ class NotifyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(double.infinity, 80.h),
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Row(
-              children: [
-                AppText24(
-                  'notification'.tr,
-                  fontWeight: FontWeight.bold,
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: _testNotify,
-                  child: const Text('Test Notify'),
-                ),
-              ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        int statusCode = await Get.find<NotificationController>().refreshData();
+        if (statusCode == 200) {
+          AppToast.showToast('Refresh thành công');
+        } else {
+          AppToast.showToast('Refresh thất bại');
+        }
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size(double.infinity, 80.h),
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                children: [
+                  AppText24(
+                    'notification'.tr,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  const Spacer(),
+                  ElevatedButton(
+                    onPressed: _testNotify,
+                    child: const Text('Test Notify'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 0),
-        child: const NotificationList(),
+        body: Padding(
+          padding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 0),
+          child: const NotificationList(),
+        ),
       ),
     );
   }

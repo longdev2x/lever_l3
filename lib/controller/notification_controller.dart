@@ -19,6 +19,12 @@ class NotificationController extends GetxController implements GetxService {
     getNotification();
   }
 
+  Future<int> refreshData() async {
+    _notifications?.clear();
+    int statusCode = await getNotification();
+    return statusCode;
+  }
+
   Future<int> getNotification() async {
     _loading = true;
     update();
@@ -29,21 +35,21 @@ class NotificationController extends GetxController implements GetxService {
       _notifications = (response.body as List<dynamic>).isNotEmpty
           ? (response.body as List<dynamic>)
               .map((json) => NotificationEntity.fromJson(json))
-              .toList().reversed.toList()
+              .toList()
+              .reversed
+              .toList()
           : [];
     } else {
       ApiChecker.checkApi(response);
     }
-    
+
     _loading = false;
     update();
 
     return response.statusCode!;
   }
 
-
   Future<int> testPushNotify() async {
-
     Response response = await repo.testPushNotify();
 
     if (response.statusCode == 200) {
@@ -51,7 +57,7 @@ class NotificationController extends GetxController implements GetxService {
     } else {
       ApiChecker.checkApi(response);
     }
-    
+
     update();
     return response.statusCode!;
   }

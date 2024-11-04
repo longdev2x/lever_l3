@@ -52,6 +52,12 @@ class PostController extends GetxController implements GetxService {
     super.onClose();
   }
 
+  Future<int> refreshData() async {
+    _posts?.clear();
+    int statusCode = await getPosts(pageIndex: 1, size: 5, status: null);
+    return statusCode;
+  }
+
   Future<int> getPosts({
     String? keyWord,
     required int pageIndex,

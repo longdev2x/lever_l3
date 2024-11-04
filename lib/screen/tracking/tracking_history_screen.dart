@@ -53,95 +53,106 @@ class TrackingHistoryScreen extends StatelessWidget {
       onPopInvoked: (didPop) {
         Get.find<TrackingController>().filterList(null);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: GetBuilder<TrackingController>(
-            builder: (controller) => controller.dateFilter == null
-                ? Text('${'history'.tr} tracking')
-                : Text(
-                    'Tracking - ${DateConverter.getOnlyFomatDate(controller.dateFilter!)}'),
-          ),
-          actions: [
-            TextButton.icon(
-              onPressed: () => _onFilter(context),
-              label: Text('filter'.tr),
-              icon: const Icon(Icons.filter_list),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          int statusCode = await Get.find<TrackingController>().refreshData();
+          if (statusCode == 200) {
+            AppToast.showToast('Refresh thành công');
+          } else {
+            AppToast.showToast('Refresh thất bại');
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: GetBuilder<TrackingController>(
+              builder: (controller) => controller.dateFilter == null
+                  ? Text('${'history'.tr} tracking')
+                  : Text(
+                      'Tracking - ${DateConverter.getOnlyFomatDate(controller.dateFilter!)}'),
             ),
-          ],
-        ),
-        body: GetBuilder<TrackingController>(
-          initState: (state) => Get.find<TrackingController>().getTracking(),
-          builder: (controller) {
-            List<TrackingEntity>? list = controller.trackings?.reversed.toList();
-      
-            if (controller.loading == true) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-      
-            if (list == null) {
-              return Center(
-                child: AppText20('error'.tr),
-              );
-            }
-      
-            //Filter
-            if (controller.dateFilter != null) {
-              list = list
-                  .where((e) => e.date?.day == controller.dateFilter?.day)
-                  .toList();
-            }
-      
-            if (list.isEmpty) {
-              return Center(
-                child: AppText20('empty_list'.tr),
-              );
-            }
-      
-            return Padding(
-              padding: EdgeInsets.only(top: 15.h),
-              child: ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    key: ValueKey(list![index].id),
-                    confirmDismiss: (direction) async {
-                      return await showDialog(
-                        context: context,
-                        builder: (context) => AppConfirm(
-                          title: 'are_you_sure_to_delete_this_schedule'.tr,
-                          onConfirm: () async {
-                            bool result = await _onDelete(list![index].id);
-      
-                            if (context.mounted) {
-                              Navigator.pop(context, result);
-                            }
-                          },
-                        ),
-                      );
-                    },
-                    background: Container(
-                      margin: EdgeInsets.only(bottom: 9.h),
-                      decoration: BoxDecoration(
-                          color: ColorResources.getRedColor(),
-                          borderRadius: BorderRadius.circular(16)),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: AppText20(
-                          'delete'.tr,
-                          fontWeight: FontWeight.bold,
+            actions: [
+              TextButton.icon(
+                onPressed: () => _onFilter(context),
+                label: Text('filter'.tr),
+                icon: const Icon(Icons.filter_list),
+              ),
+            ],
+          ),
+          body: GetBuilder<TrackingController>(
+            initState: (state) => Get.find<TrackingController>().getTracking(),
+            builder: (controller) {
+              List<TrackingEntity>? list =
+                  controller.trackings?.reversed.toList();
+
+              if (controller.loading == true) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (list == null) {
+                return Center(
+                  child: AppText20('error'.tr),
+                );
+              }
+
+              //Filter
+              if (controller.dateFilter != null) {
+                list = list
+                    .where((e) => e.date?.day == controller.dateFilter?.day)
+                    .toList();
+              }
+
+              if (list.isEmpty) {
+                return Center(
+                  child: AppText20('empty_list'.tr),
+                );
+              }
+
+              return Padding(
+                padding: EdgeInsets.only(top: 15.h),
+                child: ListView.builder(
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    return Dismissible(
+                      key: ValueKey(list![index].id),
+                      confirmDismiss: (direction) async {
+                        return await showDialog(
+                          context: context,
+                          builder: (context) => AppConfirm(
+                            title: 'are_you_sure_to_delete_this_schedule'.tr,
+                            onConfirm: () async {
+                              bool result = await _onDelete(list![index].id);
+
+                              if (context.mounted) {
+                                Navigator.pop(context, result);
+                              }
+                            },
+                          ),
+                        );
+                      },
+                      background: Container(
+                        margin: EdgeInsets.only(bottom: 9.h),
+                        decoration: BoxDecoration(
+                            color: ColorResources.getRedColor(),
+                            borderRadius: BorderRadius.circular(16)),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: AppText20(
+                            'delete'.tr,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    child: TrackingHistoryItem(
-                      objTracking: list[index],
-                    ),
-                  );
-                },
-              ),
-            );
-          },
+                      child: TrackingHistoryItem(
+                        objTracking: list[index],
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

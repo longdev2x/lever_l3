@@ -37,13 +37,16 @@ class TrackingHistoryItem extends StatelessWidget {
         child: Row(
           children: [
             if (objTracking.date != null)
-              Column(
-                children: [
-                  AppText14('${DateConverter.getWeekDay(objTracking.date!)}, ${DateConverter.getOnlyFomatDate(objTracking.date!)}', fontWeight: FontWeight.bold,),
-                  const Spacer(),
-                  AppText28(DateConverter.getHoursMinutes(objTracking.date!)),
-                  const Spacer(),
-                ],
+              SizedBox(
+                width: 150.w,
+                child: Column(
+                  children: [
+                    AppText14('${DateConverter.getWeekDay(objTracking.date!)}, ${DateConverter.getOnlyFomatDate(objTracking.date!)}', fontWeight: FontWeight.bold,),
+                    const Spacer(),
+                    AppText28(DateConverter.getHoursMinutes(objTracking.date!)),
+                    const Spacer(),
+                  ],
+                ),
               ),
             SizedBox(width: 10.w),
             Container(

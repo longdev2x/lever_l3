@@ -67,28 +67,38 @@ class _PostScreenState extends State<PostScreen> {
     final User objUser = Get.find<AuthController>().user;
 
     return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: [
-              GetBuilder<PostController>(
-                builder: (controller) {
-                  return PostHeaderWidget(
-                    avatar: objUser.image,
-                    onTapRow: () {
-                      Get.to(() => const CreatePostScreen(),
-                          transition: Transition.downToUp);
-                    },
-                    onTapImagePicker: () {
-                      _addImage(context, objUser);
-                    },
-                  );
-                },
-              ),
-              const PostDividerWidget(),
-              const PostContent(),
-            ],
+      child: RefreshIndicator(
+        onRefresh: () async {
+          int statusCode = await Get.find<PostController>().refreshData();
+          if(statusCode == 200) {
+            AppToast.showToast('Refresh thành công');
+          } else {
+            AppToast.showToast('Refresh thất bại');
+          }
+        },
+        child: Scaffold(
+          body: SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: [
+                GetBuilder<PostController>(
+                  builder: (controller) {
+                    return PostHeaderWidget(
+                      avatar: objUser.image,
+                      onTapRow: () {
+                        Get.to(() => const CreatePostScreen(),
+                            transition: Transition.downToUp);
+                      },
+                      onTapImagePicker: () {
+                        _addImage(context, objUser);
+                      },
+                    );
+                  },
+                ),
+                const PostDividerWidget(),
+                const PostContent(),
+              ],
+            ),
           ),
         ),
       ),

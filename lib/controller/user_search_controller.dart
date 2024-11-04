@@ -40,6 +40,13 @@ class UserSearchController extends GetxController implements GetxService {
     super.onClose();
   }
 
+  Future<int> refreshData() async {
+    _users?.clear();
+    int statusCode =
+        await searchUser(keyWord: null, pageIndex: 1, size: 15, status: null);
+    return statusCode;
+  }
+
   Future<int> searchUser({
     String? keyWord,
     required int pageIndex,
