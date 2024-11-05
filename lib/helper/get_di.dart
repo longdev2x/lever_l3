@@ -12,7 +12,7 @@ import 'package:timesheet/controller/post_controller.dart';
 import 'package:timesheet/controller/profile_controller.dart';
 import 'package:timesheet/controller/sign_up_controller.dart';
 import 'package:timesheet/controller/tracking_controller.dart';
-import 'package:timesheet/controller/user_search_controller.dart';
+import 'package:timesheet/controller/user_controller.dart';
 import 'package:timesheet/data/repository/check_in_repo.dart';
 import 'package:timesheet/data/repository/notification_repo.dart';
 import 'package:timesheet/data/repository/post_repo.dart';
@@ -60,7 +60,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => CheckInController(repo: Get.find()));
   Get.lazyPut(() => TrackingController(repo: Get.find()));
   Get.lazyPut(() => HomeController());
-  Get.lazyPut(() => UserSearchController(repo: Get.find()));
+  Get.lazyPut(() => UserController(repo: Get.find()));
   Get.lazyPut(() => ProfileController(repo: Get.find()));
   Get.lazyPut(() => PostController(repo: Get.find()));
   Get.lazyPut(() => NotificationController(repo: Get.find()));

@@ -8,17 +8,21 @@ import 'package:timesheet/data/model/body/user_search_entity.dart';
 import 'package:timesheet/data/model/body/request/search_request.dart';
 import 'package:timesheet/data/repository/user_search_repo.dart';
 
-class UserSearchController extends GetxController implements GetxService {
+class UserController extends GetxController implements GetxService {
   final UserSearchRepo repo;
-  UserSearchController({required this.repo});
+  UserController({required this.repo});
 
   List<User>? _users;
+  List<User> _userSearchs = [];
+  bool _hasSearchError = false;
   bool _isFirstLoad = true;
   bool _loading = false;
   bool _hasMoreData = true;
   final Map<String, File> _mapFileAvatar = {};
 
   List<User>? get users => _users;
+  List<User>? get userSearchs => _userSearchs;
+  bool get hasSearchError => _hasSearchError;
   bool get isFirstLoad => _isFirstLoad;
   bool get loading => _loading;
   bool get hasMoreData => _hasMoreData;
@@ -53,10 +57,16 @@ class UserSearchController extends GetxController implements GetxService {
     required int size,
     required int? status,
   }) async {
-    SearchRequest objSearchRequest =
-        SearchRequest(keyWord, pageIndex, size, status);
+    _userSearchs = [];
+    _hasSearchError = false;
+    SearchRequest objSearchRequest = SearchRequest(
+      keyWord,
+      pageIndex,
+      size,
+      status,
+    );
 
-    if (!hasMoreData) return 400;
+    if (!hasMoreData && keyWord == null) return 400;
 
     _loading = true;
     update();
@@ -75,9 +85,14 @@ class UserSearchController extends GetxController implements GetxService {
         }
       }
 
-      _users = [...?_users, ...newUsers];
-      _hasMoreData = newUsers.isNotEmpty && newUsers.length == size;
+      if (keyWord == null) {
+        _users = [...?_users, ...newUsers];
+        _hasMoreData = newUsers.isNotEmpty && newUsers.length == size;
+      } else {
+        _userSearchs = newUsers;
+      }
     } else {
+      _hasSearchError = true;
       ApiChecker.checkApi(response);
     }
 

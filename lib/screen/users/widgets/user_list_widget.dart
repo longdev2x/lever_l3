@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:timesheet/controller/user_search_controller.dart';
+import 'package:timesheet/controller/user_controller.dart';
 import 'package:timesheet/screen/users/widgets/user_item.dart';
 import 'package:timesheet/view/app_text.dart';
 
@@ -28,8 +28,8 @@ class _UserListWidgetState extends State<UserListWidget> {
   void _scrollListener() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      Get.find<UserSearchController>().searchUser(
-        pageIndex: Get.find<UserSearchController>().users!.length ~/ 15 + 1,
+      Get.find<UserController>().searchUser(
+        pageIndex: Get.find<UserController>().users!.length ~/ 15 + 1,
         size: 15,
         status: null,
       );
@@ -39,8 +39,8 @@ class _UserListWidgetState extends State<UserListWidget> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    Get.find<UserSearchController>();
-    return GetBuilder<UserSearchController>(
+    Get.find<UserController>();
+    return GetBuilder<UserController>(
       builder: (controller) {
         if (controller.isFirstLoad) {
           return const Center(

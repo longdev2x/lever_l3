@@ -9,6 +9,7 @@ class AppTextField extends StatelessWidget {
   final bool? obscureText;
   final Function()? onObscureTextTap;
   final Function()? onTap;
+  final Function(String value)? onChanged;
   const AppTextField(
       {super.key,
       this.controller,
@@ -16,6 +17,7 @@ class AppTextField extends StatelessWidget {
       this.lable,
       this.readOnly = false,
       this.onTap,
+      this.onChanged,
       this.initValue,
       this.obscureText,
       this.onObscureTextTap});
@@ -27,6 +29,7 @@ class AppTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       readOnly: readOnly,
+      onChanged: onChanged,
       onTap: onTap,
       obscureText: obscureText ?? false,
       initialValue: initValue,

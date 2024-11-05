@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:timesheet/controller/user_search_controller.dart';
+import 'package:timesheet/controller/user_controller.dart';
+import 'package:timesheet/screen/users/user_search_screen.dart';
 import 'package:timesheet/screen/users/widgets/user_list_widget.dart';
 
 import 'package:timesheet/utils/images.dart';
@@ -16,7 +17,7 @@ class UsersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        int statusCode = await Get.find<UserSearchController>().refreshData();
+        int statusCode = await Get.find<UserController>().refreshData();
         if (statusCode == 200) {
           AppToast.showToast('Refresh thành công');
         } else {
@@ -40,9 +41,7 @@ class UsersScreen extends StatelessWidget {
                     imagePath: Images.icSearchUser,
                     width: 25.w,
                     height: 25.w,
-                    onTap: () {
-                      //Search Icon Tap
-                    },
+                    onTap: () => Get.to(() => const UserSearchScreen()),
                   ),
                 ],
               ),

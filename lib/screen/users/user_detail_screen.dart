@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timesheet/controller/auth_controller.dart';
-import 'package:timesheet/controller/user_search_controller.dart';
+import 'package:timesheet/controller/user_controller.dart';
 import 'package:timesheet/data/model/body/user.dart';
 import 'package:timesheet/helper/date_converter.dart';
 import 'package:timesheet/screen/users/edit_member_user_screen.dart';
@@ -47,7 +47,7 @@ class UserDetailScreen extends StatelessWidget {
         padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 20.h),
         child: Column(
           children: [
-            GetBuilder<UserSearchController>(
+            GetBuilder<UserController>(
               builder: (controller) => CircleAvatar(
                 radius: 80.r,
                 backgroundImage: controller.mapFileAvatar[user.image] != null
